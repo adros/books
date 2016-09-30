@@ -1,7 +1,6 @@
 module.exports.models = {
 
-  connection: 'localPg',
-
+  connection: 'herokuPg',
   migrate: 'alter'
 
 };
