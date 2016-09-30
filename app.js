@@ -18,9 +18,8 @@
  * `node app.js --silent --port=80 --prod`
  */
 
-console.log("x", process.env.NODE_ENV);
+console.warn("Removing NODE_ENV production");
 delete process.env.NODE_ENV;
-console.log("x", process.env.NODE_ENV);
 // Ensure we're in the project directory, so relative paths work as expected
 // no matter where we actually lift from.
 process.chdir(__dirname);

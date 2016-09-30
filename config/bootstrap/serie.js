@@ -1,19 +1,38 @@
+// module.exports = {
+//   data: [{
+//     name: "Sacketts",
+//     totalCount: 18,
+//     id: 10
+//   }, {
+//     name: "Stopy",
+//     totalCount: 130
+//   }, {
+//     name: "Western",
+//     totalCount: 14
+//   }, {
+//     name: "Hulánova láska",
+//     totalCount: 5
+//   }, {
+//     name: "Theodore Boone",
+//     totalCount: 4
+//   }]
+// };
+
 module.exports = {
   data: [{
-    name: "Sacketts",
-    totalCount: 18,
-    id: 10
+    name: "Adam",
+    totalCount: 18
   }, {
-    name: "Stopy",
+    name: "Eva",
     totalCount: 130
   }, {
-    name: "Western",
+    name: "Peter",
     totalCount: 14
   }, {
-    name: "Hulánova láska",
+    name: "Michal",
     totalCount: 5
   }, {
-    name: "Theodore Boone",
+    name: "Vlado",
     totalCount: 4
   }]
 };
