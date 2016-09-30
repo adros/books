@@ -18,6 +18,9 @@
  * `node app.js --silent --port=80 --prod`
  */
 
+console.log("x", process.env.NODE_ENV);
+delete process.env.NODE_ENV;
+console.log("x", process.env.NODE_ENV);
 // Ensure we're in the project directory, so relative paths work as expected
 // no matter where we actually lift from.
 process.chdir(__dirname);
@@ -49,7 +52,9 @@ process.chdir(__dirname);
       console.error('Your `.sailsrc` file(s) will be ignored.');
       console.error('To resolve this, run:');
       console.error('npm install rc --save');
-      rc = function () { return {}; };
+      rc = function() {
+        return {};
+      };
     }
   }
 
