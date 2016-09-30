@@ -41,7 +41,8 @@ var HeroesComponent = (function () {
             .then(function (hero) {
             _this.heroes.push(hero);
             _this.selectedHero = null;
-        });
+        })
+            .catch(function (err) { return alert(err.message); });
     };
     HeroesComponent.prototype.delete = function (hero) {
         var _this = this;

@@ -27,10 +27,9 @@ var HeroSearchComponent = (function () {
         this.heroes = this.searchTerms
             .debounceTime(300) // wait for 300ms pause in events
             .distinctUntilChanged() // ignore if next search term is same as previous
-            .switchMap(function (term) { return term ? _this.heroService.search(term) : Observable_1.Observable.of([]); })
+            .switchMap(function (term) { return term ? _this.heroService.search({ name: { contains: term } }) : Observable_1.Observable.of([]); })
             .catch(function (error) {
-            // TODO: real error handling
-            console.log(error);
+            alert(error.message);
             return Observable_1.Observable.of([]);
         });
     };

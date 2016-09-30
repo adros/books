@@ -53,14 +53,17 @@ export class HeroService {
       .catch(this.handleError);
   }
 
-  search(term: string): Observable<Hero[]> {
+  search(query: Object): Observable<Hero[]> {
     return this.http
-      .get(`${this.heroesUrl}/?name=${term}`)
-      .map((r: Response) => r.json().data as Hero[]);
+      .get(`${this.heroesUrl}/?where=${JSON.stringify(query)}`)
+      .map((r: Response) => r.json() as Hero[]);
   }
 
   private handleError(error: any): Promise<any> {
+    try {
+      Object.assign(error, JSON.parse(error._body));
+    } catch (e) { }
     console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
+    return Promise.reject(error);
   }
 }

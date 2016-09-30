@@ -52,14 +52,18 @@ var HeroService = (function () {
             .then(function () { return null; })
             .catch(this.handleError);
     };
-    HeroService.prototype.search = function (term) {
+    HeroService.prototype.search = function (query) {
         return this.http
-            .get(this.heroesUrl + "/?name=" + term)
-            .map(function (r) { return r.json().data; });
+            .get(this.heroesUrl + "/?where=" + JSON.stringify(query))
+            .map(function (r) { return r.json(); });
     };
     HeroService.prototype.handleError = function (error) {
+        try {
+            Object.assign(error, JSON.parse(error._body));
+        }
+        catch (e) { }
         console.error('An error occurred', error); // for demo purposes only
-        return Promise.reject(error.message || error);
+        return Promise.reject(error);
     };
     HeroService = __decorate([
         core_1.Injectable(), 
