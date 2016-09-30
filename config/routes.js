@@ -36,7 +36,8 @@ module.exports.routes = {
   },
   'r|^/(heroes|dashboard)|': {
     view: 'homepage'
-  }
+},
+'post /import': 'ImportController.import',
 
 
   /***************************************************************************

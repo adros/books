@@ -23,6 +23,18 @@ module.exports.http = {
     app.use('/node_modules', express.static('node_modules'));
   },
 
+  bodyParser: function(opts) {
+    var xmlParser = require('express-xml-bodyparser')(opts);
+    var skipper = require('skipper')(opts);
+    return function(req, res, next) {
+      if (req.headers && (req.headers['content-type'] == 'text/xml' || req.headers['content-type'] == 'application/xml')) {
+        return xmlParser(req, res, next);
+      }
+      return skipper(req, res, next);
+    };
+
+  },
+
   /****************************************************************************
    *                                                                           *
    * Express middleware to use for every Sails request. To add custom          *
