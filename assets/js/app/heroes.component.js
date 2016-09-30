@@ -11,10 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var hero_service_1 = require('./hero.service');
+var error_handler_1 = require('./error-handler');
 var HeroesComponent = (function () {
-    function HeroesComponent(router, heroService) {
+    function HeroesComponent(router, heroService, errorHandler) {
         this.router = router;
         this.heroService = heroService;
+        this.errorHandler = errorHandler;
     }
     HeroesComponent.prototype.onSelect = function (hero) {
         this.selectedHero = (hero == this.selectedHero ? null : hero);
@@ -42,7 +44,7 @@ var HeroesComponent = (function () {
             _this.heroes.push(hero);
             _this.selectedHero = null;
         })
-            .catch(function (err) { return alert(err.message); });
+            .catch(function (err) { return _this.errorHandler.displayDialog(err); });
     };
     HeroesComponent.prototype.delete = function (hero) {
         var _this = this;
@@ -62,7 +64,7 @@ var HeroesComponent = (function () {
             templateUrl: 'heroes.component.html',
             styleUrls: ['heroes.component.css']
         }), 
-        __metadata('design:paramtypes', [router_1.Router, hero_service_1.HeroService])
+        __metadata('design:paramtypes', [router_1.Router, hero_service_1.HeroService, error_handler_1.ErrorHandler])
     ], HeroesComponent);
     return HeroesComponent;
 }());
