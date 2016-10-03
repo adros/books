@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Hero } from './hero';
 import { HeroService } from './hero.service';
-import { ErrorHandler } from './error-handler';
-import { OnInit } from '@angular/core';
+import { ErrorHandler } from './_common/error-handler';
+import { OnInit } from '@angular/core' ;
 
 
 @Component({

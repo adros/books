@@ -20,7 +20,7 @@ export class HeroService {
   }
 
   getHero(id: number): Promise<Hero> {
-    const url = `${this.heroesUrl}/${id}`;
+    const url = `${this.heroesUrl}/${id}` ;
     return this.http
       .get(url)
       .toPromise()

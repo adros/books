@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ErrorHandler } from '../error-handler';
+import { ErrorHandler } from '../_common/error-handler';
 
 import { HeroService } from '../hero.service';
 

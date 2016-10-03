@@ -9,7 +9,12 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.http.html
  */
 
-var express = require('sails/node_modules/express');
+
+var morgan = require('morgan');
+var compression = require('compression');
+var serveStatic = require('serve-static')
+
+// compress all requests
 
 module.exports.http = {
 
@@ -18,9 +23,9 @@ module.exports.http = {
   },
 
   customMiddleware: function(app) {
-    app.use(express.logger());
-    app.use(express.compress());
-    app.use('/node_modules', express.static('node_modules'));
+    app.use(morgan('combined'));
+    app.use(compression());
+    app.use('/node_modules', serveStatic('node_modules'));
   },
 
   bodyParser: function(opts) {
@@ -113,5 +118,5 @@ module.exports.http = {
    *                                                                          *
    ***************************************************************************/
 
-  // cache: 31557600000
+// cache: 31557600000
 };

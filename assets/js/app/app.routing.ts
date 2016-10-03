@@ -8,7 +8,7 @@ import { ChartsComponent }      from './chart/charts.component';
 
 const appRoutes: Routes = [{
   path: '',
-  redirectTo: '/dashboard',
+  redirectTo: '/dashboard' ,
   pathMatch: 'full'
 },
   {

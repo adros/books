@@ -23,8 +23,8 @@
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
       // other libraries
       'rxjs': 'npm:rxjs',
-      'angular-in-memory-web-api': 'npm:angular-in-memory-web-api',
-      'angular2-modal': 'npm:angular2-modal',
+      'angular2-modal': 'npm:angular2-modal/bundles/angular2-modal.umd.js',
+      'angular2-modal/plugins/bootstrap': 'npm:angular2-modal/bundles/angular2-modal.bootstrap.umd.js',
       'angular2-highcharts': 'npm:angular2-highcharts',
       'highcharts': 'npm:highcharts'
     },
@@ -37,19 +37,11 @@
       rxjs: {
         defaultExtension: 'js'
       },
+      '__angular2-modal': {
+        defaultExtension: 'js',
+        main: 'bundles/angular2-modal.umd'
+      },
       highcharts: {
-        defaultExtension: 'js'
-      },
-      'angular-in-memory-web-api': {
-        main: './index.js',
-        defaultExtension: 'js'
-      },
-      'angular2-modal': {
-        main: './index.js',
-        defaultExtension: 'js'
-      },
-      'angular2-modal/plugins/bootstrap': {
-        main: './index.js',
         defaultExtension: 'js'
       },
       'angular2-highcharts': {
