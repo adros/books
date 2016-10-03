@@ -36,6 +36,7 @@ module.exports = {
       .then(importData(Author, backupData.authors[0].author, authorDataFn, "authors"))
       .then(importData(Serie, backupData.series[0].serie, serieDataFn, "series"))
       .then(importData(Book, backupData.books[0].book, bookDataFn.bind(null, bookToAuthors, bookToSeries), "books"))
+      .then(importData(Reading, backupData.readings[0].reading, readingDataFn, "readings"))
       .then(data => res.send(data))
       .catch(err => res.serverError(err));
   }
@@ -43,7 +44,7 @@ module.exports = {
 
 function authorDataFn(author) {
   return {
-    id: +(author.author_id[0]),
+    id: +author.author_id[0],
     firstName: author.first_name[0],
     lastName: author.last_name[0],
     dateOfBirth: author.date_of_birth[0] || null,
@@ -56,20 +57,30 @@ function authorDataFn(author) {
 
 function serieDataFn(serie) {
   return {
-    id: +(serie.serie_id[0]),
+    id: +serie.serie_id[0],
     name: serie.title[0],
-    totalCount: +(serie.total_count[0])
+    totalCount: +serie.total_count[0]
   };
 }
 
 function bookDataFn(bookToAuthors, bookToSeries, book) {
-  var id = +(book.book_id[0])
+  var id = +book.book_id[0]
   return {
     id: id,
     name: book.title[0],
     genre: getGenre(book.genre[0]),
     authors: bookToAuthors[id],
     series: bookToSeries[id]
+  };
+}
+
+function readingDataFn(reading) {
+  return {
+    id: +reading.reading_id[0],
+    year: +reading.year[0],
+    yearOrder: +reading.year_order[0],
+    totalOrder: +reading.total_order[0],
+    book: +reading.book_id[0]
   };
 }
 

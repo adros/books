@@ -38,7 +38,8 @@ module.exports.routes = {
     view: 'homepage'
   },
   'post /import': 'ImportController.import',
-  'get /author-book-count': 'ChartController.authorsBooksCount'
+  'get /chart/author-book-count': 'ChartController.authorsBooksCount',
+  'get /chart/year-book-count': 'ChartController.yearBooksCount'
 
 
   /***************************************************************************

@@ -8,7 +8,22 @@
 module.exports = {
 
   attributes: {
+    year: {
+      type: 'integer',
+      required: true
+    },
+    yearOrder: {
+      type: 'integer',
+      required: true
+    },
+    totalOrder: {
+      type: 'integer',
+      required: true
+    },
+    book: {
+      model: 'book',
+      required: true
+    }
 
   }
 };
-

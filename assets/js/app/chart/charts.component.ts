@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorHandler } from '../_common/error-handler';
 
@@ -10,7 +10,7 @@ import { HeroService } from '../hero.service';
   styleUrls: ['charts.component.css'],
   selector: 'charts'
 })
-export class ChartsComponent implements OnInit {
+export class ChartsComponent {
 
   data: any[] = [];
 
@@ -43,19 +43,22 @@ export class ChartsComponent implements OnInit {
     var isFirstLoad = !this.chart;
     this.chart = chartInstance;
     if (isFirstLoad) {
-      this.loadData();
+      this.loadData("author-book-count");
     }
   }
 
-  loadData(): void {
+  sort = "value"
+  desc = true
+
+  loadData(type): void {
     this.chart.showLoading();
 
-    this.heroService.authorsBooksCount()
+    this.heroService.getChartData(type)
       .then(data => {
         this.options = {
           series: [{
             name: 'Books count',
-            data: data.map(d => [d.name, d.value])
+            data: this.sortFn(data.map(d => [d.name, d.value]))
           }]
         };
         this.chart.hideLoading();
@@ -63,7 +66,21 @@ export class ChartsComponent implements OnInit {
       .catch(err => this.errorHandler.displayDialog(err));
   }
 
-  ngOnInit(): void {
-    return;
+  sortData() {
+    this.options.series[0].data = this.sortFn(this.options.series[0].data);
+    this.options = Object.assign({}, this.options);
   }
+
+  sortFn(data) {
+    var p = this.sort == "value" ? 1 : 0;
+    return data.slice(0).sort((a, b) => {
+      a=a[p];
+      b=b[p];
+      if (typeof a == "string") {
+        return a.localeCompare(b) * (this.desc ? -1 : 1);
+      }
+      return this.desc ? b - a: a - b ;
+    });
+  }
+
 }

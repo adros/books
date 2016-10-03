@@ -66,8 +66,8 @@ export class HeroService {
       .catch(this.handleError);
   }
 
-  authorsBooksCount(): Promise<any> {
-    return this.http.get(`/author-book-count`)
+  getChartData(type:String): Promise<any> {
+    return this.http.get(`/chart/${type}`)
       .toPromise()
       .then(res => res.json())
       .catch(this.handleError);

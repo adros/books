@@ -1,6 +1,14 @@
 <h3>Charts</h3>
 <div>
   <chart [options]="options" (load)="saveInstance($event.context)"></chart>
- 
-  <button (click)="loadData()">Load</button>
+
+  <div>
+    <span>Sort by</span>
+    <input type="radio" name="sort" id="sortByName" value="name" [(ngModel)]="sort" (ngModelChange)="sortData($event)"><label for="sortByName">Name</label>
+    <input type="radio" name="sort" id="sortByValue" value="value" [(ngModel)]="sort" (ngModelChange)="sortData($event)"><label for="sortByValue">Value</label>
+    <input type="checkbox" name="desc" id="desc" [(ngModel)]="desc" (ngModelChange)="sortData($event)"><label for="desc">Descending</label>
+  </div>
+
+  <button (click)="loadData('author-book-count')">Authors</button>
+  <button (click)="loadData('year-book-count')">Year books</button>
 </div>

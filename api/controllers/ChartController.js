@@ -17,5 +17,26 @@ module.exports = {
       })
       .then(data => res.send(data))
       .catch(err => res.serverError(err));
+  },
+  yearBooksCount: function(req, res, next) {
+    Reading.find()
+      .populate('book')
+      .then(data => {
+        data = data.reduce((obj, reading) => {
+          obj[reading.year] = (obj[reading.year] || 0) + 1;
+          return obj;
+        }, {});
+        
+        data = _.reduce(data,(arr, val, prop) => {
+          arr.push({
+            name: prop + "",
+            value: val
+          });
+          return arr;
+        },[]);
+        return _.sortBy(data, "name");
+      })
+      .then(data => res.send(data))
+      .catch(err => res.serverError(err));
   }
 };
