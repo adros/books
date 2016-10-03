@@ -11,7 +11,7 @@ module.exports = {
     dateOfBirth: {
       type: 'datetime'
     },
-    dateOfDeatdh: {
+    dateOfDeath: {
       type: 'datetime'
     },
     firstName: {
@@ -26,10 +26,15 @@ module.exports = {
       type: 'url'
     },
     pictureUrl: {
-      type: 'url'
+      //  type: 'urlish'
+      type: 'string'
     },
     nationality: {
       type: 'string'
+    },
+    books: {
+      collection: 'book',
+      via: 'authors'
     }
   }
 

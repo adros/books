@@ -10,17 +10,16 @@ module.exports = {
   attributes: {
     name: {
       type: 'string',
-      required: true,
-      isUpperCase: true
+      required: true
     },
     totalCount: {
       type: 'integer',
       requried: false
-    }
-  },
-  types: {
-    isUpperCase: function(value) {
-      return /^[A-Z]/.test(value);
+    },
+    books: {
+      collection: 'book',
+      via: 'series'
     }
   }
+
 };

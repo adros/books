@@ -11,6 +11,23 @@ module.exports = {
     name: {
       type: 'string',
       required: true
+    },
+    // serie: {
+    //   model: 'serie'
+    // },
+    genre: {
+      model: 'genre',
+      required: true
+    },
+    authors: {
+      collection: 'author',
+      via: 'books',
+      dominant: true
+    },
+    series: {
+      collection: 'serie',
+      via: 'books',
+      dominant: true
     }
   }
 };

@@ -12,7 +12,7 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var HeroService = (function () {
     function HeroService(http) {
-        this.http = http;
+        this.http = http; 
         this.heroesUrl = '/serie'; // URL to web api
         this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
     }
@@ -66,7 +66,7 @@ var HeroService = (function () {
         return Promise.reject(error);
     };
     HeroService = __decorate([
-        core_1.Injectable(), 
+        core_1.Injectable(),
         __metadata('design:paramtypes', [http_1.Http])
     ], HeroService);
     return HeroService;
