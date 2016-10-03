@@ -34,10 +34,11 @@ module.exports.routes = {
   '/': {
     view: 'homepage'
   },
-  'r|^/(heroes|dashboard)|': {
+  'r|^/(heroes|dashboard|charts)|': {
     view: 'homepage'
-},
-'post /import': 'ImportController.import',
+  },
+  'post /import': 'ImportController.import',
+  'get /author-book-count': 'ChartController.authorsBooksCount'
 
 
   /***************************************************************************

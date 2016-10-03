@@ -24,7 +24,9 @@
       // other libraries
       'rxjs': 'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api',
-      'angular2-modal': 'npm:angular2-modal'
+      'angular2-modal': 'npm:angular2-modal',
+      'angular2-highcharts': 'npm:angular2-highcharts',
+      'highcharts': 'npm:highcharts'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -33,6 +35,9 @@
         defaultExtension: 'js'
       },
       rxjs: {
+        defaultExtension: 'js'
+      },
+      highcharts: {
         defaultExtension: 'js'
       },
       'angular-in-memory-web-api': {
@@ -44,6 +49,10 @@
         defaultExtension: 'js'
       },
       'angular2-modal/plugins/bootstrap': {
+        main: './index.js',
+        defaultExtension: 'js'
+      },
+      'angular2-highcharts': {
         main: './index.js',
         defaultExtension: 'js'
       }

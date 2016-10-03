@@ -19,8 +19,10 @@ var dashboard_component_1 = require('./dashboard.component');
 var hero_detail_component_1 = require('./hero-detail.component');
 var heroes_component_1 = require('./heroes.component');
 var hero_search_component_1 = require('./hero-search.component');
+var charts_component_1 = require('./chart/charts.component');
 var angular2_modal_1 = require('angular2-modal');
 var bootstrap_1 = require('angular2-modal/plugins/bootstrap');
+var angular2_highcharts_1 = require('angular2-highcharts');
 var hero_service_1 = require('./hero.service');
 var error_handler_1 = require('./error-handler');
 var AppModule = (function () {
@@ -34,9 +36,10 @@ var AppModule = (function () {
                 http_1.HttpModule,
                 app_routing_1.routing,
                 angular2_modal_1.ModalModule.forRoot(),
-                bootstrap_1.BootstrapModalModule
+                bootstrap_1.BootstrapModalModule,
+                angular2_highcharts_1.ChartModule
             ],
-            declarations: [app_component_1.AppComponent, hero_detail_component_1.HeroDetailComponent, heroes_component_1.HeroesComponent, dashboard_component_1.DashboardComponent, hero_search_component_1.HeroSearchComponent],
+            declarations: [app_component_1.AppComponent, charts_component_1.ChartsComponent, hero_detail_component_1.HeroDetailComponent, heroes_component_1.HeroesComponent, dashboard_component_1.DashboardComponent, hero_search_component_1.HeroSearchComponent],
             bootstrap: [app_component_1.AppComponent],
             providers: [hero_service_1.HeroService, error_handler_1.ErrorHandler]
         }), 

@@ -59,6 +59,20 @@ export class HeroService {
       .map((r: Response) => r.json() as Hero[]);
   }
 
+  getSeries(): Promise<any> {
+    return this.http.get(`/serie`)
+      .toPromise()
+      .then(res => res.json())
+      .catch(this.handleError);
+  }
+
+  authorsBooksCount(): Promise<any> {
+    return this.http.get(`/author-book-count`)
+      .toPromise()
+      .then(res => res.json())
+      .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     try {
       Object.assign(error, JSON.parse(error._body));

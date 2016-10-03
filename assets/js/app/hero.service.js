@@ -12,7 +12,7 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var HeroService = (function () {
     function HeroService(http) {
-        this.http = http; 
+        this.http = http;
         this.heroesUrl = '/serie'; // URL to web api
         this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
     }
@@ -57,6 +57,18 @@ var HeroService = (function () {
             .get(this.heroesUrl + "/?where=" + JSON.stringify(query))
             .map(function (r) { return r.json(); });
     };
+    HeroService.prototype.getSeries = function () {
+        return this.http.get("/serie")
+            .toPromise()
+            .then(function (res) { return res.json(); })
+            .catch(this.handleError);
+    };
+    HeroService.prototype.authorsBooksCount = function () {
+        return this.http.get("/author-book-count")
+            .toPromise()
+            .then(function (res) { return res.json(); })
+            .catch(this.handleError);
+    };
     HeroService.prototype.handleError = function (error) {
         try {
             Object.assign(error, JSON.parse(error._body));
@@ -66,7 +78,7 @@ var HeroService = (function () {
         return Promise.reject(error);
     };
     HeroService = __decorate([
-        core_1.Injectable(),
+        core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
     ], HeroService);
     return HeroService;
