@@ -20,7 +20,7 @@ export class HeroService {
   }
 
   getHero(id: number): Promise<Hero> {
-    const url = `${this.heroesUrl}/${id}` ;
+    const url = `${this.heroesUrl}/${id}`;
     return this.http
       .get(url)
       .toPromise()
@@ -66,7 +66,7 @@ export class HeroService {
       .catch(this.handleError);
   }
 
-  getChartData(type:String): Promise<any> {
+  getChartData(type: String): Promise<any> {
     return this.http.get(`/chart/${type}`)
       .toPromise()
       .then(res => res.json())

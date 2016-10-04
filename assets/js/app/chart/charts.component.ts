@@ -74,12 +74,12 @@ export class ChartsComponent {
   sortFn(data) {
     var p = this.sort == "value" ? 1 : 0;
     return data.slice(0).sort((a, b) => {
-      a=a[p];
-      b=b[p];
+      a = a[p];
+      b = b[p];
       if (typeof a == "string") {
         return a.localeCompare(b) * (this.desc ? -1 : 1);
       }
-      return this.desc ? b - a: a - b ;
+      return this.desc ? b - a : a - b;
     });
   }
 

@@ -9,10 +9,14 @@
     "removeComments": false,
     "noImplicitAny": false
   },
-  "include": [
-    "assets/js/app/**/*"
+  "filesGlob": [
+    "assets/js/app/**/*.ts",
+    "typings/**/*.ts"
   ],
   "exclude": [
+    "builds",
+    "e2e",
+    "gulp",
     "node_modules"
   ]
 }
