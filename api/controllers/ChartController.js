@@ -3,9 +3,6 @@ var genre = require("../models/Genre");
 var _ = require("lodash");
 
 module.exports = {
-  fooBar: function(req, res) {
-    this.authorsBooksCount(req, res);
-  },
   authorsBooksCount: function(req, res) {
     Author.find()
       .populate('books')

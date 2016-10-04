@@ -7,25 +7,25 @@ import './_common/rxjs-extensions';
 
 import { routing } from './app.routing';
 
-
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard.component';
-import { HeroDetailComponent } from './hero-detail.component';
-import { HeroesComponent } from './heroes.component';
-import { HeroSearchComponent } from './hero-search.component';
+import { BookDetailComponent } from './book/book-detail.component';
+import { HomeComponent } from './home/home.component';
 import { ChartsComponent } from './chart/charts.component';
+import { ReadingListComponent } from './reading/reading-list.component';
 
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { ChartModule } from 'angular2-highcharts';
 
-import { HeroService } from './hero.service';
 import { ErrorHandler } from './_common/error-handler';
+import { BookService } from './service/book.service';
+import { ChartService } from './service/chart.service';
+import { ReadingService } from './service/reading.service';
 
 
 @NgModule({
   imports: [
-  BrowserModule,
+    BrowserModule,
     FormsModule,
     HttpModule,
     routing,
@@ -33,9 +33,20 @@ import { ErrorHandler } from './_common/error-handler';
     BootstrapModalModule,
     ChartModule
   ],
-  declarations: [AppComponent, ChartsComponent, HeroDetailComponent, HeroesComponent, DashboardComponent, HeroSearchComponent],
+  declarations: [
+    AppComponent,
+    BookDetailComponent,
+    ChartsComponent,
+    HomeComponent,
+    ReadingListComponent
+  ],
   bootstrap: [AppComponent],
-  providers: [HeroService, ErrorHandler]
-  })
+  providers: [
+    ErrorHandler,
+    BookService,
+    ChartService,
+    ReadingService
+  ]
+})
 export class AppModule {
-  }
+}

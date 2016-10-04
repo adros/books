@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorHandler } from '../_common/error-handler';
 
-import { HeroService } from '../hero.service';
+import { ChartService } from '../service/chart.service';
 
 @Component({
   moduleId: module.id,
@@ -14,7 +14,7 @@ export class ChartsComponent {
 
   data: any[] = [];
 
-  constructor(private router: Router, private heroService: HeroService, private errorHandler: ErrorHandler) {
+  constructor(private router: Router, private chartService: ChartService, private errorHandler: ErrorHandler) {
     this.options = {
       chart: {
         type: 'bar'
@@ -53,7 +53,7 @@ export class ChartsComponent {
   loadData(type): void {
     this.chart.showLoading();
 
-    this.heroService.getChartData(type)
+    this.chartService.getChartData(type)
       .then(data => {
         this.options = {
           series: [{

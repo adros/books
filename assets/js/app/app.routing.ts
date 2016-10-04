@@ -1,25 +1,21 @@
 import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HeroDetailComponent }      from './hero-detail.component';
-import { HeroesComponent }      from './heroes.component';
-import { DashboardComponent }      from './dashboard.component';
+import { ReadingListComponent }      from './reading/reading-list.component';
+import { BookDetailComponent }      from './book/book-detail.component';
+import { HomeComponent }      from './home/home.component';
 import { ChartsComponent }      from './chart/charts.component';
 
-const appRoutes: Routes = [{
-  path: '',
-  redirectTo: '/dashboard' ,
-  pathMatch: 'full'
-},
+const appRoutes: Routes = [
   {
-    path: 'heroes',
-    component: HeroesComponent
+    path: 'readings',
+    component: ReadingListComponent
   }, {
-    path: 'dashboard',
-    component: DashboardComponent
+    path: '',
+    component: HomeComponent
   }, {
-    path: 'heroes/:id',
-    component: HeroDetailComponent
+    path: 'book/:id',
+    component: BookDetailComponent
   }, {
     path: 'charts',
     component: ChartsComponent

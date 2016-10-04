@@ -1,0 +1,25 @@
+<h2>Reading</h2>
+
+<div *ngIf="!readings">Loading...</div>
+
+<div *ngIf="readings">
+  <div class="form-group">
+    <label class="checkbox-inline"><input type="checkbox" [(ngModel)]="group" (ngModelChange)="sortData($event)">Group by year</label>
+    <label class="checkbox-inline"><input type="checkbox" [(ngModel)]="desc" (ngModelChange)="sortData($event)">Descending</label>
+  </div>
+
+  <div class="readings">
+    <div *ngFor="let item of data">
+      <h3>{{item.groupLabel}}</h3>
+      <ul class="readings">
+        <li *ngFor="let reading of item.readings">
+          <span class="badge">{{group?reading.yearOrder:reading.totalOrder}}</span>
+          <span><a routerLink="/book/{{reading.book.id}}">{{reading.book.name}}</a></span> [
+          <span *ngFor="let auth of reading.authors">
+              <a routerLink="/book/{{auth.id}}">{{auth.firstName}} {{auth.lastName}}</a>
+          </span> ]
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
