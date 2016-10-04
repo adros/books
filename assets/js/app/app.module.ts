@@ -9,6 +9,7 @@ import { routing } from './app.routing';
 
 import { AppComponent } from './app.component';
 import { BookDetailComponent } from './book/book-detail.component';
+import { BookListComponent } from './book/book-list.component';
 import { HomeComponent } from './home/home.component';
 import { ChartsComponent } from './chart/charts.component';
 import { ReadingListComponent } from './reading/reading-list.component';
@@ -21,6 +22,7 @@ import { ErrorHandler } from './_common/error-handler';
 import { BookService } from './service/book.service';
 import { ChartService } from './service/chart.service';
 import { ReadingService } from './service/reading.service';
+import {DataTableDirectives} from 'angular2-datatable/datatable';
 
 
 @NgModule({
@@ -36,9 +38,12 @@ import { ReadingService } from './service/reading.service';
   declarations: [
     AppComponent,
     BookDetailComponent,
+    BookListComponent,
     ChartsComponent,
     HomeComponent,
-    ReadingListComponent
+    ReadingListComponent,
+
+    DataTableDirectives
   ],
   bootstrap: [AppComponent],
   providers: [

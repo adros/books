@@ -12,8 +12,8 @@ export class BookService {
 
   constructor(private http: Http) { }
 
-  list(): Promise<Book[]> {
-    return this.http.get(`${this.url}`)
+  list(query:String): Promise<Book[]> {
+    return this.http.get(`${this.url}?${query}`)
       .toPromise()
       .then(response => response.json() as Book[])
       .catch(this.handleError);

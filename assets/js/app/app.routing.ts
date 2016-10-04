@@ -1,22 +1,30 @@
-import { ModuleWithProviders }  from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ReadingListComponent }      from './reading/reading-list.component';
-import { BookDetailComponent }      from './book/book-detail.component';
-import { HomeComponent }      from './home/home.component';
-import { ChartsComponent }      from './chart/charts.component';
+import { BookDetailComponent } from './book/book-detail.component';
+import { BookListComponent } from './book/book-list.component';
+import { ReadingListComponent } from './reading/reading-list.component';
+import { HomeComponent } from './home/home.component';
+import { ChartsComponent } from './chart/charts.component';
 
 const appRoutes: Routes = [
   {
     path: 'readings',
     component: ReadingListComponent
-  }, {
+  },
+  {
     path: '',
     component: HomeComponent
-  }, {
-    path: 'book/:id',
+  },
+  {
+    path: 'books',
+    component: BookListComponent
+  },
+  {
+    path: 'books/:id',
     component: BookDetailComponent
-  }, {
+  },
+  {
     path: 'charts',
     component: ChartsComponent
   }

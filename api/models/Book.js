@@ -28,6 +28,10 @@ module.exports = {
       collection: 'serie',
       via: 'books',
       dominant: true
+    },
+    readings: {
+      collection: 'reading',
+      via: 'book'
     }
   }
 };

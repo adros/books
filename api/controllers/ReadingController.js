@@ -10,7 +10,7 @@ var Promise = require("bluebird");
 module.exports = {
   find: function(req, res) {
     Reading.find({
-        sort: "totalOrder"
+        sort: "totalOrder",limit:40
       })
       .then(readings => {
         return Promise.map(readings, r => {

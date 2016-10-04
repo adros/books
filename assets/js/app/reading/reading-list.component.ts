@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { Reading } from './reading';
 import { ReadingService } from '../service/reading.service';
 import { ErrorHandler } from '../_common/error-handler';
@@ -26,7 +25,7 @@ export class ReadingListComponent implements OnInit {
   desc = true
   group = true
 
-  constructor(private router: Router, private readingService: ReadingService, private errorHandler: ErrorHandler) { }
+  constructor(private readingService: ReadingService, private errorHandler: ErrorHandler) { }
 
   onSelect(reading: Reading): void {
     this.selectedReading = (reading == this.selectedReading ? null : reading);
@@ -70,8 +69,4 @@ export class ReadingListComponent implements OnInit {
     return res.sort((a, b) => this.desc ? b.groupLabel - a.groupLabel : a.groupLabel - b.groupLabel);
   }
 
-  goToDetail(reading): void {
-    let link = ['/readings', reading.id];
-    this.router.navigate(link);
-  }
 }
