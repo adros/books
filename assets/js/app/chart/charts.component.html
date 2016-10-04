@@ -2,13 +2,12 @@
 <div>
   <chart [options]="options" (load)="saveInstance($event.context)"></chart>
 
-  <div>
-    <span>Sort by</span>
-    <input type="radio" name="sort" id="sortByName" value="name" [(ngModel)]="sort" (ngModelChange)="sortData($event)"><label for="sortByName">Name</label>
-    <input type="radio" name="sort" id="sortByValue" value="value" [(ngModel)]="sort" (ngModelChange)="sortData($event)"><label for="sortByValue">Value</label>
-    <input type="checkbox" name="desc" id="desc" [(ngModel)]="desc" (ngModelChange)="sortData($event)"><label for="desc">Descending</label>
+  <div class="form-group">
+    <label class="radio-inline"><input type="radio" name="sort" value="name" [(ngModel)]="sort" (ngModelChange)="sortData($event)">Sort by name</label>
+    <label class="radio-inline"><input type="radio" name="sort" value="value" [(ngModel)]="sort" (ngModelChange)="sortData($event)">Sort by value</label>
+      </div>  <div class="form-group"><label class="checkbox-inline"><input type="checkbox" name="desc" i [(ngModel)]="desc" (ngModelChange)="sortData($event)">Descending</label>
   </div>
 
-  <button (click)="loadData('author-book-count')">Authors</button>
-  <button (click)="loadData('year-book-count')">Year books</button>
+  <button (click)="loadData('authorsBooksCount')" class="btn btn-default">Authors</button>
+  <button (click)="loadData('yearBooksCount')" class="btn btn-default">Year books</button>
 </div>

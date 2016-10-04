@@ -43,7 +43,7 @@ export class ChartsComponent {
     var isFirstLoad = !this.chart;
     this.chart = chartInstance;
     if (isFirstLoad) {
-      this.loadData("author-book-count");
+      this.loadData("authorsBooksCount");
     }
   }
 

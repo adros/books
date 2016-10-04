@@ -7,7 +7,7 @@ import { Hero } from './hero';
 @Injectable()
 export class HeroService {
 
-  private heroesUrl = '/serie';  // URL to web api
+  private heroesUrl = '/svc/series';  // URL to web api
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
   constructor(private http: Http) { }
@@ -59,15 +59,8 @@ export class HeroService {
       .map((r: Response) => r.json() as Hero[]);
   }
 
-  getSeries(): Promise<any> {
-    return this.http.get(`/serie`)
-      .toPromise()
-      .then(res => res.json())
-      .catch(this.handleError);
-  }
-
   getChartData(type: String): Promise<any> {
-    return this.http.get(`/chart/${type}`)
+    return this.http.get(`/svc/charts/${type}`)
       .toPromise()
       .then(res => res.json())
       .catch(this.handleError);

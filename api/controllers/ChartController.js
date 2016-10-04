@@ -3,7 +3,10 @@ var genre = require("../models/Genre");
 var _ = require("lodash");
 
 module.exports = {
-  authorsBooksCount: function(req, res, next) {
+  fooBar: function(req, res) {
+    this.authorsBooksCount(req, res);
+  },
+  authorsBooksCount: function(req, res) {
     Author.find()
       .populate('books')
       .then(data => {
@@ -18,7 +21,7 @@ module.exports = {
       .then(data => res.send(data))
       .catch(err => res.serverError(err));
   },
-  yearBooksCount: function(req, res, next) {
+  yearBooksCount: function(req, res) {
     Reading.find()
       .populate('book')
       .then(data => {
@@ -26,14 +29,14 @@ module.exports = {
           obj[reading.year] = (obj[reading.year] || 0) + 1;
           return obj;
         }, {});
-        
-        data = _.reduce(data,(arr, val, prop) => {
+
+        data = _.reduce(data, (arr, val, prop) => {
           arr.push({
             name: prop + "",
             value: val
           });
           return arr;
-        },[]);
+        }, []);
         return _.sortBy(data, "name");
       })
       .then(data => res.send(data))

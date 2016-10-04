@@ -34,12 +34,10 @@ module.exports.routes = {
   '/': {
     view: 'homepage'
   },
-  'r|^/(heroes|dashboard|charts)|': {
+  'r|^/(?!(svc|js|styles|images))|': {
     view: 'homepage'
   },
-  'post /import': 'ImportController.import',
-  'get /chart/author-book-count': 'ChartController.authorsBooksCount',
-  'get /chart/year-book-count': 'ChartController.yearBooksCount'
+  'post /svc/import': 'ImportController.import'
 
 
   /***************************************************************************
