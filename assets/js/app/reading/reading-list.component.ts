@@ -52,10 +52,11 @@ export class ReadingListComponent implements OnInit {
     }
 
     let res = readings.reduce((_res, r: Reading) => {
-      if (!_res[r.year]) {
-        _res[r.year] = [];
+      var y = r.year + "";
+      if (!_res[y]) {
+        _res[y] = [];
       }
-      _res[r.year].push(r); //items are already orderes in readings correctly
+      _res[y].push(r); //items are already orderes in readings correctly
       return _res;
     }, {});
 
@@ -65,8 +66,7 @@ export class ReadingListComponent implements OnInit {
         readings: readings
       });
       return _res;
-    });
+    }, []);
     return res.sort((a, b) => this.desc ? b.groupLabel - a.groupLabel : a.groupLabel - b.groupLabel);
   }
-
 }

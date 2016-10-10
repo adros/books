@@ -14,7 +14,7 @@
       <ul class="readings">
         <li *ngFor="let reading of item.readings">
           <span class="badge">{{group?reading.yearOrder:reading.totalOrder}}</span>
-          <span><a routerLink="/books/{{reading.book.id}}">{{reading.book.name}}</a></span> [
+          <span><a routerLink="/books/{{reading.bookId}}">{{reading.name}}</a></span> [
           <span *ngFor="let auth of reading.authors">
               <a routerLink="/books/{{auth.id}}">{{auth.firstName}} {{auth.lastName}}</a>
           </span> ]
