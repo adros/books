@@ -17,14 +17,14 @@ module.exports = {
       obj[bookId] = obj[bookId] || [];
       obj[bookId].push(authorId);
       return obj;
-    });
+    }, {});
     var bookToSeries = backupData.book_series[0].book_serie.reduce((obj, bs) => {
       var serieId = +bs.serie_id[0];
       var bookId = +bs.book_id[0];
       obj[bookId] = obj[bookId] || [];
       obj[bookId].push(serieId);
       return obj;
-    });
+    }, {});
 
     Promise.all([
         Author.destroy({}),

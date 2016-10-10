@@ -26,7 +26,7 @@
       'angular2-modal': 'npm:angular2-modal/bundles/angular2-modal.umd.js',
       'angular2-modal/plugins/bootstrap': 'npm:angular2-modal/bundles/angular2-modal.bootstrap.umd.js',
       'angular2-highcharts': 'npm:angular2-highcharts',
-      'angular2-datatable': 'npm:angular2-datatable',
+      'angular-2-data-table': 'npm:angular-2-data-table/dist',
       'highcharts': 'npm:highcharts',
       'lodash': 'npm:lodash'
     },
@@ -39,10 +39,6 @@
       rxjs: {
         defaultExtension: 'js'
       },
-      '__angular2-modal': {
-        defaultExtension: 'js',
-        main: 'bundles/angular2-modal.umd'
-      },
       highcharts: {
         defaultExtension: 'js'
       },
@@ -54,9 +50,11 @@
         main: './lodash.js',
         defaultExtension: 'js'
       },
-      'angular2-datatable': {
-        defaultExtension: 'js'
-      },
+      'angular-2-data-table': {
+        format: 'cjs',
+        defaultExtension: 'js',
+        main: 'index.js'
+      }
     }
   });
 })(this);

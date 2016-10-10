@@ -1,45 +1,27 @@
 <h2>Books</h2>
 
-<div *ngIf="!books">Loading...</div>
-
-<div *ngIf="books">
-  
-  <table class="table table-striped" [mfData]="books" #mf="mfDataTable" [mfRowsOnPage]="10">
-    <thead>
-      <tr>
-        <th style="width: 20%">
-          <mfDefaultSorter by="name">Name</mfDefaultSorter>
-        </th>
-        <th style="width: 40%">
-          <mfDefaultSorter by="authors[0].firstName">Authors</mfDefaultSorter>
-        </th>
-        <th style="width: 10%">
-          <mfDefaultSorter by="pages">Pages</mfDefaultSorter>
-        </th>
-        <th style="width: 20%">
-          <mfDefaultSorter by="genre.name">Genre</mfDefaultSorter>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of mf.data">
-        <td><a routerLink="/books/{{item.id}}">{{item.name}}</a></td>
-        <td>
-          <span *ngFor="let auth of item.authors">
-              <a routerLink="/books/{{auth.id}}">{{auth.firstName}} {{auth.lastName}}</a>
-          </span>
-        </td>
-        <td class="text-right">{{item.pages}}</td>
-        <td>{{item.genre.name}}</td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="5">
-          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
-        </td>
-      </tr>
-    </tfoot>
-  </table>
+<div #dataTableParent>
+  <data-table #dataTable [items]="items" [itemCount]="itemCount" (reload)="reloadItems($event)" [showReloading]="false">
+    <data-table-column property="name" header="Name" [sortable]="true" [resizable]="true">
+      <template #dataTableCell let-item="item">
+          <a routerLink="/books/{{item.id}}">{{item.name}}</a>
+        </template>
+    </data-table-column>
+    <data-table-column property="authors" header="Authors" [sortable]="false">
+      <template #dataTableCell let-item="item">
+            <a *ngFor="let author of item.authors">{{author.firstName}} {{author.lastName}}</a>
+        </template>
+    </data-table-column>
+    <data-table-column property="genre" header="Genre" [sortable]="true">
+      <template #dataTableCell let-item="item">
+            <span>{{item.genre && item.genre.name}}</span>
+        </template>
+    </data-table-column>
+    <data-table-column property="readings" header="Read" [sortable]="false">
+      <template #dataTableCell let-item="item">
+            <span *ngFor="let r of item.readings; let i=index">{{i==0?'':', '}}{{r.year}}</span>
+        </template>
+    </data-table-column>
+  </data-table>
 
 </div>

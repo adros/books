@@ -22,7 +22,7 @@ import { ErrorHandler } from './_common/error-handler';
 import { BookService } from './service/book.service';
 import { ChartService } from './service/chart.service';
 import { ReadingService } from './service/reading.service';
-import {DataTableDirectives} from 'angular2-datatable/datatable';
+import { DataTableModule } from 'angular-2-data-table';
 
 
 @NgModule({
@@ -33,7 +33,8 @@ import {DataTableDirectives} from 'angular2-datatable/datatable';
     routing,
     ModalModule.forRoot(),
     BootstrapModalModule,
-    ChartModule
+    ChartModule,
+    DataTableModule
   ],
   declarations: [
     AppComponent,
@@ -41,9 +42,7 @@ import {DataTableDirectives} from 'angular2-datatable/datatable';
     BookListComponent,
     ChartsComponent,
     HomeComponent,
-    ReadingListComponent,
-
-    DataTableDirectives
+    ReadingListComponent
   ],
   bootstrap: [AppComponent],
   providers: [
