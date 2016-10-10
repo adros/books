@@ -1,0 +1,20 @@
+<div *ngIf="reading">
+  <h2>{{reading.id}}</h2>
+
+  <div class="form-group row">
+    <label for="example-text-input" class="col-xs-1 col-form-label">Text</label>
+    <div class="col-xs-11">
+      <input class="form-control" auto-complete blank-option-text="<none>" [(ngModel)]="reading.book" [source]="booksUrl" display-property-name="name" [list-formatter]="listFormatter" min-chars="0" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="example-text-input" class="col-xs-1 col-form-label">Text</label>
+    <div class="col-xs-11">
+      <input class="form-control" auto-complete blank-option-text="<none>" [(ngModel)]="reading.country" [source]="countriesUrl" display-property-name="name" [list-formatter]="countryFormatter" min-chars="0" />
+    </div>
+  </div>
+  
+  <pre>{{reading|json}}</pre>
+
+</div>

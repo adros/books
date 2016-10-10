@@ -37,7 +37,8 @@ module.exports.routes = {
   'r|^/(?!(svc|js|styles|images))|': {
     view: 'homepage'
   },
-  'post /svc/import': 'ImportController.import'
+  'post /svc/import': 'ImportController.import',
+  'get /svc/countries': 'CountryController.find'
 
 
   /***************************************************************************

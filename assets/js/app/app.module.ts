@@ -13,28 +13,33 @@ import { BookListComponent } from './book/book-list.component';
 import { HomeComponent } from './home/home.component';
 import { ChartsComponent } from './chart/charts.component';
 import { ReadingListComponent } from './reading/reading-list.component';
+import { ReadingDetailComponent } from './reading/reading-detail.component';
+
+
 
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { ChartModule } from 'angular2-highcharts';
+import { DataTableModule } from 'angular-2-data-table';
+import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 
 import { ErrorHandler } from './_common/error-handler';
 import { BookService } from './service/book.service';
 import { ChartService } from './service/chart.service';
 import { ReadingService } from './service/reading.service';
-import { DataTableModule } from 'angular-2-data-table';
 
 
 @NgModule({
   imports: [
-    BrowserModule,
+  BrowserModule,
     FormsModule,
     HttpModule,
     routing,
     ModalModule.forRoot(),
     BootstrapModalModule,
     ChartModule,
-    DataTableModule
+    DataTableModule,
+    Ng2AutoCompleteModule
   ],
   declarations: [
     AppComponent,
@@ -42,7 +47,8 @@ import { DataTableModule } from 'angular-2-data-table';
     BookListComponent,
     ChartsComponent,
     HomeComponent,
-    ReadingListComponent
+    ReadingListComponent,
+    ReadingDetailComponent
   ],
   bootstrap: [AppComponent],
   providers: [
@@ -51,6 +57,6 @@ import { DataTableModule } from 'angular-2-data-table';
     ChartService,
     ReadingService
   ]
-})
+  })
 export class AppModule {
-}
+  }

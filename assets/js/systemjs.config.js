@@ -28,8 +28,10 @@
       'angular2-highcharts': 'npm:angular2-highcharts',
       'angular-2-data-table': 'npm:angular-2-data-table/dist',
       'highcharts': 'npm:highcharts',
-      'lodash': 'npm:lodash'
+      'lodash': 'npm:lodash',
+      'ng2-auto-complete': 'npm:ng2-auto-complete/dist'
     },
+
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
       app: {
@@ -54,6 +56,10 @@
         format: 'cjs',
         defaultExtension: 'js',
         main: 'index.js'
+      },
+      'ng2-auto-complete': {
+        main: 'ng2-auto-complete.umd.js',
+        defaultExtension: 'js'
       }
     }
   });
