@@ -21,7 +21,7 @@ export class ReadingDetailComponent implements OnInit {
     private location: Location
   ) { }
 
-  public booksUrl: string = "/svc/books?limit=10&sort=name&where=" + JSON.stringify({ name: { contains: ":keyword" } });
+  public booksUrl: string = "/svc/books?limit=20&sort=name&where=" + JSON.stringify({ name: { contains: ":keyword" } });
   public countriesUrl: string = "/svc/countries?limit=20&name=:keyword";
 
   ngOnInit(): void {

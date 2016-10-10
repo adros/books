@@ -33,3 +33,7 @@ button {
 * {
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.ng2-auto-complete{
+  display: block !important;
+}
