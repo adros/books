@@ -1,0 +1,20 @@
+{
+  "name": "books",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd bl && npm install && cd -",
+	"start" : "node bl/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adros/books.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adros/books/issues"
+  },
+  "homepage": "https://github.com/adros/books#readme"
+}
