@@ -370,7 +370,7 @@ module.exports = {
   *                                                                         *
   ***************************************************************************/
   custom: {
-    baseUrl: 'https://example.com',
+    baseUrl: 'https://adros-books.herokuapp.com',
     internalEmailAddress: 'support@example.com',
 
     // mailgunDomain: 'mg.example.com',
