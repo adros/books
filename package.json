@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deploy": "cd bl && npm install && node app"
+    "build": "cd bl && npm install && cd -",
+	"start" : "node bl/app.js"
   },
   "repository": {
     "type": "git",
