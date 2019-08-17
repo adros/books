@@ -5,6 +5,10 @@ module.exports = function(grunt) {
       command: 'npm install',
       cwd: "./UI"
     },
+    installUiDevDeps: {
+      command: 'npm install --only=dev',
+      cwd: "./UI"
+    },
     buildUi: {
       command: 'npm run build',
       cwd: "./UI"
