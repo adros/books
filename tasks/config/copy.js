@@ -23,7 +23,7 @@ module.exports = function(grunt) {
     build: {
       files: [{
         expand: true,
-        cwd: '.tmp/public',
+        cwd: './UI/dist/books',
         src: ['**/*'],
         dest: 'www'
       }]
