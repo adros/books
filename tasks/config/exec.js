@@ -6,7 +6,7 @@ module.exports = function(grunt) {
       cwd: "./UI"
     },
     buildUi: {
-      command: 'npm build',
+      command: 'npm run build',
       cwd: "./UI"
     }
   });
