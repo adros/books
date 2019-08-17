@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         expand: true,
         cwd: './UI/dist/books',
         src: ['**/*'],
-        dest: '.tmp/public'
+        dest: './assets'
       }]
     },
     beforeLinkBuildProd: {
