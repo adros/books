@@ -1,23 +1,12 @@
-/**
- * Serie.js
- *
- * @description :: A model definition represents a database table/collection.
- * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
- */
-
 module.exports = {
+
+  dontUseObjectIds: true,
 
   attributes: {
 
-    title: {
-      type: 'string',
-      required: true
-    },
-
-    totalCount: {
-      type: 'number',
-      required: true
-    }
+    id: { type: 'number', columnName: '_id' },
+    title: { type: 'string', required: true },
+    totalCount: { type: 'number', required: true }
 
   },
 
