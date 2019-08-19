@@ -21,7 +21,7 @@ async function importSeries() {
   var series = (await getImportData()).series.serie;
 
   await Serie.createEach(series.map(({ serie_id, title, total_count }) => ({
-    id: +serie_id,
+    id: serie_id,
     title,
     totalCount: total_count
   })));
@@ -37,9 +37,10 @@ async function importAuthors() {
   var authors = (await getImportData()).authors.author;
 
   var authorsData = await Promise.all(authors.map(async function (item) {
+    !item.picture_url && console.log(`skipping img for ${item.first_name} ${item.last_name}`);
     const pictureUrl = item.picture_url && (await getAuthorImage(item.picture_url));
     return {
-      id: +item.author_id,
+      id: item.author_id,
       dateOfBirth: item.date_of_birth,
       dateOfDeath: item.date_of_death,
       firstName: item.first_name,
@@ -70,5 +71,6 @@ function getAuthorImage(link) {
     throw new Error(`Missing image ${imgPath}`);
   }
 
+  console.log(`creting datauri for img ${imgPath}`);
   return dataUri(imgPath);
 }
