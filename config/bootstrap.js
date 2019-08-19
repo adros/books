@@ -39,6 +39,7 @@ async function importAuthors() {
   var authorsData = await Promise.all(authors.map(async function (item) {
     !item.picture_url && console.log(`skipping img for ${item.first_name} ${item.last_name}`);
     const pictureUrl = item.picture_url && (await getAuthorImage(item.picture_url));
+    console.log(`picture url for ${item.first_name} ${item.last_name}: ${pictureUrl}`);
     return {
       id: item.author_id,
       dateOfBirth: item.date_of_birth,
@@ -67,10 +68,14 @@ function getImportData() {
 
 function getAuthorImage(link) {
   const imgPath = path.join(__dirname, `../_import/authors/${link.split('/').pop()}`);
-  if(!fs.existsSync(imgPath)){
+  if (!fs.existsSync(imgPath)) {
     throw new Error(`Missing image ${imgPath}`);
   }
 
   console.log(`creting datauri for img ${imgPath}`);
-  return dataUri(imgPath);
+  return dataUri(imgPath)
+    .then((s) => {
+      console.log(`datauri created: ${s}`);
+      return s;
+    });
 }
