@@ -1,30 +1,45 @@
-/**
- * Seed Function
- * (sails.config.bootstrap)
- *
- * A function that runs just before your Sails app gets lifted.
- * > Need more flexibility?  You can also create a hook.
- *
- * For more information on seeding your app with fake data, check out:
- * https://sailsjs.com/config/bootstrap
- */
+module.exports.bootstrap = async function () {
 
-module.exports.bootstrap = async function() {
+  var numRecords = await Serie.count(criteria);
+  if (count > 0) { return };
 
-  // By convention, this is a good place to set up fake data during development.
-  //
-  // For example:
-  // ```
-  // // Set up fake development data (or if we already have some, avast)
-  // if (await User.count() > 0) {
-  //   return;
-  // }
-  //
-  // await User.createEach([
-  //   { emailAddress: 'ry@example.com', fullName: 'Ryan Dahl', },
-  //   { emailAddress: 'rachael@example.com', fullName: 'Rachael Shaw', },
-  //   // etc.
-  // ]);
-  // ```
+  return Serie.createEach([
+    {
+      _id: "1",
+      title: "Sacketts",
+      totalCount: "18"
+    },
+    {
+      _id: "2",
+      title: "Stopy",
+      totalCount: "130"
+    },
+    {
+      _id: "3",
+      title: "Western",
+      totalCount: "14"
+    },
+    {
+      _id: "4",
+      title: "Hulánova láska",
+      totalCount: "5"
+    },
+    {
+      _id: "5",
+      title: "Theodore Boone",
+      totalCount: "4"
+    },
+    {
+      _id: "6",
+      title: "Millennium",
+      totalCount: "5"
+    },
+    {
+      _id: "7",
+      title: "V tieni padišaha",
+      totalCount: "6"
+    }
+  ]);
+
 
 };
