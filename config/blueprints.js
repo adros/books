@@ -10,7 +10,7 @@
  */
 
 module.exports.blueprints = {
-
+  prefix: '/svc'
   /***************************************************************************
   *                                                                          *
   * Automatically expose implicit routes for every action in your app?       *

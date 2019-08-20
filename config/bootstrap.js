@@ -25,9 +25,6 @@ async function importSeries() {
     title,
     totalCount: total_count
   })));
-
-
-
 }
 
 async function importAuthors() {
@@ -37,7 +34,7 @@ async function importAuthors() {
   var authors = (await getImportData()).authors.author;
 
   var authorsData = await Promise.all(authors.map(async function (item) {
-    !item.picture_url && console.log(`skipping img for ${item.first_name} ${item.last_name}`);
+    //!item.picture_url && console.log(`skipping img for ${item.first_name} ${item.last_name}`);
     const pictureUrl = item.picture_url && (await getAuthorImage(item.picture_url));
     return {
       id: item.author_id,
@@ -71,6 +68,6 @@ function getAuthorImage(link) {
     throw new Error(`Missing image ${imgPath}`);
   }
 
-  console.log(`creting datauri for img ${imgPath}`);
+  //console.log(`creting datauri for img ${imgPath}`);
   return dataUri(imgPath);
 }

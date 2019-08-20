@@ -24,7 +24,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss",
+              "node_modules/ngx-easy-table/style.css",
+              "node_modules/typeface-montserrat/index.css"
             ],
             "scripts": []
           },
@@ -89,7 +91,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss",
+              "node_modules/ngx-easy-table/style.css",
+              "node_modules/typeface-montserrat/index.css",
             ],
             "scripts": []
           }
@@ -120,6 +124,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "books"
 }
