@@ -59,7 +59,7 @@ export class AuthorsComponent implements OnInit {
     this.configuration = DefaultConfig;
     this.configuration.orderEnabled = true;
 
-    this.data = this.authorsService.listAuthors();
+    this.data = this.authorsService.listAuthors('omit=pictureUrl&limit=10000');
   }
 
 }
