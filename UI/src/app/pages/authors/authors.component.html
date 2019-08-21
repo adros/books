@@ -1,4 +1,16 @@
 <p>authors works!</p>
 
-
-<ngx-table [configuration]="configuration" [data]="data | async" [columns]="columns"></ngx-table>
+<ngx-table [configuration]="configuration" [data]="data | async" [columns]="columns">
+    <ng-template let-row>
+        <td>{{row.lastName}}, {{row.firstName}}</td>
+        <td>
+            <img *ngIf="row.nationality" src="/assets/flags/{{row.nationality | lowercase}}.png" [alt]="row.nationality"
+                [title]="row.nationality">
+        </td>
+        <td>{{row.dateOfBirth | date}}</td>
+        <td>
+            <input type="checkbox" [checked]="!!row.pictureName" disabled>            
+            <!--<img *ngIf="row.pictureName" src="/svc/author/image/{{row.id}}">-->
+        </td>
+    </ng-template>
+</ngx-table>

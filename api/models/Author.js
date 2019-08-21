@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = {
 
   dontUseObjectIds: true,
@@ -12,8 +14,13 @@ module.exports = {
     link: { type: 'string', required: false },
     nationality: { type: 'string', required: false },
     pictureUrl: { type: 'string', required: false },
+    pictureName: { type: 'string', required: false }
 
-  }
+  },
+
+  customToJSON: function () {
+    return _.omit(this, ['pictureUrl']);
+  },
 
 };
 

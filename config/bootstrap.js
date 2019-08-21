@@ -28,15 +28,14 @@ async function importSeries() {
 }
 
 async function importAuthors() {
-  //if (await Author.count() > 0) { return };
-  await Author.destroy({});
+  if (await Author.count() > 0) { return };
+  //await Author.destroy({});
 
   var authors = (await getImportData()).authors.author;
 
   var authorsData = await Promise.all(authors.map(async function (item) {
-    //!item.picture_url && console.log(`skipping img for ${item.first_name} ${item.last_name}`);
-    const pictureUrl = item.picture_url && (await getAuthorImage(item.picture_url));
-    //console.log(`picture url for ${item.first_name} ${item.last_name}: ${pictureUrl}`);
+    const pictureName = item.picture_url && item.picture_url.split('/').pop();
+    const pictureUrl = pictureName && (await getAuthorImage(pictureName));
     return {
       id: item.author_id,
       dateOfBirth: item.date_of_birth,
@@ -45,6 +44,7 @@ async function importAuthors() {
       lastName: item.last_name,
       link: item.link,
       nationality: item.nationality,
+      pictureName,
       pictureUrl
     };
   }));
@@ -63,16 +63,14 @@ function getImportData() {
 }
 
 
-function getAuthorImage(link) {
-  const imgPath = path.join(__dirname, `../_import/authors/${link.split('/').pop()}`);
+function getAuthorImage(imgName) {
+  const imgPath = path.join(__dirname, `../_import/authors/${imgName}`);
   if (!fs.existsSync(imgPath)) {
     throw new Error(`Missing image ${imgPath}`);
   }
 
-  //console.log(`creting datauri for img ${imgPath}`);
   return dataUri(imgPath)
     .then((s) => {
-      //console.log(`datauri created: ${s}`);
       return s;
     });
 }

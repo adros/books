@@ -21,6 +21,11 @@ module.exports.routes = {
 
   '/': { view: 'pages/homepage' },
 
+  'get /svc/author/image/:id': {
+    controller: 'author', 
+    action: 'getImage',
+    skipAssets: false
+  }
 
   /***************************************************************************
   *                                                                          *
