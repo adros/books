@@ -10,7 +10,7 @@ module.exports = function(grunt) {
       cwd: "./UI"
     },
     buildUi: {
-      command: 'npm run build',
+      command: 'npm run build --prod',
       cwd: "./UI"
     }
   });
