@@ -5,11 +5,11 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthorsService {
+export class BooksService {
 
   constructor(private http: HttpClient) { }
 
-  public listAuthors(query?) {
-    return this.http.get(`${environment.baseUrl}/svc/author/${query ? `?${query}` : ''}`);
+  public listBooks(query?) {
+    return this.http.get(`${environment.baseUrl}/svc/book/${query ? `?${query}` : ''}`);
   }
 }

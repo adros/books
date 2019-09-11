@@ -6,7 +6,9 @@ module.exports = {
 
     id: { type: 'string', columnName: '_id', autoIncrement: false },
     title: { type: 'string', required: true },
-    totalCount: { type: 'number', required: true }
+    totalCount: { type: 'number', required: true },
+
+    books: { collection: 'book', via: 'series' }
 
   },
 

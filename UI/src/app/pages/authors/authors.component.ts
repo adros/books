@@ -16,7 +16,7 @@ export class AuthorsComponent implements OnInit {
   constructor(private authorsService: AuthorsService) { }
 
   ngOnInit() {
-    this.configuration = DefaultConfig;
+    this.configuration = { ...DefaultConfig, rows: 5000, isLoading: true };
 
     this.columns = [
       { key: 'lastName', title: 'Meno' },
@@ -26,6 +26,7 @@ export class AuthorsComponent implements OnInit {
     ];
 
     this.data = this.authorsService.listAuthors('limit=10000');
+    this.data.subscribe(() => this.configuration = { ...this.configuration, isLoading: false });
   }
 
 }
