@@ -8,12 +8,10 @@ let importDataPromise;
 
 module.exports.bootstrap = async function () {
 
-  await Promise.all([
-    importSeries()//,
-    //importAuthors(),
-    //importBooks(),
-    //importReadings()
-  ]);
+  await importSeries();
+  await importAuthors();
+  await importBooks();
+  await importReadings();
 
 };
 
@@ -40,8 +38,8 @@ async function importAuthors() {
     const pictureUrl = pictureName && (await getAuthorImage(pictureName));
     return {
       id: item.author_id,
-      dateOfBirth: item.date_of_birth == '1900-01-01T00:00:00' ? undefined : item.date_of_birth,
-      dateOfDeath: item.date_of_death || undefined,
+      dateOfBirth: new Date(),// item.date_of_birth && item.date_of_birth == '1900-01-01T00:00:00' ? undefined : new Date(item.date_of_birth),
+      dateOfDeath:  new Date(),//item.date_of_death ? new Date(item.date_of_death) : undefined,
       firstName: item.first_name.trim(),
       lastName: item.last_name.trim(),
       link: item.link,
@@ -88,7 +86,7 @@ async function importBooks() {
 
 }
 
-async function importReadings(){
+async function importReadings() {
   await Reading.destroy({});
   if (await Reading.count() > 0) { return };
 
