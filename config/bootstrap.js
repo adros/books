@@ -9,9 +9,10 @@ let importDataPromise;
 module.exports.bootstrap = async function () {
 
   await Promise.all([
-    importSeries(),
-    importAuthors(),
-    importBooks()
+    importSeries()//,
+    //importAuthors(),
+    //importBooks(),
+    //importReadings()
   ]);
 
 };
@@ -85,6 +86,25 @@ async function importBooks() {
 
   await Book.createEach(booksData);
 
+}
+
+async function importReadings(){
+  await Reading.destroy({});
+  if (await Reading.count() > 0) { return };
+
+  var readings = (await getImportData()).readings.reading;
+
+  var readingsData = await Promise.all(readings.map(async function (item) {
+    return {
+      id: item.reading_id,
+      year: +item.year,
+      yearOrder: +item.year_order,
+      totalOrder: +item.total_order,
+      book: item.book_id
+    };
+  }));
+
+  await Reading.createEach(readingsData);
 }
 
 function getImportData() {

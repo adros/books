@@ -11,7 +11,7 @@ module.exports = {
 
   attributes: {
 
-    id: { type: 'string', columnName: '_id', autoIncrement: false, required: true  },
+    id: { type: 'string', columnName: '_id', autoIncrement: false, required: true },
     title: { type: 'string', required: true },
     original: { type: 'string', required: false },
     pages: { type: 'number', required: true },
@@ -23,7 +23,8 @@ module.exports = {
     pictureName: { type: 'string', required: false },
 
     series: { collection: 'serie', via: 'books' },
-    authors: { collection: 'author', via: 'books' }
+    authors: { collection: 'author', via: 'books' },
+    readings: { collection: 'reading', via: 'book' }
 
   },
 
