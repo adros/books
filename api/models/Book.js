@@ -11,7 +11,7 @@ module.exports = {
 
   attributes: {
 
-    id: { type: 'string', columnName: '_id', autoIncrement: false },
+    id: { type: 'string', columnName: '_id', autoIncrement: false, required: true  },
     title: { type: 'string', required: true },
     original: { type: 'string', required: false },
     pages: { type: 'number', required: true },

@@ -6,7 +6,7 @@ module.exports = {
 
   attributes: {
 
-    id: { type: 'string', columnName: '_id', autoIncrement: false },
+    id: { type: 'string', columnName: '_id', autoIncrement: false, required: true },
     dateOfBirth: { type: 'string', required: false, columnType: 'date' },
     dateOfDeath: { type: 'string', required: false, columnType: 'date' },
     firstName: { type: 'string', required: true },
