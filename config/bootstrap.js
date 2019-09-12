@@ -10,7 +10,8 @@ module.exports.bootstrap = async function () {
 
   await Promise.all([
     importSeries(),
-    importAuthors()
+    importAuthors(),
+    importBooks()
   ]);
 
 };
@@ -28,8 +29,8 @@ async function importSeries() {
 }
 
 async function importAuthors() {
+  await Author.destroy({});
   if (await Author.count() > 0) { return };
-  //await Author.destroy({});
 
   var authors = (await getImportData()).authors.author;
 
@@ -38,10 +39,10 @@ async function importAuthors() {
     const pictureUrl = pictureName && (await getAuthorImage(pictureName));
     return {
       id: item.author_id,
-      dateOfBirth: item.date_of_birth,
-      dateOfDeath: item.date_of_death,
-      firstName: item.first_name,
-      lastName: item.last_name,
+      dateOfBirth: item.date_of_birth == '1900-01-01T00:00:00' ? undefined : item.date_of_birth,
+      dateOfDeath: item.date_of_death || undefined,
+      firstName: item.first_name.trim(),
+      lastName: item.last_name.trim(),
       link: item.link,
       nationality: item.nationality,
       pictureName,
@@ -50,6 +51,40 @@ async function importAuthors() {
   }));
 
   await Author.createEach(authorsData);
+}
+
+async function importBooks() {
+  await Book.destroy({});
+  if (await Book.count() > 0) { return };
+
+  var books = (await getImportData()).books.book;
+  var bookSeries = (await getImportData()).book_series.book_serie;
+  var authorBooks = (await getImportData()).author_books.author_book;
+
+  var booksData = await Promise.all(books.map(async function (item) {
+    const pictureName = item.picture_url && item.picture_url.split('/').pop();
+    const pictureUrl = pictureName && (await getBookImage(pictureName));
+    const series = bookSeries.filter(({ book_id }) => book_id == item.book_id).map(({ serie_id }) => serie_id);
+    const authors = authorBooks.filter(({ book_id }) => book_id == item.book_id).map(({ author_id }) => author_id);
+
+    return {
+      id: item.book_id,
+      title: item.title.trim(),
+      original: item.original == '-' ? undefined : item.original.trim(),
+      pages: +item.pages,
+      published: item.published ? +item.published : undefined,
+      description: item.description,
+      home: item.home == 'true',
+      genre: item.genre,
+      pictureUrl,
+      pictureName,
+      series: series, // no empty string
+      authors: authors
+    };
+  }));
+
+  await Book.createEach(booksData);
+
 }
 
 function getImportData() {
@@ -62,15 +97,28 @@ function getImportData() {
   return importDataPromise;
 }
 
-
 function getAuthorImage(imgName) {
   const imgPath = path.join(__dirname, `../_import/authors/${imgName}`);
   if (!fs.existsSync(imgPath)) {
-    throw new Error(`Missing image ${imgPath}`);
+    throw new Error(`Missing author image ${imgPath}`);
   }
 
-  return dataUri(imgPath)
-    .then((s) => {
-      return s;
-    });
+  return dataUri(imgPath);
+}
+
+function getBookImage(imgName) {
+  const imgPath = path.join(__dirname, `../_import/books/${imgName}`)
+    .replace('Stratený', 'Strateny')
+    .replace('Gróf', 'Grвf')
+    .replace('Jožo Ráž - Návrat', 'Jozo Rаz - Nаvrat')
+    .replace('Neodovzdaný list', 'Neodovzdany list')
+    .replace('Víchor na Jamaike', 'Vбchor na Jamaike')
+    .replace('Alexander Veľký', 'Alexander Velky');
+
+
+  if (!fs.existsSync(imgPath)) {
+    throw new Error(`Missing book image ${imgPath}`);
+  }
+
+  return dataUri(imgPath);
 }
