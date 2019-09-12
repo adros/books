@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Config, Columns, DefaultConfig, Event, API, APIDefinition } from 'ngx-easy-table';
-import { BooksService } from '../books.service';
-import { map } from 'rxjs/operators';
+import { BooksService } from '../../services/books.service';
+import { map, share, skip } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-books',
@@ -12,7 +13,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
 
   public configuration: Config;
   public columns: Columns[];
-  public data;
+  public data: Observable<any>;
 
   @ViewChild('table', { static: false }) table: APIDefinition;
 
@@ -31,8 +32,10 @@ export class BooksComponent implements OnInit, AfterViewInit {
       { key: 'pictureUrl', title: 'Obrazok' }
     ];
 
-    this.data = this.booksService.listBooks('limit=10000');
-    this.data.subscribe(() => this.configuration = { ...this.configuration, isLoading: false });
+    this.data = this.booksService.listBooksPaged(50).pipe(share());
+    this.data.pipe(skip(1)).subscribe({
+      next: () => this.configuration = { ...this.configuration, isLoading: false }
+    });
 
 
   }
