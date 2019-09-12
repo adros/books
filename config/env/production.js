@@ -47,7 +47,9 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     default: {
-        url: process.env.MONGODB_URI
+      //url: process.env.MONGODB_URI,
+      adapter: 'sails-postgresql',
+      url: process.env.DATABASE_URL
     },
 
   },
@@ -227,8 +229,8 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     onlyAllowOrigins: [
-       'https://adros-books.herokuapp.com'
-     ],
+      'https://adros-books.herokuapp.com'
+    ],
 
 
     /***************************************************************************
