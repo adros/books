@@ -10,6 +10,10 @@
 
 module.exports.custom = {
 
+  releaseCreatedAt: (new Date()).toISOString(),
+  releaseVersion: 'v0.LOCAL',
+  slugCommit: 'N/A'
+
   /***************************************************************************
   *                                                                          *
   * Any other custom config this Sails app should use during development.    *

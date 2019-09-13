@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:1337'
+  baseUrl: 'http://localhost:1337',
+  releaseCreatedAt: (new Date()).toISOString(),
+  releaseVersion: 'v0.LOCAL',
+  slugCommit: 'N/A'
 };
 
 /*
