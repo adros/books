@@ -6,6 +6,8 @@ const dataUri = require('datauri').promise;
 
 let importDataPromise;
 
+const CLEAR_COLLECTIONS = false;
+
 module.exports.bootstrap = async function () {
 
   await importSeries();
@@ -16,6 +18,7 @@ module.exports.bootstrap = async function () {
 };
 
 async function importSeries() {
+  CLEAR_COLLECTIONS && await Serie.destroy({});
   if (await Serie.count() > 0) { return };
 
   var series = (await getImportData()).series.serie;
@@ -28,7 +31,7 @@ async function importSeries() {
 }
 
 async function importAuthors() {
-  await Author.destroy({});
+  CLEAR_COLLECTIONS && await Author.destroy({});
   if (await Author.count() > 0) { return };
 
   var authors = (await getImportData()).authors.author;
@@ -39,7 +42,7 @@ async function importAuthors() {
     return {
       id: item.author_id,
       dateOfBirth: new Date(),// item.date_of_birth && item.date_of_birth == '1900-01-01T00:00:00' ? undefined : new Date(item.date_of_birth),
-      dateOfDeath:  new Date(),//item.date_of_death ? new Date(item.date_of_death) : undefined,
+      dateOfDeath: new Date(),//item.date_of_death ? new Date(item.date_of_death) : undefined,
       firstName: item.first_name.trim(),
       lastName: item.last_name.trim(),
       link: item.link,
@@ -53,7 +56,7 @@ async function importAuthors() {
 }
 
 async function importBooks() {
-  await Book.destroy({});
+  CLEAR_COLLECTIONS && await Book.destroy({});
   if (await Book.count() > 0) { return };
 
   var books = (await getImportData()).books.book;
@@ -87,7 +90,7 @@ async function importBooks() {
 }
 
 async function importReadings() {
-  await Reading.destroy({});
+  CLEAR_COLLECTIONS && await Reading.destroy({});
   if (await Reading.count() > 0) { return };
 
   var readings = (await getImportData()).readings.reading;

@@ -31,6 +31,11 @@ module.exports.routes = {
     controller: 'book',
     action: 'getImage',
     skipAssets: false
+  },
+
+  'get /svc/reading/list/': {
+    controller: 'reading',
+    action: 'listExpanded'
   }
 
   /***************************************************************************
