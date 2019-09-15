@@ -29,16 +29,23 @@ module.exports.http = {
     *                                                                          *
     ***************************************************************************/
 
-    // order: [
-    //   'cookieParser',
-    //   'session',
-    //   'bodyParser',
-    //   'compress',
-    //   'poweredBy',
-    //   'router',
-    //   'www',
-    //   'favicon',
-    // ],
+    order: [
+      'versionHeader',
+      'cookieParser',
+      'session',
+      'bodyParser',
+      'compress',
+      'poweredBy',
+      'router',
+      'www',
+      'favicon',
+    ],
+
+    versionHeader: function (req, res, next) {
+      const { releaseVersion, releaseCreatedAt, slugCommit } = sails.config.custom;
+      res.header('X-Build-Version', `${releaseVersion} ${releaseCreatedAt} ${slugCommit.substring(0, 7)}`);
+      next()
+    },
 
 
     /***************************************************************************

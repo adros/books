@@ -349,24 +349,11 @@ module.exports = {
   ***************************************************************************/
   custom: {
     baseUrl: 'https://adros-books.herokuapp.com',
-    internalEmailAddress: 'support@example.com',
 
-    // mailgunDomain: 'mg.example.com',
-    // mailgunSecret: 'key-prod_fake_bd32301385130a0bafe030c',
-    // stripeSecret: 'sk_prod__fake_Nfgh82401348jaDa3lkZ0d9Hm',
-    //--------------------------------------------------------------------------
-    // /\   OR, to avoid checking them in to version control, you might opt to
-    // ||   set sensitive credentials like these using environment variables.
-    //
-    // For example:
-    // ```
-    // sails_custom__mailgunDomain=mg.example.com
-    // sails_custom__mailgunSecret=key-prod_fake_bd32301385130a0bafe030c
-    // sails_custom__stripeSecret=sk_prod__fake_Nfgh82401348jaDa3lkZ0d9Hm
-    // ```
-    //--------------------------------------------------------------------------
-
-  },
+    releaseCreatedAt: process.env.HEROKU_RELEASE_CREATED_AT,
+    releaseVersion: process.env.HEROKU_RELEASE_VERSION,
+    slugCommit: process.env.HEROKU_SLUG_COMMIT
+  }
 
 
 
