@@ -32,11 +32,10 @@ export class BooksComponent implements OnInit, AfterViewInit {
       { key: 'pictureUrl', title: 'Obrazok' }
     ];
 
-    this.data = this.booksService.listBooksPaged(50).pipe(share());
-    this.data.pipe(skip(1)).subscribe({
+    this.data = this.booksService.listBooks().pipe(share());
+    this.data.subscribe({
       next: () => this.configuration = { ...this.configuration, isLoading: false }
     });
-
 
   }
 

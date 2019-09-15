@@ -33,8 +33,8 @@ module.exports.routes = {
     skipAssets: false
   },
 
-  'get /svc/reading/list/': {
-    controller: 'reading',
+  'get /svc/book/list/': {
+    controller: 'book',
     action: 'listExpanded'
   }
 

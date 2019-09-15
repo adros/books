@@ -11,7 +11,7 @@ export class BooksService {
   constructor(private http: HttpClient) { }
 
   public listBooks(query?) {
-    return this.http.get(`${environment.baseUrl}/svc/book/${query ? `?${query}` : ''}`);
+    return this.http.get(`${environment.baseUrl}/svc/book/list/${query ? `?${query}` : ''}`);
   }
 
   public listBooksPaged(pageSize: number, query?: string): Observable<any> {
