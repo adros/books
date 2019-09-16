@@ -1,11 +1,6 @@
-nav a{
-  margin-right: 10px;
-}
 
 .version{
-  font-size: 12px;
-  position: absolute;
-  top: 3px;
-  right: 6px;
-  color: grey;
+  font-size: 10px;
+  color: #a8a8a8;
+  margin-right: 5px
 }

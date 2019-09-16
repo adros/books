@@ -1,0 +1,7 @@
+// separate file for better debugging and override possibilities
+@import 'variables';
+@import '~bootstrap/scss/bootstrap';
+
+.ng-touched.ng-invalid {
+  @extend .is-invalid;
+}

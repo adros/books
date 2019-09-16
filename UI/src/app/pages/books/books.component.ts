@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Config, Columns, DefaultConfig, Event, API, APIDefinition } from 'ngx-easy-table';
 import { BooksService } from '../../services/books.service';
-import { map, share, skip } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./books.component.css']
 })
 export class BooksComponent implements OnInit, AfterViewInit {
+
+  // TODO: readings does not have correct order
 
   public configuration: Config;
   public columns: Columns[];
@@ -28,11 +30,12 @@ export class BooksComponent implements OnInit, AfterViewInit {
       { key: 'published', title: 'Rok vydania' },
       { key: 'pages', title: 'Počet strán' },
       { key: 'authors', title: 'Autor', orderEventOnly: true },
-      { key: 'series', title: 'Séria' },
+      { key: 'series', title: 'Séria', orderEventOnly: true },
+      { key: 'readings', title: 'Čítanie', orderEventOnly: true },
       { key: 'pictureUrl', title: 'Obrazok' }
     ];
 
-    this.data = this.booksService.listBooks().pipe(share());
+    this.data = this.booksService.listBooks().pipe(shareReplay());
     this.data.subscribe({
       next: () => this.configuration = { ...this.configuration, isLoading: false }
     });
@@ -52,10 +55,36 @@ export class BooksComponent implements OnInit, AfterViewInit {
     return asc ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
   }
 
+  sortBySerie(a, b, asc: boolean) {
+    const titleA = a.series && a.series[0] && a.series[0].title || '';
+    const titleB = b.series && b.series[0] && b.series[0].title || '';
+    return asc ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA);
+  }
+
+  sortByReading(a, b, asc: boolean) {
+    const orderA = a.readings && a.readings[0] && a.readings[0].totalOrder || 0;
+    const orderB = b.readings && b.readings[0] && b.readings[0].totalOrder || 0;
+    return asc ? orderA - orderB : orderB - orderA;
+  }
+
   eventEmitted($event) {
-    if ($event.event === Event.onOrder && $event.value.key === 'authors') {
-      const asc = $event.value.order === 'asc';
-      this.data = this.data.pipe(map((data: any[]) => [...data.sort((a, b) => this.sortByAuthor(a, b, asc))]));
+    if ($event.event !== Event.onOrder) { return; }
+
+    const asc = $event.value.order === 'asc';
+    let sortFn;
+    switch ($event.value.key) {
+      case 'authors':
+        sortFn = (a, b) => this.sortByAuthor(a, b, asc);
+        break;
+      case 'series':
+        sortFn = (a, b) => this.sortBySerie(a, b, asc);
+        break;
+      case 'readings':
+        sortFn = (a, b) => this.sortByReading(a, b, asc);
+        break;
+    }
+    if (sortFn) {
+      this.data = this.data.pipe(map((data: any[]) => [...data.sort(sortFn)]));
     }
   }
 

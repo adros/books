@@ -4,7 +4,7 @@ module.exports = {
 
   attributes: {
 
-    id: { type: 'string', columnName: '_id', autoIncrement: false, required: true  },
+    id: { type: 'number', required: true },
     title: { type: 'string', required: true },
     totalCount: { type: 'number', required: true },
 

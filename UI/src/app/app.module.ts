@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthorsComponent } from './pages/authors/authors.component';
 import { BooksComponent } from './pages/books/books.component';
+import { BookComponent } from './pages/book/book.component';
 import { HomeComponent } from './pages/home/home.component';
 
 import { TableModule } from 'ngx-easy-table';
@@ -16,6 +17,7 @@ import { TableModule } from 'ngx-easy-table';
     AppComponent,
     AuthorsComponent,
     BooksComponent,
+    BookComponent,
     HomeComponent
   ],
   imports: [

@@ -2,7 +2,7 @@
 
 <ngx-table #table [configuration]="configuration" [data]="data | async" [columns]="columns" (event)="eventEmitted($event)">
   <ng-template let-row>
-    <td>{{row.title}}</td>
+    <td><a [routerLink]="['/books', row.id]">{{row.title}}</a></td>
     <td>{{row.original}}</td>
     <td>
       <ng-container *ngIf=" row.published">{{row.published}}</ng-container>
@@ -10,6 +10,7 @@
     <td>{{row.pages}}</td>
     <td><span *ngFor="let author of row.authors" class="column-item">{{author.lastName}}, {{author.firstName}}</span></td>
     <td><span *ngFor="let serie of row.series" class="column-item">{{serie.title}}</span></td>
+    <td><span *ngFor="let reading of row.readings" class="column-item" title="Poradie: {{reading.totalOrder}}">{{reading.year}}</span></td>
     <td>
       <input type="checkbox" [checked]="!!row.pictureName" disabled>
       <!--<img *ngIf="row.pictureName" src="http://localhost:1337/svc/book/image/{{row.id}}">-->

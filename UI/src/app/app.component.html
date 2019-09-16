@@ -1,10 +1,37 @@
-<h1>
-  Welcome to Books!
-</h1>
-<span class="version" [title]="versionTitle">{{version}}</span>
-<nav>
-  <a [routerLink]="['/home']">Home</a>
-  <a [routerLink]="['/authors']">Autori</a>
-  <a [routerLink]="['/books']">Knihy</a>
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top ">
+  <a class="navbar-brand" [routerLink]="['/home']">Knihy</a>
+  <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/authors']">Autori</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/books']">Knihy</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Nový
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+        </div>
+      </li>
+    </ul>
+    <div>
+      <span class="version" [title]="versionTitle">{{version}}</span>
+    </div>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Autor / Kniha" aria-label="Hľadať">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Hľadať</button>
+    </form>
+  </div>
 </nav>
+
+
 <router-outlet></router-outlet>

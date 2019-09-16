@@ -26,7 +26,7 @@ export class AuthorsComponent implements OnInit {
       { key: 'pictureUrl', title: 'pictureUrl' }
     ];
 
-    this.data = this.authorsService.listAuthors('limit=10000&populate=false').pipe(share());
+    this.data = this.authorsService.listAuthors('limit=10000&populate=false&sort=lastName').pipe(share());
     this.data.subscribe(() => this.configuration = { ...this.configuration, isLoading: false });
   }
 

@@ -13,17 +13,17 @@ module.exports = {
 
         try {
             const client = sails.getDatastore().driver;
-            const query = `SELECT b._id, b.title, b.original, b.pages, b.published, b.home, b.genre, b."pictureName",
-                        json_agg((SELECT x FROM (SELECT r.year, r._id, r."totalOrder") AS x)) AS readings,
-                        json_agg((SELECT x FROM (SELECT a."firstName", a._id, a."lastName") AS x)) AS authors,
-                        json_agg((SELECT x FROM (SELECT s."title", s._id) AS x)) AS series
-                      FROM public.book b 
-                      LEFT JOIN public.reading r ON b._id = r.book
-                      LEFT JOIN public.author_books__book_authors ab ON b._id = ab.book_authors
-                      LEFT JOIN public.author a ON a._id = ab.author_books
-                      LEFT JOIN public.book_series__serie_books bs ON b._id = bs.book_series
-                      LEFT JOIN public.serie s ON s._id = bs.serie_books
-                      GROUP BY b._id;`;
+            const query = `SELECT b.id, b.title, b.original, b.pages, b.published, b.home, b.genre, b."pictureName",
+                        json_agg((SELECT x FROM (SELECT r.year, r.id, r."totalOrder") AS x)) AS readings,
+                        json_agg((SELECT x FROM (SELECT a."firstName", a.id, a."lastName") AS x)) AS authors,
+                        json_agg((SELECT x FROM (SELECT s."title", s.id) AS x)) AS series
+                      FROM public.book b
+                      LEFT JOIN public.reading r ON b.id = r.book
+                      LEFT JOIN public.author_books__book_authors ab ON b.id = ab.book_authors
+                      LEFT JOIN public.author a ON a.id = ab.author_books
+                      LEFT JOIN public.book_series__serie_books bs ON b.id = bs.book_series
+                      LEFT JOIN public.serie s ON s.id = bs.serie_books
+                      GROUP BY b.id;`;
 
             const result = await sails.getDatastore().sendNativeQuery(query, []);
             res.send(result.rows);

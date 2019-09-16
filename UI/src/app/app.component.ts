@@ -9,4 +9,10 @@ import { environment } from '../environments/environment';
 export class AppComponent {
   version = environment.releaseVersion;
   versionTitle = `${environment.releaseVersion} ${environment.releaseCreatedAt} ${environment.slugCommit}`;
+
+  navbarOpen = false;
+
+  public toggleNavbar() {
+    this.navbarOpen = !this.navbarOpen;
+  }
 }

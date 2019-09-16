@@ -6,7 +6,7 @@ const dataUri = require('datauri').promise;
 
 let importDataPromise;
 
-const CLEAR_COLLECTIONS = false;
+const CLEAR_COLLECTIONS = true;
 
 module.exports.bootstrap = async function () {
 
@@ -24,7 +24,7 @@ async function importSeries() {
   var series = (await getImportData()).series.serie;
 
   await Serie.createEach(series.map(({ serie_id, title, total_count }) => ({
-    id: serie_id,
+    id: +serie_id,
     title,
     totalCount: total_count
   })));
@@ -40,7 +40,7 @@ async function importAuthors() {
     const pictureName = item.picture_url && item.picture_url.split('/').pop();
     const pictureUrl = pictureName && (await getAuthorImage(pictureName));
     return {
-      id: item.author_id,
+      id: +item.author_id,
       dateOfBirth: new Date(),// item.date_of_birth && item.date_of_birth == '1900-01-01T00:00:00' ? undefined : new Date(item.date_of_birth),
       dateOfDeath: new Date(),//item.date_of_death ? new Date(item.date_of_death) : undefined,
       firstName: item.first_name.trim(),
@@ -70,7 +70,7 @@ async function importBooks() {
     const authors = authorBooks.filter(({ book_id }) => book_id == item.book_id).map(({ author_id }) => author_id);
 
     return {
-      id: item.book_id,
+      id: +item.book_id,
       title: item.title.trim(),
       original: item.original == '-' ? undefined : item.original.trim(),
       pages: +item.pages,
@@ -97,7 +97,7 @@ async function importReadings() {
 
   var readingsData = await Promise.all(readings.map(async function (item) {
     return {
-      id: item.reading_id,
+      id: +item.reading_id,
       year: +item.year,
       yearOrder: +item.year_order,
       totalOrder: +item.total_order,

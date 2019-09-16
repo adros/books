@@ -9,7 +9,7 @@ module.exports = {
 
   attributes: {
 
-    id: { type: 'string', columnName: '_id', autoIncrement: false, required: true },
+    id: { type: 'number', required: true },
     year: { type: 'number', required: true },
     yearOrder: { type: 'number', required: true },
     totalOrder: { type: 'number', required: true },
