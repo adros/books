@@ -1,8 +1,11 @@
-<select (change)="sort.emit($event)">
-  <option value="DEFAULT">Default</option>
-  <option value="title_asc">Názov &#x2B61;</option>
-  <option value="title_desc">Názov &#x2B63;</option>
-</select>
+<form class="form-inline">
+  <label for="sortSelect" class="mr-2 col-form-label-sm">Sort</label>
+  <select class="form-control form-control-sm" id="sortSelect" (change)="sort.emit($event)">
+    <option value="DEFAULT">Default</option>
+    <option value="title_asc">Názov &#x2B61;</option>
+    <option value="title_desc">Názov &#x2B63;</option>
+  </select>
+</form>
 
 <table class="table table-hover table-sm table-responsive">
   <thead class="thead-light">
