@@ -5,8 +5,8 @@ module.exports.datastores = {
 
     //url: 'mongodb://localhost:27017/booksdb'
     // url in local or production configs
-
-    adapter: 'sails-postgresql'
+    adapter: 'sails-postgresql',
+    url: process.env.DATABASE_URL
   }
 
 };
