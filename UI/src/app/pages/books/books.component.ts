@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, EventEmitter } from '@angular/core';
 import { Config, Columns, DefaultConfig, Event, API, APIDefinition } from 'ngx-easy-table';
 import { BooksService } from '../../services/books.service';
-import { map, shareReplay } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { map, shareReplay, startWith } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-books',
@@ -16,6 +16,10 @@ export class BooksComponent implements OnInit, AfterViewInit {
   public configuration: Config;
   public columns: Columns[];
   public data: Observable<any>;
+  public data2: Observable<any>;
+  public isLoading = true;
+
+  public sort = new EventEmitter();
 
   @ViewChild('table', { static: false }) table: APIDefinition;
 
@@ -37,7 +41,22 @@ export class BooksComponent implements OnInit, AfterViewInit {
 
     this.data = this.booksService.listBooks().pipe(shareReplay());
     this.data.subscribe({
-      next: () => this.configuration = { ...this.configuration, isLoading: false }
+      next: () => this.isLoading = false
+    });
+
+    const sort$ = this.sort.pipe(map(({ target }) => target.options[target.selectedIndex].value), startWith('DEFAULT'));
+    this.data2 = combineLatest(this.data, sort$, (data, sort) => {
+      if (sort === 'DEFAULT') { return data; }
+      let sortFn;
+      switch (sort) {
+        case 'title_asc':
+          sortFn = (a, b) => a.title.localeCompare(b.title);
+          break;
+        case 'title_desc':
+          sortFn = (a, b) => b.title.localeCompare(a.title);
+          break;
+      }
+      return data.slice(0).sort(sortFn);
     });
 
   }

@@ -1,3 +1,4 @@
 .column-item {
-  display: block;
+  /*display: block;*/
+  margin-right: 5px;
 }

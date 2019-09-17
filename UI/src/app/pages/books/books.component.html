@@ -1,6 +1,51 @@
-<p>authors works!</p>
+<select (change)="sort.emit($event)">
+  <option value="DEFAULT">Default</option>
+  <option value="title_asc">Názov &#x2B61;</option>
+  <option value="title_desc">Názov &#x2B63;</option>
+</select>
 
-<ngx-table #table [configuration]="configuration" [data]="data | async" [columns]="columns" (event)="eventEmitted($event)">
+<table class="table table-hover table-sm table-responsive">
+  <thead class="thead-light">
+    <tr>
+      <th>Názov</th>
+      <th>Pôvodný názov</th>
+      <th>Rok&nbsp;vydania</th>
+      <th>Počet&nbsp;strán</th>
+      <th>Autor</th>
+      <th>Séria</th>
+      <th>Čítanie</th>
+      <th>Obrázok</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of data2 | async">
+      <td><a [routerLink]="['/books', book.id]">{{book.title}}</a></td>
+      <td>{{book.original}}</td>
+      <td>
+        <ng-container *ngIf="book.published">{{book.published}}</ng-container>
+      </td>
+      <td>{{book.pages}}</td>
+      <td><span *ngFor="let author of book.authors" class="column-item">{{author.lastName}}, {{author.firstName}}</span>
+      </td>
+      <td><span *ngFor="let serie of book.series" class="column-item">{{serie.title}}</span></td>
+      <td><span *ngFor="let reading of book.readings" class="column-item"
+          title="Poradie: {{reading.totalOrder}}">{{reading.year}}</span></td>
+      <td>
+        <input type="checkbox" [checked]="!!book.pictureName" disabled>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="isLoading" class="d-flex justify-content-center">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<!--
+<ngx-table #table [configuration]="configuration" [data]="data | async" [columns]="columns"
+  (event)="eventEmitted($event)">
   <ng-template let-row>
     <td><a [routerLink]="['/books', row.id]">{{row.title}}</a></td>
     <td>{{row.original}}</td>
@@ -8,12 +53,13 @@
       <ng-container *ngIf=" row.published">{{row.published}}</ng-container>
     </td>
     <td>{{row.pages}}</td>
-    <td><span *ngFor="let author of row.authors" class="column-item">{{author.lastName}}, {{author.firstName}}</span></td>
+    <td><span *ngFor="let author of row.authors" class="column-item">{{author.lastName}}, {{author.firstName}}</span>
+    </td>
     <td><span *ngFor="let serie of row.series" class="column-item">{{serie.title}}</span></td>
-    <td><span *ngFor="let reading of row.readings" class="column-item" title="Poradie: {{reading.totalOrder}}">{{reading.year}}</span></td>
+    <td><span *ngFor="let reading of row.readings" class="column-item"
+        title="Poradie: {{reading.totalOrder}}">{{reading.year}}</span></td>
     <td>
       <input type="checkbox" [checked]="!!row.pictureName" disabled>
-      <!--<img *ngIf="row.pictureName" src="http://localhost:1337/svc/book/image/{{row.id}}">-->
     </td>
   </ng-template>
-</ngx-table>
+</ngx-table>-->
