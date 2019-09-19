@@ -1,49 +1,59 @@
-<form class="form-inline">
-  <label for="sortSelect" class="mr-2 col-form-label-sm">Sort</label>
-  <select class="form-control form-control-sm" id="sortSelect" (change)="sort.emit($event)">
-    <option value="DEFAULT">Default</option>
-    <option value="title_asc">Názov &#x2B61;</option>
-    <option value="title_desc">Názov &#x2B63;</option>
-  </select>
-</form>
-
-<table class="table table-hover table-sm table-responsive">
-  <thead class="thead-light">
-    <tr>
-      <th>Názov</th>
-      <th>Pôvodný názov</th>
-      <th>Rok&nbsp;vydania</th>
-      <th>Počet&nbsp;strán</th>
-      <th>Autor</th>
-      <th>Séria</th>
-      <th>Čítanie</th>
-      <th>Obrázok</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let book of data2 | async">
-      <td><a [routerLink]="['/books', book.id]">{{book.title}}</a></td>
-      <td>{{book.original}}</td>
-      <td>
-        <ng-container *ngIf="book.published">{{book.published}}</ng-container>
-      </td>
-      <td>{{book.pages}}</td>
-      <td><span *ngFor="let author of book.authors" class="column-item">{{author.lastName}}, {{author.firstName}}</span>
-      </td>
-      <td><span *ngFor="let serie of book.series" class="column-item">{{serie.title}}</span></td>
-      <td><span *ngFor="let reading of book.readings" class="column-item"
-          title="Poradie: {{reading.totalOrder}}">{{reading.year}}</span></td>
-      <td>
-        <input type="checkbox" [checked]="!!book.pictureName" disabled>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
 <div *ngIf="isLoading" class="d-flex justify-content-center">
   <div class="spinner-border" role="status">
     <span class="sr-only">Loading...</span>
   </div>
+</div>
+
+<form #form="ngForm" [hidden]="isLoading" class="form-inline">
+  <label for="sortSelect" class="mr-2 col-form-label-sm">Sort</label>
+  <select class="form-control form-control-sm" id="sortSelect" [(ngModel)]="sort" name="sort">
+    <option value="order_asc"># &uarr;</option>
+    <option value="order_desc"># &darr;</option>
+    <option value="title_asc">Názov &uarr;</option>
+    <option value="title_desc">Názov &darr;</option>
+    <option value="firstReading_asc">Prvé čítanie &uarr;</option>
+    <option value="firstReading_desc">Prvé čítanie &darr;</option>
+    <option value="lastReading_asc">Posledné čítanie &uarr;</option>
+    <option value="lastReading_desc">Posledné čítanie &darr;</option>
+  </select>
+</form>
+
+<div *ngIf="!isLoading">
+  <table class="table table-hover table-sm table-responsive">
+    <thead class="thead-light">
+      <tr>
+        <th>#</th>
+        <th>Názov</th>
+        <th>Pôvodný názov</th>
+        <th>Rok&nbsp;vydania</th>
+        <th>Počet&nbsp;strán</th>
+        <th>Autor</th>
+        <th>Séria</th>
+        <th>Čítanie</th>
+        <th>Obrázok</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of displayedData | async">
+        <td>{{book.order}}</td>
+        <td><a [routerLink]="['/books', book.id]">{{book.title}}</a></td>
+        <td>{{book.original}}</td>
+        <td>
+          <ng-container *ngIf="book.published">{{book.published}}</ng-container>
+        </td>
+        <td>{{book.pages}}</td>
+        <td><span *ngFor="let author of book.authors" class="column-item">{{author.lastName}},
+            {{author.firstName}}</span>
+        </td>
+        <td><span *ngFor="let serie of book.series" class="column-item">{{serie.title}}</span></td>
+        <td><span *ngFor="let reading of book.readings" class="column-item"
+            title="Poradie: {{reading.totalOrder}}">{{reading.year}}</span></td>
+        <td>
+          <input type="checkbox" [checked]="!!book.pictureName" disabled>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <!--

@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, AfterViewInit, EventEmitter } from '@angular/core';
-import { Config, Columns, DefaultConfig, Event, API, APIDefinition } from 'ngx-easy-table';
+import { Component, OnInit, AfterViewInit, EventEmitter, ViewChild } from '@angular/core';
 import { BooksService } from '../../services/books.service';
-import { map, shareReplay, startWith } from 'rxjs/operators';
+import { map, shareReplay, startWith, filter } from 'rxjs/operators';
 import { Observable, combineLatest } from 'rxjs';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-books',
@@ -11,100 +11,68 @@ import { Observable, combineLatest } from 'rxjs';
 })
 export class BooksComponent implements OnInit, AfterViewInit {
 
-  // TODO: readings does not have correct order
-
-  public configuration: Config;
-  public columns: Columns[];
   public data: Observable<any>;
-  public data2: Observable<any>;
+  public displayedData: Observable<any>;
   public isLoading = true;
 
-  public sort = new EventEmitter();
+  public sort = 'title_desc';
 
-  @ViewChild('table', { static: false }) table: APIDefinition;
+  @ViewChild('form', { static: true })
+  public form: NgForm;
 
   constructor(private booksService: BooksService) { }
 
   ngOnInit() {
-    this.configuration = { ...DefaultConfig, rows: 5000, isLoading: true };
-
-    this.columns = [
-      { key: 'title', title: 'Názov' },
-      { key: 'original', title: 'Pôvodný názov' },
-      { key: 'published', title: 'Rok vydania' },
-      { key: 'pages', title: 'Počet strán' },
-      { key: 'authors', title: 'Autor', orderEventOnly: true },
-      { key: 'series', title: 'Séria', orderEventOnly: true },
-      { key: 'readings', title: 'Čítanie', orderEventOnly: true },
-      { key: 'pictureUrl', title: 'Obrazok' }
-    ];
-
     this.data = this.booksService.listBooks().pipe(shareReplay());
     this.data.subscribe({
       next: () => this.isLoading = false
     });
 
-    const sort$ = this.sort.pipe(map(({ target }) => target.options[target.selectedIndex].value), startWith('DEFAULT'));
-    this.data2 = combineLatest(this.data, sort$, (data, sort) => {
-      if (sort === 'DEFAULT') { return data; }
+    const sort$ = this.form.form.valueChanges.pipe(
+      map(({ sort }) => sort),
+      filter(Boolean),
+      startWith(this.sort)
+    );
+
+
+    this.displayedData = combineLatest(this.data, sort$, (data, sort: string) => {
       let sortFn;
       switch (sort) {
+        case 'order_asc':
+        case 'order_desc':
+          sortFn = (a, b) => a.order - b.order;
+          break;
         case 'title_asc':
+        case 'title_desc':
           sortFn = (a, b) => a.title.localeCompare(b.title);
           break;
-        case 'title_desc':
-          sortFn = (a, b) => b.title.localeCompare(a.title);
+        case 'firstReading_asc':
+        case 'firstReading_desc':
+          sortFn = (a, b) => {
+            const orderA = a.readings && a.readings.length && a.readings[0].totalOrder || 0;
+            const orderB = b.readings && b.readings.length && b.readings[0].totalOrder || 0;
+            return orderA - orderB;
+          };
+          break;
+        case 'lastReading_asc':
+        case 'lastReading_desc':
+          sortFn = (a, b) => {
+            const orderA = a.readings && a.readings.length && a.readings[a.readings.length - 1].totalOrder || 0;
+            const orderB = b.readings && b.readings.length && b.readings[b.readings.length - 1].totalOrder || 0;
+            return orderA - orderB;
+          };
           break;
       }
-      return data.slice(0).sort(sortFn);
-    });
-
-  }
-
-  ngAfterViewInit() {
-    this.table.apiEvent({
-      type: API.setPaginationRange,
-      value: [10, 20, 50, 100, 500, 1000, 5000],
+      let displayedData = data.slice(0);
+      displayedData.sort(/_asc$/.test(sort) ? sortFn : (a, b) => sortFn(b, a));
+      if (/^lastReading/.test(sort)) {
+        displayedData = displayedData.map(({ readings, ...obj }) => ({ ...obj, readings: readings.slice(0).reverse() }));
+      }
+      return displayedData;
     });
   }
 
-  sortByAuthor(a, b, asc: boolean) {
-    const nameA = a.authors && a.authors[0] && a.authors[0].lastName || '';
-    const nameB = b.authors && b.authors[0] && b.authors[0].lastName || '';
-    return asc ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-  }
+  ngAfterViewInit() { }
 
-  sortBySerie(a, b, asc: boolean) {
-    const titleA = a.series && a.series[0] && a.series[0].title || '';
-    const titleB = b.series && b.series[0] && b.series[0].title || '';
-    return asc ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA);
-  }
-
-  sortByReading(a, b, asc: boolean) {
-    const orderA = a.readings && a.readings[0] && a.readings[0].totalOrder || 0;
-    const orderB = b.readings && b.readings[0] && b.readings[0].totalOrder || 0;
-    return asc ? orderA - orderB : orderB - orderA;
-  }
-
-  eventEmitted($event) {
-    if ($event.event !== Event.onOrder) { return; }
-
-    const asc = $event.value.order === 'asc';
-    let sortFn;
-    switch ($event.value.key) {
-      case 'authors':
-        sortFn = (a, b) => this.sortByAuthor(a, b, asc);
-        break;
-      case 'series':
-        sortFn = (a, b) => this.sortBySerie(a, b, asc);
-        break;
-      case 'readings':
-        sortFn = (a, b) => this.sortByReading(a, b, asc);
-        break;
-    }
-    if (sortFn) {
-      this.data = this.data.pipe(map((data: any[]) => [...data.sort(sortFn)]));
-    }
-  }
 
 }

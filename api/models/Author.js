@@ -7,9 +7,9 @@ module.exports = {
   attributes: {
 
     id: { type: 'number', required: true },
-    dateOfBirth: { type: 'string', required: false, columnType: 'date' },
-    dateOfDeath: { type: 'string', required: false, columnType: 'date' },
-    firstName: { type: 'string', required: true },
+    dateOfBirth: { type: 'string', required: false, allowNull: true },
+    dateOfDeath: { type: 'string', required: false, allowNull: true },
+    firstName: { type: 'string', required: true, },
     lastName: { type: 'string', required: true },
     link: { type: 'string', required: false },
     nationality: { type: 'string', required: false },

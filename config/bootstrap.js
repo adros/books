@@ -6,7 +6,7 @@ const dataUri = require('datauri').promise;
 
 let importDataPromise;
 
-const CLEAR_COLLECTIONS = true;
+const CLEAR_COLLECTIONS = false;
 
 module.exports.bootstrap = async function () {
 
@@ -39,10 +39,10 @@ async function importAuthors() {
   var authorsData = await Promise.all(authors.map(async function (item) {
     const pictureName = item.picture_url && item.picture_url.split('/').pop();
     const pictureUrl = pictureName && (await getAuthorImage(pictureName));
-    return {
+    const data = {
       id: +item.author_id,
-      dateOfBirth: new Date(),// item.date_of_birth && item.date_of_birth == '1900-01-01T00:00:00' ? undefined : new Date(item.date_of_birth),
-      dateOfDeath: new Date(),//item.date_of_death ? new Date(item.date_of_death) : undefined,
+      dateOfBirth: item.date_of_birth && item.date_of_birth == '1900-01-01T00:00:00' ? null : item.date_of_birth,
+      dateOfDeath: item.date_of_death ? item.date_of_death : null,
       firstName: item.first_name.trim(),
       lastName: item.last_name.trim(),
       link: item.link,
@@ -50,6 +50,8 @@ async function importAuthors() {
       pictureName,
       pictureUrl
     };
+
+    return data;
   }));
 
   await Author.createEach(authorsData);

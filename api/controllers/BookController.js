@@ -6,16 +6,17 @@
  */
 
 const dataUri = require('datauri').promise;
+const _ = require('lodash');
 
 module.exports = {
 
-    listExpanded: async function (req, res) {
+  listExpanded: async function (req, res) {
 
-        try {
-            const client = sails.getDatastore().driver;
-            const query = `SELECT b.id, b.title, b.original, b.pages, b.published, b.home, b.genre, b."pictureName",
+    try {
+      const client = sails.getDatastore().driver;
+      const query = `SELECT b.id, b.title, b.original, b.pages, b.published, b.home, b.genre, b."pictureName",
                         json_agg((SELECT x FROM (SELECT r.year, r.id, r."totalOrder") AS x)) AS readings,
-                        json_agg((SELECT x FROM (SELECT a."firstName", a.id, a."lastName") AS x)) AS authors,
+                        json_agg((SELECT x FROM (SELECT a."firstName", a.id, a."lastName", ab.id as relId) AS x)) AS authors,
                         json_agg((SELECT x FROM (SELECT s."title", s.id) AS x)) AS series
                       FROM public.book b
                       LEFT JOIN public.reading r ON b.id = r.book
@@ -25,28 +26,42 @@ module.exports = {
                       LEFT JOIN public.serie s ON s.id = bs.serie_books
                       GROUP BY b.id;`;
 
-            const result = await sails.getDatastore().sendNativeQuery(query, []);
-            res.send(result.rows);
-        } catch (e) {
-            res.status(500).send(`Connection error: ${e.message}`);
-        }
-    },
-
-    getImage: async function (req, res) {
-
-        var book = await Book.findOne({ id: req.param('id').split('.')[0] }); //trim extension
-        if (!book || !book.pictureUrl) {
-            return res.status(404).send('book not found');
-        }
-        const [meta, data] = book.pictureUrl.split(',');
-        const m = meta && meta.match(/data:(.*)+;base64/);
-        if (!m) {
-            res.status(500).send(`unknown meta: '${meta}'`);
-        }
-        res.set('Cache-Control', `max-age=${60 * 60 * 24 * 365}`)
-            .type(m[1])
-            .send(Buffer.from(data, 'base64'));
+      const result = (await sails.getDatastore().sendNativeQuery(query, []))
+        .rows
+        .map((item, idx) => {
+          if (item.authors.length > 1) {
+            item.authors = _.orderBy(_.uniqBy(item.authors, 'id'), 'relId');
+          }
+          if (item.readings.length > 1) {
+            item.readings = _.orderBy(_.uniqBy(item.readings, 'id'), 'totalOrder');
+          }
+          if (item.series.length > 1) {
+            item.series = _.orderBy(_.uniqBy(item.series, 'id'), 'id');
+          }
+          item.order = idx + 1;
+          return item;
+        });
+      res.send(result);
+    } catch (e) {
+      res.status(500).send(`Connection error: ${e.message}`);
     }
+  },
+
+  getImage: async function (req, res) {
+
+    var book = await Book.findOne({ id: req.param('id').split('.')[0] }); //trim extension
+    if (!book || !book.pictureUrl) {
+      return res.status(404).send('book not found');
+    }
+    const [meta, data] = book.pictureUrl.split(',');
+    const m = meta && meta.match(/data:(.*)+;base64/);
+    if (!m) {
+      res.status(500).send(`unknown meta: '${meta}'`);
+    }
+    res.set('Cache-Control', `max-age=${60 * 60 * 24 * 365}`)
+      .type(m[1])
+      .send(Buffer.from(data, 'base64'));
+  }
 
 
 };
