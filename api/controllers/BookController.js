@@ -24,7 +24,7 @@ module.exports = {
                       LEFT JOIN public.author a ON a.id = ab.author_books
                       LEFT JOIN public.book_series__serie_books bs ON b.id = bs.book_series
                       LEFT JOIN public.serie s ON s.id = bs.serie_books
-                      GROUP BY b.id;`;
+                      GROUP BY b.id SORT BY b.id`;
 
       const result = (await sails.getDatastore().sendNativeQuery(query, []))
         .rows
