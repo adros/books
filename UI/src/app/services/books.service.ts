@@ -18,6 +18,10 @@ export class BooksService {
     return this.http.get(`${environment.baseUrl}/svc/book/list/${query ? `?${query}` : ''}`);
   }
 
+  public getImgUrl(id) {
+    return `${environment.baseUrl}/svc/book/image/${id}`;
+  }
+
   /*public listBooksPaged(pageSize: number, query?: string): Observable<any> {
     const result = new BehaviorSubject([]);
     this.loadPagesRecursive(result, pageSize, query);
