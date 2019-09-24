@@ -27,7 +27,8 @@
               "src/styles/styles.scss",
               "src/styles/bootstrap.scss",
               "node_modules/ngx-easy-table/style.css",
-              "node_modules/typeface-montserrat/index.css"
+              "node_modules/typeface-montserrat/index.css",
+              "node_modules/font-awesome/css/font-awesome.css"
             ],
             "scripts": []
           },

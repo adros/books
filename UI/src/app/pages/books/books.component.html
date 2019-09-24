@@ -34,13 +34,14 @@
     <div class="col-lg-2 col-md-3 col-sm-6">
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='table'}">
-          <input type="radio" name="layout" value="table" [(ngModel)]="layout"> Tabuľka
+          <input type="radio" name="layout" value="table" [(ngModel)]="layout"><span class="fa fa-th-list"></span>
         </label>
         <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='cards'}">
-          <input type="radio" name="layout" value="cards" [(ngModel)]="layout"> Karty
+          <input type="radio" name="layout" value="cards" [(ngModel)]="layout"><span class="fa fa-th"></span>
         </label>
         <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='pictures'}">
-          <input type="radio" name="layout" value="pictures" [(ngModel)]="layout"> Obrázky
+          <input type="radio" name="layout" value="pictures" [(ngModel)]="layout"><span
+            class="fa fa-file-image-o"></span>
         </label>
       </div>
     </div>
@@ -85,7 +86,7 @@
   </table>
 
   <div *ngIf="layout == 'cards'">
-    <div class="b-cards">
+    <div class="cards">
       <div class="card border mb-3" *ngFor="let book of displayedData | async">
         <div class="card-header text-center" [title]="book.title">
           <a [routerLink]="['/books', book.id]">{{book.title}}</a>
@@ -103,28 +104,7 @@
   </div>
 
   <div *ngIf="layout == 'pictures'" class="pictures">
-    <a *ngFor="let book of displayedData | async" [routerLink]="['/books', book.id]">
-      <img src="{{booksService.getImgUrl(book.id)}}">
+    <a *ngFor="let book of displayedData | async" [routerLink]="['/books', book.id]" title="{{book.title}}">
+      <div [style]="getImageBackground(book.id)"></div>
     </a>
   </div>
-
-  <!--
-<ngx-table #table [configuration]="configuration" [data]="data | async" [columns]="columns"
-  (event)="eventEmitted($event)">
-  <ng-template let-row>
-    <td><a [routerLink]="['/books', row.id]">{{row.title}}</a></td>
-    <td>{{row.original}}</td>
-    <td>
-      <ng-container *ngIf=" row.published">{{row.published}}</ng-container>
-    </td>
-    <td>{{row.pages}}</td>
-    <td><span *ngFor="let author of row.authors" class="column-item">{{author.lastName}}, {{author.firstName}}</span>
-    </td>
-    <td><span *ngFor="let serie of row.series" class="column-item">{{serie.title}}</span></td>
-    <td><span *ngFor="let reading of row.readings" class="column-item"
-        title="Poradie: {{reading.totalOrder}}">{{reading.year}}</span></td>
-    <td>
-      <input type="checkbox" [checked]="!!row.pictureName" disabled>
-    </td>
-  </ng-template>
-</ngx-table>-->

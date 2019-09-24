@@ -3,6 +3,7 @@ import { BooksService } from '../../services/books.service';
 import { map, shareReplay, startWith, filter } from 'rxjs/operators';
 import { Observable, combineLatest } from 'rxjs';
 import { NgForm } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-books',
@@ -16,12 +17,12 @@ export class BooksComponent implements OnInit, AfterViewInit {
   public isLoading = true;
 
   public sort = 'order_asc';
-  public layout: any = 'cards';
+  public layout: any = 'pictures';
 
   @ViewChild('form', { static: true })
   public form: NgForm;
 
-  constructor(public booksService: BooksService) { }
+  constructor(public booksService: BooksService, public sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.data = this.booksService.listBooks().pipe(shareReplay());
@@ -142,6 +143,10 @@ export class BooksComponent implements OnInit, AfterViewInit {
       return this.thClass('firstReading') || this.thClass('lastReading') || '';
     }
     return '';
+  }
+
+  public getImageBackground(id) {
+    return this.sanitizer.bypassSecurityTrustStyle(`background-image: url('${this.booksService.getImgUrl(id)}')`);
   }
 
 }

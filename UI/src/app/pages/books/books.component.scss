@@ -33,25 +33,13 @@ th {
   }
 }
 
-.pictures {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-
-  img {
-    width: 120px;
-    height: 180px;
-    margin: 5px;
-  }
-}
-
-.b-cards {
+.cards {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 
   .card {
-    flex: 0 1 calc(50% - 0.5rem);
+    flex: 0 1 calc(100% / 2 - 0.5rem);
 
     .card-header,
     .card-body {
@@ -74,50 +62,33 @@ th {
   }
 }
 
-@media (min-width: 450px) {
-  .b-cards .card {
-    flex: 0 1 calc(33% - 0.5rem);
+.pictures {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  a {
+    flex: 0 1 calc(100% / 2 - 0.5rem);
+
+    div {
+      height: 0;
+      overflow: hidden;
+      padding-top: 150%;
+      margin-bottom: 0.5rem;
+      background-size: 100% 100%;
+    }
   }
 }
 
-@media (min-width: 600px) {
-  .b-cards .card {
-    flex: 0 1 calc(25% - 0.5rem);
+@for $i from 1 through 12 {
+  @media (min-width: #{133 * $i}px) {
+    .pictures a {
+      flex: 0 1 calc(100% / #{$i} - 0.5rem);
+    }
   }
-}
-
-@media (min-width: 750px) {
-  .b-cards .card {
-    flex: 0 1 calc(20% - 0.5rem);
-  }
-}
-
-@media (min-width: 900px) {
-  .b-cards .card {
-    flex: 0 1 calc(16% - 0.5rem);
-  }
-}
-
-@media (min-width: 1050px) {
-  .b-cards .card {
-    flex: 0 1 calc(14% - 0.5rem);
-  }
-}
-
-@media (min-width: 1200px) {
-  .b-cards .card {
-    flex: 0 1 calc(12% - 0.5rem);
-  }
-}
-
-@media (min-width: 1350px) {
-  .b-cards .card {
-    flex: 0 1 calc(11% - 0.5rem);
-  }
-}
-
-@media (min-width: 1500px) {
-  .b-cards .card {
-    flex: 0 1 calc(10% - 0.5rem);
+  @media (min-width: #{150 * $i}px) {
+    .cards .card {
+      flex: 0 1 calc(100% / #{$i} - 0.5rem);
+    }
   }
 }
