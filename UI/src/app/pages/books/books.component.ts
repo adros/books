@@ -17,7 +17,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
   public isLoading = true;
 
   public sort = 'order_asc';
-  public layout: any = 'pictures';
+  public layout: any = 'cards';
 
   @ViewChild('form', { static: true })
   public form: NgForm;

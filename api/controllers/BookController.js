@@ -35,8 +35,9 @@ module.exports = {
           if (item.readings.length > 1) {
             item.readings = _.orderBy(_.uniqBy(item.readings, 'id'), 'totalOrder');
           }
+          item.series = item.series.filter(({ id }) => !!id);
           if (item.series.length > 1) {
-            item.series = _.orderBy(_.uniqBy(item.series, 'id'), 'id');
+            item.series = _.orderBy(_.uniqBy(item.series, 'id'), 'id'); // there are some null itms?
           }
           item.order = idx + 1;
           return item;

@@ -58,6 +58,7 @@
         <th (click)="hSortClick('published')" [class]="thClass('published')">Rok&nbsp;vydania</th>
         <th (click)="hSortClick('pages')" [class]="thClass('pages')">Počet&nbsp;strán</th>
         <th (click)="hSortClick('author')" [class]="thClass('author')">Autor</th>
+        <th (click)="hSortClick('genre')" [class]="thClass('genre')">Žáner</th>
         <th (click)="hSortClick('serie')" [class]="thClass('serie')">Séria</th>
         <th (click)="hSortClick('reading')" [class]="thClass('reading')">Prečítané</th>
         <th (click)="hSortClick('pictureName')" [class]="thClass('pictureName')">Obrázok</th>
@@ -72,12 +73,23 @@
           <ng-container *ngIf="book.published">{{book.published}}</ng-container>
         </td>
         <td>{{book.pages}}</td>
-        <td><span *ngFor="let author of book.authors" class="column-item">{{author.lastName}},
-            {{author.firstName}}</span>
+        <td>
+          <span *ngFor="let author of book.authors; let isLast=last">
+            <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a><span
+              *ngIf="!isLast"> &amp; </span>
+          </span>
         </td>
-        <td><span *ngFor="let serie of book.series" class="column-item">{{serie.title}}</span></td>
-        <td><span *ngFor="let reading of book.readings" class="column-item"
-            title="Poradie: {{reading.totalOrder}}">{{reading.year}}</span></td>
+        <td>{{book.genre}}</td>
+        <td>
+          <span *ngFor="let serie of book.series; let isLast=last">
+            <a [routerLink]="['/series', serie.id]">{{serie.title}}</a><span *ngIf="!isLast">, </span>
+          </span>
+        </td>
+        <td><span *ngFor="let reading of book.readings; let isLast=last">
+            <a [routerLink]="['/readings', reading.id]"
+              title="Poradie: {{reading.totalOrder}}">{{reading.year}}</a><span *ngIf="!isLast">, </span>
+          </span>
+        </td>
         <td>
           <input type="checkbox" [checked]="!!book.pictureName" disabled>
         </td>
@@ -92,12 +104,26 @@
           <a [routerLink]="['/books', book.id]">{{book.title}}</a>
         </div>
         <div class="card-body">
-          <div class="text-center"><img src="{{booksService.getImgUrl(book.id)}}"></div>
-          May, Karl
-          Original: Der Flucher
-          Published: 1952
-          Genre: Dobrodružný Román
-          Pages: 124 • Read: 1998, 2016
+          <div class="b-picture" [style]="getImageBackground(book.id)"></div>
+          <div class="b-authors">
+            <span *ngFor="let author of book.authors; let isLast=last">
+              <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a><span
+                *ngIf="!isLast"> &amp; </span>
+            </span>
+          </div>
+          <div class="b-original-piblished" *ngIf="book.published && book.original">
+            <span class="b-original" *ngIf="book.original">{{book.original}}</span>
+            <span *ngIf="book.published && book.original"> • </span>
+            <span class="b-published" *ngIf="book.published">{{book.published}}</span>
+          </div>
+          <div>{{book.genre}}</div>
+          <div class="b-readings">
+            <span *ngFor="let reading of book.readings; let isLast=last">
+              <a [routerLink]="['/readings', reading.id]"
+                title="Poradie: {{reading.totalOrder}}">{{reading.year}}</a><span *ngIf="!isLast">, </span>
+            </span> •
+            {{book.pages}} str.
+          </div>
         </div>
       </div>
     </div>
