@@ -1,0 +1,136 @@
+<div *ngIf="isLoading" class="d-flex justify-content-center">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<form #form="ngForm" [hidden]="isLoading" class="mt-2 mb-2">
+  <div class="form-row">
+    <div class="col-lg-2 col-md-3 col-sm-6">
+      <select class="form-control form-control-sm" id="sortSelect" [(ngModel)]="sort" name="sort">
+        <option value="order_asc"># &uarr;</option>
+        <option value="order_desc"># &darr;</option>
+        <option value="title_asc">Názov &uarr;</option>
+        <option value="title_desc">Názov &darr;</option>
+        <option value="original_asc">Pôvodný názov &uarr;</option>
+        <option value="original_desc">Pôvodný názov &darr;</option>
+        <option value="published_asc">Rok vydania &uarr;</option>
+        <option value="published_desc">Rok vydania &darr;</option>
+        <option value="pages_asc">Počet strán &uarr;</option>
+        <option value="pages_desc">Počet strán &darr;</option>
+        <option value="author_asc">Autor &uarr;</option>
+        <option value="author_desc">Autor &darr;</option>
+        <option value="serie_asc">Séria &uarr;</option>
+        <option value="serie_desc">Séria &darr;</option>
+        <option value="firstReading_asc">Prečítané 1.x &uarr;</option>
+        <option value="firstReading_desc">Prečítané 1.x &darr;</option>
+        <option value="lastReading_asc">Prečítané N.x &uarr;</option>
+        <option value="lastReading_desc">Prečítané N.x &darr;</option>
+        <option value="pictureName_asc">Obrázok &uarr;</option>
+        <option value="pictureName_desc">Obrázok &darr;</option>
+      </select>
+    </div>
+
+    <div class="col-lg-2 col-md-3 col-sm-6">
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='table'}">
+          <input type="radio" name="layout" value="table" [(ngModel)]="layout"><span class="fa fa-th-list"></span>
+        </label>
+        <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='cards'}">
+          <input type="radio" name="layout" value="cards" [(ngModel)]="layout"><span class="fa fa-th"></span>
+        </label>
+        <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='pictures'}">
+          <input type="radio" name="layout" value="pictures" [(ngModel)]="layout"><span
+            class="fa fa-file-image-o"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div *ngIf="!isLoading">
+  <table *ngIf="layout === 'table'" class="table table-hover table-sm table-responsive">
+    <thead class="thead-light">
+      <tr>
+        <th (click)="hSortClick('order')" [class]="thClass('order')">#</th>
+        <th (click)="hSortClick('title')" [class]="thClass('title')">Názov</th>
+        <th (click)="hSortClick('original')" [class]="thClass('original')">Pôvodný názov</th>
+        <th (click)="hSortClick('published')" [class]="thClass('published')">Rok&nbsp;vydania</th>
+        <th (click)="hSortClick('pages')" [class]="thClass('pages')">Počet&nbsp;strán</th>
+        <th (click)="hSortClick('author')" [class]="thClass('author')">Autor</th>
+        <th (click)="hSortClick('genre')" [class]="thClass('genre')">Žáner</th>
+        <th (click)="hSortClick('serie')" [class]="thClass('serie')">Séria</th>
+        <th (click)="hSortClick('reading')" [class]="thClass('reading')">Prečítané</th>
+        <th (click)="hSortClick('pictureName')" [class]="thClass('pictureName')">Obrázok</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of displayedData$ | async">
+        <td>{{book.order}}</td>
+        <td><a [routerLink]="['/books', book.id]">{{book.title}}</a></td>
+        <td>{{book.original}}</td>
+        <td>
+          <ng-container *ngIf="book.published">{{book.published}}</ng-container>
+        </td>
+        <td>{{book.pages}}</td>
+        <td>
+          <span *ngFor="let author of book.authors; let isLast=last">
+            <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a><span
+              *ngIf="!isLast"> &amp; </span>
+          </span>
+        </td>
+        <td>{{book.genre}}</td>
+        <td>
+          <span *ngFor="let serie of book.series; let isLast=last">
+            <a [routerLink]="['/series', serie.id]">{{serie.title}}</a><span *ngIf="!isLast">, </span>
+          </span>
+        </td>
+        <td><span *ngFor="let reading of book.readings; let isLast=last">
+            <a [routerLink]="['/readings', reading.id]"
+              title="Poradie: {{reading.totalOrder}}">{{reading.year}}</a><span *ngIf="!isLast">, </span>
+          </span>
+        </td>
+        <td>
+          <input type="checkbox" [checked]="!!book.pictureName" disabled>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="layout == 'cards'">
+    <div class="cards">
+      <div class="card border mb-3" *ngFor="let book of displayedData$ | async">
+        <div class="card-header text-center" [title]="book.title">
+          <a [routerLink]="['/books', book.id]">{{book.title}}</a>
+        </div>
+        <div class="card-body">
+          <div class="b-picture" [style]="getImageBackground(book.id)"></div>
+          <div class="b-authors">
+            <span *ngFor="let author of book.authors; let isLast=last">
+              <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a><span
+                *ngIf="!isLast"> &amp; </span>
+            </span>
+          </div>
+          <div class="b-original-piblished" *ngIf="book.published && book.original">
+            <span class="b-original" *ngIf="book.original">{{book.original}}</span>
+            <span *ngIf="book.published && book.original"> • </span>
+            <span class="b-published" *ngIf="book.published">{{book.published}}</span>
+          </div>
+          <div>{{book.genre}}</div>
+          <div class="b-readings">
+            <span *ngFor="let reading of book.readings; let isLast=last">
+              <a [routerLink]="['/readings', reading.id]"
+                title="Poradie: {{reading.totalOrder}}">{{reading.year}}</a><span *ngIf="!isLast">, </span>
+            </span> •
+            {{book.pages}} str.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="layout == 'pictures'" class="pictures">
+    <a *ngFor="let book of displayedData$ | async" [routerLink]="['/books', book.id]" title="{{book.title}}">
+      <div [style]="getImageBackground(book.id)"></div>
+    </a>
+  </div>

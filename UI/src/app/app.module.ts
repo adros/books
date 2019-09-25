@@ -11,14 +11,18 @@ import { BookComponent } from './pages/book/book.component';
 import { HomeComponent } from './pages/home/home.component';
 
 import { TableModule } from 'ngx-easy-table';
+import { BookListComponent } from './pages/books/book-list.component';
+import { AuthorComponent } from './pages/author/author.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthorsComponent,
+    AuthorComponent,
     BooksComponent,
     BookComponent,
-    HomeComponent
+    HomeComponent,
+    BookListComponent
   ],
   imports: [
     BrowserModule,

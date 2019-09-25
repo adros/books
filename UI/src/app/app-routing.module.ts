@@ -4,11 +4,13 @@ import { AuthorsComponent } from './pages/authors/authors.component';
 import { BooksComponent } from './pages/books/books.component';
 import { BookComponent } from './pages/book/book.component';
 import { HomeComponent } from './pages/home/home.component';
+import { AuthorComponent } from './pages/author/author.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'authors', component: AuthorsComponent },
+  { path: 'authors/:id', component: AuthorComponent },
   { path: 'books', component: BooksComponent },
   { path: 'books/:id', component: BookComponent }
 ];
