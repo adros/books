@@ -10,9 +10,9 @@ import { BooksComponent } from './pages/books/books.component';
 import { BookComponent } from './pages/book/book.component';
 import { HomeComponent } from './pages/home/home.component';
 
-import { TableModule } from 'ngx-easy-table';
 import { BookListComponent } from './pages/books/book-list.component';
 import { AuthorComponent } from './pages/author/author.component';
+import { AuthorListComponent } from './pages/authors/author-list.component';
 
 @NgModule({
   declarations: [
@@ -22,12 +22,12 @@ import { AuthorComponent } from './pages/author/author.component';
     BooksComponent,
     BookComponent,
     HomeComponent,
-    BookListComponent
+    BookListComponent,
+    AuthorListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    TableModule,
     HttpClientModule,
     FormsModule
   ],

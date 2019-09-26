@@ -1,7 +1,5 @@
 <div *ngIf="isLoading" class="d-flex justify-content-center">
-  <div class="spinner-border" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
+  <div class="spinner-border m-5 text-primary" role="status"></div>
 </div>
 
 <form #form="ngForm" [hidden]="isLoading" class="mt-2 mb-2">
@@ -105,7 +103,7 @@
             <a [routerLink]="['/books', book.id]">{{book.title}}</a>
           </div>
           <div class="card-body">
-            <div class="b-picture" [style]="getImageBackground(book.id)"></div>
+            <div class="b-picture" [style]="getImageBackground(book)"></div>
             <div class="b-authors">
               <span *ngFor="let author of book.authors; let isLast=last">
                 <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a><span
@@ -122,7 +120,7 @@
               <span *ngFor="let reading of book.readings; let isLast=last">
                 <a [routerLink]="['/readings', reading.id]"
                   title="Poradie: {{reading.totalOrder}}">{{reading.year}}</a><span *ngIf="!isLast">, </span>
-              </span>• {{book.pages}} str.
+              </span> • {{book.pages}} str.
             </div>
           </div>
         </div>
@@ -132,6 +130,6 @@
 
   <div *ngIf="layout == 'pictures'" class="pictures">
     <a *ngFor="let book of displayedData$ | async" [routerLink]="['/books', book.id]" title="{{book.title}}">
-      <div [style]="getImageBackground(book.id)"></div>
+      <div [style]="getImageBackground(book)"></div>
     </a>
   </div>

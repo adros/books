@@ -36,7 +36,12 @@ module.exports.routes = {
   'get /svc/book/list/': {
     controller: 'book',
     action: 'listExpanded'
-  }
+  },
+
+  'get /svc/author/:id/book/list/': {
+    controller: 'book',
+    action: 'listExpandedByAuthor'
+  },
 
   /***************************************************************************
   *                                                                          *

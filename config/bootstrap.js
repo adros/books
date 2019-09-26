@@ -6,7 +6,7 @@ const dataUri = require('datauri').promise;
 
 let importDataPromise;
 
-const CLEAR_COLLECTIONS = false;
+const CLEAR_COLLECTIONS = true;
 
 module.exports.bootstrap = async function () {
 

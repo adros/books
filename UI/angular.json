@@ -26,7 +26,6 @@
             "styles": [
               "src/styles/styles.scss",
               "src/styles/bootstrap.scss",
-              "node_modules/ngx-easy-table/style.css",
               "node_modules/font-awesome/css/font-awesome.css"
             ],
             "scripts": []
@@ -93,8 +92,7 @@
             ],
             "styles": [
               "src/styles/styles.scss",
-              "src/styles/bootstrap.scss",
-              "node_modules/ngx-easy-table/style.css"
+              "src/styles/bootstrap.scss"
             ],
             "scripts": []
           }

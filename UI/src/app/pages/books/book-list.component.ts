@@ -129,6 +129,8 @@ export class BookListComponent implements OnInit, AfterViewInit {
         sortFn = (a, b) => {
           let nameA = a.series && a.series.length && a.series[0].title || '';
           let nameB = b.series && b.series.length && b.series[0].title || '';
+          if (!nameA) { return 1; }
+          if (!nameB) { return -1; }
           if (/_desc$/.test(sort)) { [nameA, nameB] = [nameB, nameA]; }
           return nameA.localeCompare(nameB);
         };

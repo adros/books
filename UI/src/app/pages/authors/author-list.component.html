@@ -1,0 +1,112 @@
+<div *ngIf="isLoading" class="d-flex justify-content-center">
+  <div class="spinner-border m-5 text-primary" role="status"></div>
+</div>
+
+<form #form="ngForm" [hidden]="isLoading" class="mt-2 mb-2">
+  <div class="form-row">
+    <div class="col-lg-2 col-md-3 col-sm-6">
+      <select class="form-control form-control-sm" id="sortSelect" [(ngModel)]="sort" name="sort">
+        <option value="lastName_asc">Meno &uarr;</option>
+        <option value="lastName_desc">Meno &darr;</option>
+        <option value="nationality_asc">Národnosť &uarr;</option>
+        <option value="nationality_desc">Národnosť &darr;</option>
+        <option value="dateOfBirth_asc">Dátum narodenia &uarr;</option>
+        <option value="dateOfBirth_desc">Dátum narodenia &darr;</option>
+        <option value="dateOfDeath_asc">Dátum úmrtia &uarr;</option>
+        <option value="dateOfDeath_desc">Dátum úmrtia &darr;</option>
+        <option value="booksInDb_asc">Knihy v DB &uarr;</option>
+        <option value="booksInDb_desc">Knihy v DB &darr;</option>
+        <option value="readBooks_asc">Prečítané knihy &uarr;</option>
+        <option value="readBooks_desc">Prečítané knihy &darr;</option>
+        <option value="pictureName_asc">Obrázok &uarr;</option>
+        <option value="pictureName_desc">Obrázok &darr;</option>
+      </select>
+    </div>
+
+    <div class="col-lg-2 col-md-3 col-sm-6">
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='table'}">
+          <input type="radio" name="layout" value="table" [(ngModel)]="layout"><span class="fa fa-th-list"></span>
+        </label>
+        <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='cards'}">
+          <input type="radio" name="layout" value="cards" [(ngModel)]="layout"><span class="fa fa-th"></span>
+        </label>
+        <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='pictures'}">
+          <input type="radio" name="layout" value="pictures" [(ngModel)]="layout"><span
+            class="fa fa-file-image-o"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div *ngIf="!isLoading" class="table-responsive">
+  <table *ngIf="layout === 'table'" class="table table-hover table-sm">
+    <thead class="thead-light">
+      <tr>
+        <th (click)="hSortClick('lastName')" [class]="thClass('lastName')">Meno</th>
+        <th (click)="hSortClick('nationality')" [class]="thClass('nationality')">Národnosť</th>
+        <th (click)="hSortClick('dateOfBirth')" [class]="thClass('dateOfBirth')">Dátum narodenia</th>
+        <th (click)="hSortClick('dateOfDeath')" [class]="thClass('dateOfDeath')">Dátum úmrtia</th>
+        <th (click)="hSortClick('booksInDb')" [class]="thClass('booksInDb')">Knihy v DB</th>
+        <th (click)="hSortClick('readBooks')" [class]="thClass('readBooks')">Prečítané knihy</th>
+        <th (click)="hSortClick('pictureName')" [class]="thClass('pictureName')">Obrázok</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let author of displayedData$ | async">
+        <td>{{author.lastName}}, {{author.firstName}}</td>
+        <td>
+          <img *ngIf="author.nationality" src="/assets/flags/{{author.nationality | lowercase}}.png"
+            [alt]="author.nationality" [title]="author.nationality">
+        </td>
+        <td>{{author.dateOfBirth | date}}</td>
+        <td>{{author.dateOfDeath | date}}</td>
+        <td>{{author.booksInDb}}</td>
+        <td>{{author.readBooks}}</td>
+        <td>
+          <input type="checkbox" [checked]="!!author.pictureName" disabled>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="layout == 'cards'">
+    <div class="cards mr-n1 ml-n1">
+      <div class="card-wrapper" *ngFor="let author of displayedData$ | async">
+        <div class="card border m-1">
+          <div class="card-header text-center" [title]="author.title">
+            <a [routerLink]="['/authors', author.id]">{{author.title}}</a>
+          </div>
+          <div class="card-body">
+            <div class="b-picture" [style]="getImageBackground(author)"></div>
+            <div class="b-authors">
+              <span *ngFor="let author of author.authors; let isLast=last">
+                <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a><span
+                  *ngIf="!isLast"> &amp; </span>
+              </span>
+            </div>
+            <div class="b-original-piblished" *ngIf="author.published && author.original">
+              <span class="b-original" *ngIf="author.original">{{author.original}}</span>
+              <span *ngIf="author.published && author.original"> • </span>
+              <span class="b-published" *ngIf="author.published">{{author.published}}</span>
+            </div>
+            <div>{{author.genre}}</div>
+            <div class="b-readings">
+              <span *ngFor="let reading of author.readings; let isLast=last">
+                <a [routerLink]="['/readings', reading.id]"
+                  title="Poradie: {{reading.totalOrder}}">{{reading.year}}</a><span *ngIf="!isLast">, </span>
+              </span> • {{author.pages}} str.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="layout == 'pictures'" class="pictures">
+    <a *ngFor="let author of displayedData$ | async" [routerLink]="['/authors', author.id]" title="{{author.title}}">
+      <div [style]="getImageBackground(author)"></div>
+    </a>
+  </div>

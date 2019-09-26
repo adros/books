@@ -13,12 +13,16 @@ export class AuthorsService {
   public getAuthor(id): Observable<any> {
     return this.http.get(`${environment.baseUrl}/svc/author/${id}?populate=false`);
   }
+
   public getAuthorBooks(id): Observable<any> {
-    return this.http.get(`${environment.baseUrl}/svc/author/${id}/books/`);
+    return this.http.get(`${environment.baseUrl}/svc/author/${id}/book/list/`);
   }
 
   public listAuthors(query?) {
     return this.http.get(`${environment.baseUrl}/svc/author/${query ? `?${query}` : ''}`);
+  }
+  public getImgUrl(id) {
+    return `${environment.baseUrl}/svc/author/image/${id}`;
   }
 
 
