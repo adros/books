@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from '../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,10 @@ export class AppComponent {
   versionTitle = `${environment.releaseVersion} ${environment.releaseCreatedAt} ${environment.slugCommit}`;
 
   navbarOpen = false;
+
+  constructor(private router: Router) {
+    router.events.subscribe(() => this.navbarOpen = false);
+  }
 
   public toggleNavbar() {
     this.navbarOpen = !this.navbarOpen;

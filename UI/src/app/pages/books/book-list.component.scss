@@ -5,7 +5,8 @@
 table {
   font-size: 0.85rem;
 
-  td:nth-child(7) {
+  td:nth-child(7), 
+  td:nth-child(8) {
     width: 140px; // genre
   }
 }
@@ -42,27 +43,31 @@ th {
   flex-wrap: wrap;
   justify-content: space-between;
 
-  .card {
-    flex: 0 1 calc(100% / 2 - 0.5rem);
+  .card-wrapper {
+    flex: 0 1 calc(100% / 2);
 
-    .card-header,
-    .card-body {
-      padding: 0.35rem 0.35rem;
-      font-size: 0.8rem;
-      line-height: 1.15;
-    }
+    .card{
+      height: calc(100% - 0.6rem);
 
-    .card-header {
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-    }
+      .card-header,
+      .card-body {
+        padding: 0.35rem 0.35rem;
+        font-size: 0.8rem;
+        line-height: 1.15;
+      }
 
-    img {
-      width: 120px;
-      height: 180px;
+      .card-header {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+      }
+
+      img {
+        width: 120px;
+        height: 180px;
+      }
     }
   }
 
@@ -73,35 +78,46 @@ th {
     background-size: 100% 100%;
     margin-bottom: 0.35rem;
   }
+
+  &::after {
+    content: "";
+    flex: auto;
+  }
 }
 
 .pictures {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin: 0 -0.18rem;
 
   a {
-    flex: 0 1 calc(100% / 2 - 0.5rem);
+    flex: 0 1 calc(100% / 2);
 
     div {
       height: 0;
       overflow: hidden;
       padding-top: 150%;
-      margin-bottom: 0.5rem;
       background-size: 100% 100%;
+      margin: 0.18rem;
     }
+  }
+
+  &::after {
+    content: "";
+    flex: auto;
   }
 }
 
 @for $i from 1 through 13 {
   @media (min-width: #{110 * $i}px) {
     .pictures a {
-      flex: 0 1 calc(100% / #{$i} - 0.5rem);
+      flex: 0 1 calc(100% / #{$i});
     }
   }
   @media (min-width: #{160 * $i}px) {
-    .cards .card {
-      flex: 0 1 calc(100% / #{$i} - 0.5rem);
+    .cards .card-wrapper {
+      flex: 0 1 calc(100% / #{$i});
     }
   }
 }
