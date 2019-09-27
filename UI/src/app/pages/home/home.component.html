@@ -4,15 +4,15 @@
 <div *ngIf="!isLoading" class="row">
     <div class="col-xl-6">
         <div style="display: block">
-            <canvas baseChart [data]="barChartData1$ | async" [labels]="barChartLabels1$ | async" [options]="{}"
-                chartType="horizontalBar" [legend]="false" [colors]="[{backgroundColor: 'rgba(23, 162, 184, 0.7)'}]">
+            <canvas baseChart [datasets]="barChartData1$ | async" [labels]="barChartLabels1$ | async" [options]="{}"
+                chartType="horizontalBar" [legend]="false">
             </canvas>
         </div>
     </div>
     <div class="col-xl-6">
         <div style="display: block">
-            <canvas baseChart [data]="barChartData2$ | async" [labels]="barChartLabels2$ | async" [options]="{}"
-                chartType="horizontalBar" [legend]="false" [colors]="[{backgroundColor: 'rgba(23, 162, 184, 0.7)'}]">
+            <canvas baseChart [datasets]="barChartData2$ | async" [labels]="barChartLabels2$ | async" [options]="{}"
+                chartType="horizontalBar" [legend]="false">
             </canvas>
         </div>
     </div>
