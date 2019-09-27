@@ -9,10 +9,8 @@
 table {
   font-size: 0.85rem;
 
-  td:nth-child(7), 
-  td:nth-child(8) {
-    width: 140px; // genre
-    white-space: nowrap;
+  td:nth-child(7) {
+    width:40px;
   }
 }
 

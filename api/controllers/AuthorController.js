@@ -27,6 +27,7 @@ const controller = module.exports = {
             .map((item, idx) => {
                 item.booksInDb = _.uniqBy(item.books, 'id').length
                 item.readBooks = _.uniqBy(item.readings, 'id').length
+                item.hasImage = !!item.pictureName;
                 delete item.readings;
                 delete item.books;
                 return item;

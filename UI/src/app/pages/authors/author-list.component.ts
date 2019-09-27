@@ -88,9 +88,13 @@ export class AuthorListComponent implements OnInit, AfterViewInit {
       case 'dateOfBirth_desc':
       case 'dateOfDeath_asc':
       case 'dateOfDeath_desc':
-      case 'pictureName_asc':
-      case 'pictureName_desc':
         sortFn = byStringProp(sort.split('_')[0], /_asc$/.test(sort));
+        break;
+      case 'hasImage_asc':
+      case 'hasImage_desc':
+      case 'link_asc':
+      case 'link_desc':
+        sortFn = byBooleanProp(sort.split('_')[0], /_asc$/.test(sort));
         break;
     }
     return sortFn;
@@ -112,18 +116,35 @@ export class AuthorListComponent implements OnInit, AfterViewInit {
         return a[prop] - b[prop];
       };
     }
+
+    function byBooleanProp(prop, asc) {
+      return (a, b) => {
+        if (!asc) { [a, b] = [b, a]; }
+        return (!!b[prop] as any) - (!!a[prop] as any);
+      };
+    }
   }
 
   ngAfterViewInit() { }
 
   public hSortClick(prop) {
-    const sort = `${prop}_asc` === this.sort ? `${prop}_desc` : `${prop}_asc`;
+    let sort;
+    if (prop === 'info') {
+      const sorts = ['link_asc', 'link_desc', 'hasImage_asc', 'hasImage_desc'];
+      const idx = sorts.indexOf(this.sort) + 1;
+      sort = sorts[idx === 4 ? 0 : idx];
+    } else {
+      sort = `${prop}_asc` === this.sort ? `${prop}_desc` : `${prop}_asc`;
+    }
     this.form.form.setValue({ sort, layout: this.layout });
   }
 
   public thClass(prop) {
     if (this.sort === `${prop}_asc`) { return 'asc'; }
     if (this.sort === `${prop}_desc`) { return 'desc'; }
+    if (prop === 'info') {
+      return this.thClass('hasImage') || this.thClass('link') || '';
+    }
     return '';
   }
 

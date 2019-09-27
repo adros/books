@@ -20,7 +20,7 @@ const controller = module.exports = {
   },
 
   _getBooks: async function (where, params) {
-    const query = `SELECT b.id, b.title, b.original, b.pages, b.published, b.home, b.genre, b."pictureName",
+    const query = `SELECT b.id, b.title, b.original, b.pages, b.published, b.home, b.genre, b."pictureName", b.description,
                       json_agg((SELECT x FROM (SELECT r.year, r.id, r."totalOrder") AS x)) AS readings,
                       json_agg((SELECT x FROM (SELECT a."firstName", a.id, a."lastName", ab.id as relid) AS x)) AS authors,
                       json_agg((SELECT x FROM (SELECT s."title", s.id) AS x)) AS series
@@ -46,6 +46,9 @@ const controller = module.exports = {
         if (item.series.length > 1) {
           item.series = _.orderBy(_.uniqBy(item.series, 'id'), 'id'); // there are some null itms?
         }
+        item.hasImage = !!item.pictureName;
+        item.hasDescription = !!item.description;
+        delete item.description;
         item.order = idx + 1;
         return item;
       });

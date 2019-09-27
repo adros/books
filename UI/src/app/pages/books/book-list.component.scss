@@ -11,8 +11,11 @@ table {
 
   td:nth-child(7), 
   td:nth-child(8) {
-    width: 140px; // genre
     white-space: nowrap;
+  }
+
+  td:nth-child(10) {
+    width:60px;
   }
 }
 
@@ -69,10 +72,6 @@ th {
         font-size: 0.85rem;
       }
 
-      img {
-        width: 120px;
-        height: 180px;
-      }
     }
   }
 

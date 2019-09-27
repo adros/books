@@ -18,8 +18,10 @@
         <option value="booksInDb_desc">Knihy v DB &darr;</option>
         <option value="readBooks_asc">Prečítané knihy &uarr;</option>
         <option value="readBooks_desc">Prečítané knihy &darr;</option>
-        <option value="pictureName_asc">Obrázok &uarr;</option>
-        <option value="pictureName_desc">Obrázok &darr;</option>
+        <option value="link_asc">Link &uarr;</option>
+        <option value="link_desc">Link &darr;</option>
+        <option value="hasImage_asc">Obrázok &uarr;</option>
+        <option value="hasImage_desc">Obrázok &darr;</option>
       </select>
     </div>
 
@@ -40,39 +42,41 @@
   </div>
 </form>
 
-<div *ngIf="!isLoading" class="table-responsive">
-  <table *ngIf="layout === 'table'" class="table table-hover table-sm">
-    <thead class="thead-light">
-      <tr>
-        <th (click)="hSortClick('lastName')" [class]="thClass('lastName')">Meno</th>
-        <th (click)="hSortClick('nationality')" [class]="thClass('nationality')">Národnosť</th>
-        <th (click)="hSortClick('dateOfBirth')" [class]="thClass('dateOfBirth')">Dátum narodenia</th>
-        <th (click)="hSortClick('dateOfDeath')" [class]="thClass('dateOfDeath')">Dátum úmrtia</th>
-        <th (click)="hSortClick('booksInDb')" [class]="thClass('booksInDb')">Knihy v DB</th>
-        <th (click)="hSortClick('readBooks')" [class]="thClass('readBooks')">Prečítané knihy</th>
-        <th (click)="hSortClick('pictureName')" [class]="thClass('pictureName')">Obrázok</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let author of displayedData$ | async">
-        <td>
-          <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a>
-        </td>
-        <td>
-          <img *ngIf="author.nationality" src="/assets/flags/{{author.nationality | lowercase}}.png"
-            [alt]="author.nationality" [title]="author.nationality">
-        </td>
-        <td>{{author.dateOfBirth | date}}</td>
-        <td>{{author.dateOfDeath | date}}</td>
-        <td>{{author.booksInDb}}</td>
-        <td>{{author.readBooks}}</td>
-        <td>
-          <input type="checkbox" [checked]="!!author.pictureName" disabled>
-        </td>
-
-      </tr>
-    </tbody>
-  </table>
+<div *ngIf="!isLoading">
+  <div class="table-responsive">
+    <table *ngIf="layout === 'table'" class="table table-hover table-sm">
+      <thead class="thead-light">
+        <tr>
+          <th (click)="hSortClick('lastName')" [class]="thClass('lastName')">Meno</th>
+          <th (click)="hSortClick('nationality')" [class]="thClass('nationality')">Národnosť</th>
+          <th (click)="hSortClick('dateOfBirth')" [class]="thClass('dateOfBirth')">Dátum narodenia</th>
+          <th (click)="hSortClick('dateOfDeath')" [class]="thClass('dateOfDeath')">Dátum úmrtia</th>
+          <th (click)="hSortClick('booksInDb')" [class]="thClass('booksInDb')">Knihy v DB</th>
+          <th (click)="hSortClick('readBooks')" [class]="thClass('readBooks')">Prečítané knihy</th>
+          <th (click)="hSortClick('info')" [class]="thClass('info')">Info</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let author of displayedData$ | async">
+          <td>
+            <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a>
+          </td>
+          <td>
+            <img *ngIf="author.nationality" src="/assets/flags/{{author.nationality | lowercase}}.png"
+              [alt]="author.nationality" [title]="author.nationality">
+          </td>
+          <td>{{author.dateOfBirth | date}}</td>
+          <td>{{author.dateOfDeath | date}}</td>
+          <td>{{author.booksInDb}}</td>
+          <td>{{author.readBooks}}</td>
+          <td>
+            <a href="{{author.link}}" class="mr-1 text-info"><i class="fas fa-link" title="Link" [ngClass]="{invisible:!author.link}"></i></a>
+            <i class="fas fa-file-image text-info" title="Obrázok" [ngClass]="{invisible:!author.hasImage}"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div *ngIf="layout == 'cards'">
     <div class="cards mr-n1 ml-n1">

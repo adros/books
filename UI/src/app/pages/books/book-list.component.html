@@ -24,8 +24,12 @@
         <option value="firstReading_desc">Prečítané 1.x &darr;</option>
         <option value="lastReading_asc">Prečítané N.x &uarr;</option>
         <option value="lastReading_desc">Prečítané N.x &darr;</option>
-        <option value="pictureName_asc">Obrázok &uarr;</option>
-        <option value="pictureName_desc">Obrázok &darr;</option>
+        <option value="home_asc">Doma &uarr;</option>
+        <option value="home_desc">Doma &darr;</option>
+        <option value="hasDescription_asc">Popis &uarr;</option>
+        <option value="hasDescription_desc">Popis &darr;</option>
+        <option value="hasImage_asc">Obrázok &uarr;</option>
+        <option value="hasImage_desc">Obrázok &darr;</option>
       </select>
     </div>
 
@@ -46,54 +50,58 @@
   </div>
 </form>
 
-<div *ngIf="!isLoading" class="table-responsive">
-  <table *ngIf="layout === 'table'" class="table table-hover table-sm">
-    <thead class="thead-light">
-      <tr>
-        <th (click)="hSortClick('order')" [class]="thClass('order')">#</th>
-        <th (click)="hSortClick('title')" [class]="thClass('title')">Názov</th>
-        <th (click)="hSortClick('original')" [class]="thClass('original')">Pôvodný názov</th>
-        <th (click)="hSortClick('published')" [class]="thClass('published')">Rok&nbsp;vydania</th>
-        <th (click)="hSortClick('pages')" [class]="thClass('pages')">Počet&nbsp;strán</th>
-        <th (click)="hSortClick('author')" [class]="thClass('author')">Autor</th>
-        <th (click)="hSortClick('genre')" [class]="thClass('genre')">Žáner</th>
-        <th (click)="hSortClick('serie')" [class]="thClass('serie')">Séria</th>
-        <th (click)="hSortClick('reading')" [class]="thClass('reading')">Prečítané</th>
-        <th (click)="hSortClick('pictureName')" [class]="thClass('pictureName')">Obrázok</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let book of displayedData$ | async">
-        <td>{{book.order}}</td>
-        <td><a [routerLink]="['/books', book.id]">{{book.title}}</a></td>
-        <td>{{book.original}}</td>
-        <td>
-          <ng-container *ngIf="book.published">{{book.published}}</ng-container>
-        </td>
-        <td>{{book.pages}}</td>
-        <td>
-          <span *ngFor="let author of book.authors; let isLast=last">
-            <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a><span
-              *ngIf="!isLast"> &amp; </span>
-          </span>
-        </td>
-        <td>{{book.genre}}</td>
-        <td>
-          <span *ngFor="let serie of book.series; let isLast=last">
-            <a [routerLink]="['/series', serie.id]">{{serie.title}}</a><span *ngIf="!isLast">, </span>
-          </span>
-        </td>
-        <td><span *ngFor="let reading of book.readings; let isLast=last">
-            <a [routerLink]="['/readings', reading.id]"
-              title="Poradie: {{reading.totalOrder}}">{{reading.year}}</a><span *ngIf="!isLast">, </span>
-          </span>
-        </td>
-        <td>
-          <input type="checkbox" [checked]="!!book.pictureName" disabled>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div *ngIf="!isLoading">
+  <div class="table-responsive">
+    <table *ngIf="layout === 'table'" class="table table-hover table-sm">
+      <thead class="thead-light">
+        <tr>
+          <th (click)="hSortClick('order')" [class]="thClass('order')">#</th>
+          <th (click)="hSortClick('title')" [class]="thClass('title')">Názov</th>
+          <th (click)="hSortClick('original')" [class]="thClass('original')">Pôvodný názov</th>
+          <th (click)="hSortClick('published')" [class]="thClass('published')">Rok&nbsp;vydania</th>
+          <th (click)="hSortClick('pages')" [class]="thClass('pages')">Počet&nbsp;strán</th>
+          <th (click)="hSortClick('author')" [class]="thClass('author')">Autor</th>
+          <th (click)="hSortClick('genre')" [class]="thClass('genre')">Žáner</th>
+          <th (click)="hSortClick('serie')" [class]="thClass('serie')">Séria</th>
+          <th (click)="hSortClick('reading')" [class]="thClass('reading')">Prečítané</th>
+          <th (click)="hSortClick('info')" [class]="thClass('info')">Info</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of displayedData$ | async">
+          <td>{{book.order}}</td>
+          <td><a [routerLink]="['/books', book.id]">{{book.title}}</a></td>
+          <td>{{book.original}}</td>
+          <td>
+            <ng-container *ngIf="book.published">{{book.published}}</ng-container>
+          </td>
+          <td>{{book.pages}}</td>
+          <td>
+            <span *ngFor="let author of book.authors; let isLast=last">
+              <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a><span
+                *ngIf="!isLast"> &amp; </span>
+            </span>
+          </td>
+          <td>{{book.genre}}</td>
+          <td>
+            <span *ngFor="let serie of book.series; let isLast=last">
+              <a [routerLink]="['/series', serie.id]">{{serie.title}}</a><span *ngIf="!isLast">, </span>
+            </span>
+          </td>
+          <td><span *ngFor="let reading of book.readings; let isLast=last">
+              <a [routerLink]="['/readings', reading.id]"
+                title="Poradie: {{reading.totalOrder}}">{{reading.year}}</a><span *ngIf="!isLast">, </span>
+            </span>
+          </td>
+          <td class="text-info">
+            <i class="fas fa-home mr-1" title="Doma" [ngClass]="{invisible:!book.home}"></i>
+            <i class="fas fa-file-alt mr-1" title="Popis" [ngClass]="{invisible:!book.hasDescription}"></i>
+            <i class="fas fa-file-image" title="Obrázok" [ngClass]="{invisible:!book.hasImage}"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div *ngIf="layout == 'cards'">
     <div class="cards mr-n1 ml-n1">

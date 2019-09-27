@@ -91,11 +91,15 @@ export class BookListComponent implements OnInit, AfterViewInit {
       case 'title_desc':
       case 'original_asc':
       case 'original_desc':
-      case 'pictureName_asc':
-      case 'pictureName_desc':
-      case 'title_asc':
-      case 'title_desc':
         sortFn = byStringProp(sort.split('_')[0], /_asc$/.test(sort));
+        break;
+      case 'hasImage_asc':
+      case 'hasImage_desc':
+      case 'home_asc':
+      case 'home_desc':
+      case 'hasDescription_asc':
+      case 'hasDescription_desc':
+        sortFn = byBooleanProp(sort.split('_')[0], /_asc$/.test(sort));
         break;
       case 'firstReading_asc':
       case 'firstReading_desc':
@@ -155,6 +159,13 @@ export class BookListComponent implements OnInit, AfterViewInit {
         return a[prop] - b[prop];
       };
     }
+
+    function byBooleanProp(prop, asc) {
+      return (a, b) => {
+        if (!asc) { [a, b] = [b, a]; }
+        return b[prop] - a[prop];
+      };
+    }
   }
 
   ngAfterViewInit() { }
@@ -165,6 +176,10 @@ export class BookListComponent implements OnInit, AfterViewInit {
       const sorts = ['firstReading_asc', 'firstReading_desc', 'lastReading_asc', 'lastReading_desc'];
       const idx = sorts.indexOf(this.sort) + 1;
       sort = sorts[idx === 4 ? 0 : idx];
+    } else if (prop === 'info') {
+      const sorts = ['home_asc', 'home_desc', 'hasDescription_asc', 'hasDescription_desc', 'hasImage_asc', 'hasImage_desc'];
+      const idx = sorts.indexOf(this.sort) + 1;
+      sort = sorts[idx === 6 ? 0 : idx];
     } else {
       sort = `${prop}_asc` === this.sort ? `${prop}_desc` : `${prop}_asc`;
     }
@@ -176,6 +191,9 @@ export class BookListComponent implements OnInit, AfterViewInit {
     if (this.sort === `${prop}_desc`) { return 'desc'; }
     if (prop === 'reading') {
       return this.thClass('firstReading') || this.thClass('lastReading') || '';
+    }
+    if (prop === 'info') {
+      return this.thClass('hasImage') || this.thClass('home') || this.thClass('hasDescription') || '';
     }
     return '';
   }
