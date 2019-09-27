@@ -14,4 +14,8 @@ export class ReadingsService {
     return this.http.get(`${environment.baseUrl}/svc/reading/list/`);
   }
 
+  public getStats() {
+    return this.http.get(`${environment.baseUrl}/svc/reading/stats/`);
+  }
+
 }
