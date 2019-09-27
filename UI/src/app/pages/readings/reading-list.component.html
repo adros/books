@@ -1,0 +1,112 @@
+<div *ngIf="isLoading" class="d-flex justify-content-center">
+  <div class="spinner-border m-5 text-primary" role="status"></div>
+</div>
+
+<form #form="ngForm" [hidden]="isLoading" class="mt-2 mb-2">
+  <div class="form-row">
+    <div class="col-lg-2 col-md-3 col-sm-4">
+      <select class="form-control form-control-sm" [(ngModel)]="sortYear" name="sortYear" [disabled]="!grupped">
+        <option value="group_asc">Rok &uarr;</option>
+        <option value="group_desc">Rok &darr;</option>
+      </select>
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-4">
+      <select class="form-control form-control-sm" [(ngModel)]="sort" name="sort">
+        <option value="order_asc">Poradie &uarr;</option>
+        <option value="order_desc">Poradie &darr;</option>
+      </select>
+    </div>
+
+    <div class="col-lg-2 col-md-3 col-sm-4">
+      <div class="btn-group btn-group-toggle grupped mr-2" data-toggle="buttons">
+        <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:grupped}">
+          <input type="checkbox" name="grupped" [(ngModel)]="grupped"><i class="fa "
+            [ngClass]="{'fa-check':grupped,'fa-times':!grupped}"></i> Po rokoch
+        </label>
+      </div>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='table'}">
+          <input type="radio" name="layout" value="table" [(ngModel)]="layout"><span class="fas fa-th-list"></span>
+        </label>
+        <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='cards'}">
+          <input type="radio" name="layout" value="cards" [(ngModel)]="layout"><span class="fas fa-th"></span>
+        </label>
+        <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='pictures'}">
+          <input type="radio" name="layout" value="pictures" [(ngModel)]="layout"><span
+            class="fas fa-file-image"></span>
+        </label>
+      </div>
+    </div>
+
+
+  </div>
+</form>
+
+<div *ngIf="!isLoading">
+
+  <div *ngIf="layout == 'table'" class="list">
+    <div *ngFor="let yearObj of displayedData$ | async">
+      <h5 class="text-primary" (click)="collapsed[yearObj.year] = !collapsed[yearObj.year]">{{yearObj.year}}</h5>
+      <div [collapse]="collapsed[yearObj.year]" [isAnimated]="true" class="r-collapse-body">
+        <div *ngFor="let book of yearObj.books" class="text-secondary">
+          <span *ngIf="!grupped" class="r-order">{{book.totalOrder}}.</span>
+          <span *ngIf="grupped" class="r-order">{{book.yearOrder}}.</span>
+          <a [routerLink]="['/books', book.bookid]" class="r-title">{{book.title}}</a>
+          •
+          <span *ngFor="let author of book.authors; let isLast=last" class="r-author">
+            <a [routerLink]="['/authors', author.id]" class="text-success">{{author.lastName}}, {{author.firstName}}</a>
+            <span *ngIf="!isLast"> &amp; </span>
+          </span>
+          •
+          <span class="r-pages">{{book.pages}} str.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="layout == 'cards'">
+    <div *ngFor="let yearObj of displayedData$ | async">
+      <h5 class="text-primary" (click)="collapsed[yearObj.year] = !collapsed[yearObj.year]">{{yearObj.year}}</h5>
+      <div [collapse]="collapsed[yearObj.year]" [isAnimated]="true">
+
+        <div class="cards mr-n1 ml-n1">
+          <div class="card-wrapper" *ngFor="let book of yearObj.books">
+            <div class="card border m-1">
+              <div class="card-header text-center" [title]="book.title">
+                <a [routerLink]="['/books', book.id]">
+                  <span *ngIf="!grupped" class="r-order text-secondary">{{book.totalOrder}}.</span>
+                  <span *ngIf="grupped" class="r-order text-secondary">{{book.yearOrder}}.</span>
+                  {{book.title}}
+                </a>
+              </div>
+              <div class="card-body">
+                <div class="b-picture" [style]="getImageBackground(book)"></div>
+                <div class="b-authors">
+                  <span *ngFor="let author of book.authors; let isLast=last">
+                    <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a><span
+                      *ngIf="!isLast"> &amp; </span>
+                  </span>
+                </div>
+                <div class="b-pages">{{book.pages}} str.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="layout == 'pictures'">
+    <div *ngFor="let yearObj of displayedData$ | async">
+      <h5 class="text-primary" (click)="collapsed[yearObj.year] = !collapsed[yearObj.year]">{{yearObj.year}}</h5>
+      <div [collapse]="collapsed[yearObj.year]" [isAnimated]="true">
+        <div class="pictures">
+          <a *ngFor="let book of yearObj.books" [routerLink]="['/books', book.bookid]"
+            title="{{book.title}}&#013;Poradie v roku {{book.year}}: {{book.yearOrder}}&#013;Celkové poradie: {{book.totalOrder}}">
+            <div [style]="getImageBackground(book)"></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

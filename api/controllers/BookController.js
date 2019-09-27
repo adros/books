@@ -1,20 +1,13 @@
-/**
- * BookController
- *
- * @description :: Server-side actions for handling incoming requests.
- * @help        :: See https://sailsjs.com/docs/concepts/actions
- */
-
 const dataUri = require('datauri').promise;
 const _ = require('lodash');
 
-let controller = module.exports = {
+const controller = module.exports = {
 
   listExpanded: async function (req, res) {
     try {
       res.send(await controller._getBooks());
     } catch (e) {
-      res.status(500).send(`Connection error: ${e.message}`);
+      res.status(500).send(`Error: ${e.message}`);
     }
   },
 
@@ -22,14 +15,14 @@ let controller = module.exports = {
     try {
       res.send(await controller._getBooks(`WHERE a.id=$1`, [req.param('id')]));
     } catch (e) {
-      res.status(500).send(`Connection error: ${e.message}`);
+      res.status(500).send(`Error: ${e.message}`);
     }
   },
 
   _getBooks: async function (where, params) {
     const query = `SELECT b.id, b.title, b.original, b.pages, b.published, b.home, b.genre, b."pictureName",
                       json_agg((SELECT x FROM (SELECT r.year, r.id, r."totalOrder") AS x)) AS readings,
-                      json_agg((SELECT x FROM (SELECT a."firstName", a.id, a."lastName", ab.id as relId) AS x)) AS authors,
+                      json_agg((SELECT x FROM (SELECT a."firstName", a.id, a."lastName", ab.id as relid) AS x)) AS authors,
                       json_agg((SELECT x FROM (SELECT s."title", s.id) AS x)) AS series
                     FROM public.book b
                     LEFT JOIN public.reading r ON b.id = r.book
@@ -44,7 +37,7 @@ let controller = module.exports = {
       .rows
       .map((item, idx) => {
         if (item.authors.length > 1) {
-          item.authors = _.orderBy(_.uniqBy(item.authors, 'id'), 'relId');
+          item.authors = _.orderBy(_.uniqBy(item.authors, 'id'), 'relid');
         }
         if (item.readings.length > 1) {
           item.readings = _.orderBy(_.uniqBy(item.readings, 'id'), 'totalOrder');

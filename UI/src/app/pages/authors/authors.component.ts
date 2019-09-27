@@ -15,7 +15,7 @@ export class AuthorsComponent implements OnInit {
   constructor(private authorsService: AuthorsService) { }
 
   ngOnInit() {
-    this.data$ = this.authorsService.listAuthors('limit=5000').pipe(shareReplay());
+    this.data$ = this.authorsService.listAuthors().pipe(shareReplay());
   }
 
 }

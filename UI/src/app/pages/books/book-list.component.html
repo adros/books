@@ -32,14 +32,14 @@
     <div class="col-lg-2 col-md-3 col-sm-6">
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='table'}">
-          <input type="radio" name="layout" value="table" [(ngModel)]="layout"><span class="fa fa-th-list"></span>
+          <input type="radio" name="layout" value="table" [(ngModel)]="layout"><span class="fas fa-th-list"></span>
         </label>
         <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='cards'}">
-          <input type="radio" name="layout" value="cards" [(ngModel)]="layout"><span class="fa fa-th"></span>
+          <input type="radio" name="layout" value="cards" [(ngModel)]="layout"><span class="fas fa-th"></span>
         </label>
         <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='pictures'}">
           <input type="radio" name="layout" value="pictures" [(ngModel)]="layout"><span
-            class="fa fa-file-image-o"></span>
+            class="fas fa-file-image"></span>
         </label>
       </div>
     </div>
@@ -133,3 +133,4 @@
       <div [style]="getImageBackground(book)"></div>
     </a>
   </div>
+</div>

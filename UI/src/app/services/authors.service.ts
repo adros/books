@@ -19,7 +19,7 @@ export class AuthorsService {
   }
 
   public listAuthors(query?) {
-    return this.http.get(`${environment.baseUrl}/svc/author/${query ? `?${query}` : ''}`);
+    return this.http.get(`${environment.baseUrl}/svc/author/list/${query ? `?${query}` : ''}`);
   }
   public getImgUrl(id) {
     return `${environment.baseUrl}/svc/author/image/${id}`;

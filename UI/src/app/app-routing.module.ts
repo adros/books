@@ -5,6 +5,7 @@ import { BooksComponent } from './pages/books/books.component';
 import { BookComponent } from './pages/book/book.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AuthorComponent } from './pages/author/author.component';
+import { ReadingsComponent } from './pages/readings/readings.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'authors', component: AuthorsComponent },
   { path: 'authors/:id', component: AuthorComponent },
   { path: 'books', component: BooksComponent },
-  { path: 'books/:id', component: BookComponent }
+  { path: 'books/:id', component: BookComponent },
+  { path: 'readings', component: ReadingsComponent }
 ];
 @NgModule({
   imports: [

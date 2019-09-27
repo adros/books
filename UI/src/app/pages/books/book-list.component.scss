@@ -2,6 +2,10 @@
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
+.btn-group-toggle .fas {
+  font-size: 1rem;
+}
+
 table {
   font-size: 0.85rem;
 

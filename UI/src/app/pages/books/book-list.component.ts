@@ -180,8 +180,11 @@ export class BookListComponent implements OnInit, AfterViewInit {
     return '';
   }
 
-  public getImageBackground(id) {
-    return this.sanitizer.bypassSecurityTrustStyle(`background-image: url('${this.booksService.getImgUrl(id)}')`);
+  public getImageBackground(book) {
+    if (!book.pictureName) {
+      return this.sanitizer.bypassSecurityTrustStyle(`background-image: url('/assets/anonymous.jpg')`);
+    }
+    return this.sanitizer.bypassSecurityTrustStyle(`background-image: url('${this.booksService.getImgUrl(book.id)}')`);
   }
 
 }

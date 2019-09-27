@@ -13,6 +13,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { BookListComponent } from './pages/books/book-list.component';
 import { AuthorComponent } from './pages/author/author.component';
 import { AuthorListComponent } from './pages/authors/author-list.component';
+import { ReadingListComponent } from './pages/readings/reading-list.component';
+import { ReadingsComponent } from './pages/readings/readings.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 @NgModule({
   declarations: [
@@ -22,14 +27,18 @@ import { AuthorListComponent } from './pages/authors/author-list.component';
     BooksComponent,
     BookComponent,
     HomeComponent,
+    ReadingsComponent,
     BookListComponent,
-    AuthorListComponent
+    AuthorListComponent,
+    ReadingListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    CollapseModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

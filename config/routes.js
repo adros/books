@@ -27,6 +27,11 @@ module.exports.routes = {
     skipAssets: false
   },
 
+  'get /svc/author/list/': {
+    controller: 'author',
+    action: 'listExpanded'
+  },
+
   'get /svc/book/image/:id': {
     controller: 'book',
     action: 'getImage',
@@ -42,6 +47,12 @@ module.exports.routes = {
     controller: 'book',
     action: 'listExpandedByAuthor'
   },
+
+  'get /svc/reading/list/': {
+    controller: 'reading',
+    action: 'listExpanded'
+  },
+  
 
   /***************************************************************************
   *                                                                          *

@@ -26,14 +26,14 @@
     <div class="col-lg-2 col-md-3 col-sm-6">
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='table'}">
-          <input type="radio" name="layout" value="table" [(ngModel)]="layout"><span class="fa fa-th-list"></span>
+          <input type="radio" name="layout" value="table" [(ngModel)]="layout"><span class="fas fa-th-list"></span>
         </label>
         <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='cards'}">
-          <input type="radio" name="layout" value="cards" [(ngModel)]="layout"><span class="fa fa-th"></span>
+          <input type="radio" name="layout" value="cards" [(ngModel)]="layout"><span class="fas fa-th"></span>
         </label>
         <label class="btn btn-outline-primary btn-sm" [ngClass]="{active:layout=='pictures'}">
           <input type="radio" name="layout" value="pictures" [(ngModel)]="layout"><span
-            class="fa fa-file-image-o"></span>
+            class="fas fa-file-image"></span>
         </label>
       </div>
     </div>
@@ -55,7 +55,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let author of displayedData$ | async">
-        <td>{{author.lastName}}, {{author.firstName}}</td>
+        <td>
+          <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a>
+        </td>
         <td>
           <img *ngIf="author.nationality" src="/assets/flags/{{author.nationality | lowercase}}.png"
             [alt]="author.nationality" [title]="author.nationality">
@@ -77,27 +79,20 @@
       <div class="card-wrapper" *ngFor="let author of displayedData$ | async">
         <div class="card border m-1">
           <div class="card-header text-center" [title]="author.title">
-            <a [routerLink]="['/authors', author.id]">{{author.title}}</a>
+            <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a>
           </div>
           <div class="card-body">
-            <div class="b-picture" [style]="getImageBackground(author)"></div>
-            <div class="b-authors">
-              <span *ngFor="let author of author.authors; let isLast=last">
-                <a [routerLink]="['/authors', author.id]">{{author.lastName}}, {{author.firstName}}</a><span
-                  *ngIf="!isLast"> &amp; </span>
-              </span>
+            <div class="a-picture" [style]="getImageBackground(author)"></div>
+            <div class="a-nationality-books">
+              <img *ngIf="author.nationality" src="/assets/flags/{{author.nationality | lowercase}}.png"
+                [alt]="author.nationality" [title]="author.nationality">
+              <span title="Knihy v DB"><span class="fas fa-book"></span>{{author.booksInDb}}</span>
+              <span title="Prečítané knihy"><span class="fas fa-glasses"></span>{{author.readBooks}}</span>
+              <a class="fas fa-link" *ngIf="author.link" href="{{author.link}}"></a>
             </div>
-            <div class="b-original-piblished" *ngIf="author.published && author.original">
-              <span class="b-original" *ngIf="author.original">{{author.original}}</span>
-              <span *ngIf="author.published && author.original"> • </span>
-              <span class="b-published" *ngIf="author.published">{{author.published}}</span>
-            </div>
-            <div>{{author.genre}}</div>
-            <div class="b-readings">
-              <span *ngFor="let reading of author.readings; let isLast=last">
-                <a [routerLink]="['/readings', reading.id]"
-                  title="Poradie: {{reading.totalOrder}}">{{reading.year}}</a><span *ngIf="!isLast">, </span>
-              </span> • {{author.pages}} str.
+            <div class="a-dates">
+              {{author.dateOfBirth | date: 'd.M.yyyy'}}<span *ngIf="author.dateOfDeath"> -
+              </span>{{author.dateOfDeath | date: 'd.M.yyyy'}}
             </div>
           </div>
         </div>
@@ -110,3 +105,4 @@
       <div [style]="getImageBackground(author)"></div>
     </a>
   </div>
+</div>

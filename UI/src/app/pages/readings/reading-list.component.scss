@@ -6,40 +6,27 @@
   font-size: 1rem;
 }
 
-table {
-  font-size: 0.85rem;
-
-  td:nth-child(7), 
-  td:nth-child(8) {
-    width: 140px; // genre
-    white-space: nowrap;
-  }
+.grupped i{
+  width: 14px;
 }
 
-th {
-  cursor: pointer;
-  position: relative;
-  padding-right: 12px;
 
-  &:hover {
-    background: #dee2e6;
+
+.list{
+  h5 {
+    cursor: pointer;
   }
 
-  &:after {
-    content: " ";
+  .r-collapse-body{
+    padding-left: 45px;
+  }
+
+  .r-order {
     display: inline-block;
-    width: 8px;
-    white-space: pre;
-    position: absolute;
-    right: 2px;
-  }
-
-  &.asc:after {
-    content: "\2191";
-  }
-
-  &.desc:after {
-    content: "\2193";
+    width: 45px;
+    text-align: right;
+    margin-left: -45px;
+    padding-right: 0.25rem;
   }
 }
 
@@ -69,19 +56,12 @@ th {
         font-size: 0.85rem;
       }
 
-      img {
-       vertical-align: unset
-      }
-
-      .a-nationality-books {
-        .fas {
-          margin-left: 0.6rem;
-          margin-right: 0.2rem;
-          font-size: 0.85rem;
-        }
-        span.fas {
-          color:#545454;
-        } 
+      .b-picture {
+        width: 100%;
+        overflow: hidden;
+        padding-top: 150%;
+        background-size: 100% 100%;
+        margin-bottom: 0.35rem;
       }
     }
   }
