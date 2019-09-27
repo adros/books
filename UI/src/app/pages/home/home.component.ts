@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartDataSets } from 'chart.js';
-import { Label, Color } from 'ng2-charts';
+import { ChartDataSets, ChartOptions } from 'chart.js';
+import { Label, Color, BaseChartDirective } from 'ng2-charts';
 import { ReadingsService } from '../../services/readings.service';
 import { shareReplay, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { groupBy, sumBy, orderBy } from 'lodash-es';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import * as pluginAnnotation from 'chartjs-plugin-annotation';
 
 const defaultBarColor = 'rgba(23, 162, 184, 0.7)';
 const currentYearBarColor = 'rgba(0, 118, 138, 0.7)';
@@ -24,34 +26,53 @@ export class HomeComponent implements OnInit {
   public barChartData1$: Observable<ChartDataSets[]>;
   public barChartData2$: Observable<ChartDataSets[]>;
 
+  public plugins = [pluginDataLabels, pluginAnnotation];
+
+  public chartOpts1: ChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      datalabels: { anchor: 'end', color: 'white', offset: 0, align: 'left' },
+    },
+    scales: { xAxes: [{ ticks: { beginAtZero: true, suggestedMax: 50 } }] },
+  }
+
+  public chartOpts2: ChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      datalabels: { anchor: 'end', color: 'white', offset: 0, align: 'left' },
+    },
+    scales: { xAxes: [{ ticks: { beginAtZero: true } }] },
+  }
+
   constructor(private readingService: ReadingsService) { }
 
   ngOnInit() {
     const data$ = this.readingService.getStats().pipe(shareReplay());
 
-    const barChartData1All$ = data$.pipe(map((data: any[]) => {
-      return orderBy(Object.entries(groupBy(data, 'year')).map(([year, readings]) => [year, sumBy(readings, 'pages')]), '1').reverse();
-    }));
-    this.barChartLabels1$ = barChartData1All$.pipe(map((data: any[]) => data.map(([year, pages]) => year)));
-    this.barChartData1$ = barChartData1All$.pipe(map((data: any[]) => [{
-      data: data.map(([year, pages]) => pages),
-      backgroundColor: data.map(([year]) => year == currentYear ? currentYearBarColor : defaultBarColor),
-      hoverBackgroundColor: data.map(([year]) => (year == currentYear ? currentYearBarColor : defaultBarColor).replace('0.7', '0.8')),
-      hoverBorderColor: 'transparent'
-    }]));
-
-    const barChartData2All$ = data$.pipe(map((data: any[]) => {
+    const barChartData1All$ = data$.pipe(map((data) => {
       return orderBy(Object.entries(groupBy(data, 'year')).map(([year, readings]) => [year, (readings as any).length]), '1').reverse();
     }));
-    this.barChartLabels2$ = barChartData2All$.pipe(map((data: any[]) => data.map(([year, pages]) => year)));
-    this.barChartData2$ = barChartData2All$.pipe(map((data: any[]) => [{
-      data: data.map(([year, pages]) => pages),
-      backgroundColor: data.map(([year]) => year == currentYear ? currentYearBarColor : defaultBarColor),
-      hoverBackgroundColor: data.map(([year]) => (year == currentYear ? currentYearBarColor : defaultBarColor).replace('0.7', '0.8')),
-      hoverBorderColor: 'transparent'
-    }]));
+    this.barChartLabels1$ = barChartData1All$.pipe(map((data) => data.map(([year, pages]) => year)));
+    this.barChartData1$ = barChartData1All$.pipe(map(buildDataSets));
+
+    const barChartData2All$ = data$.pipe(map((data) => {
+      return orderBy(Object.entries(groupBy(data, 'year')).map(([year, readings]) => [year, sumBy(readings, 'pages')]), '1').reverse();
+    }));
+    this.barChartLabels2$ = barChartData2All$.pipe(map((data) => data.map(([year, pages]) => year)));
+    this.barChartData2$ = barChartData2All$.pipe(map(buildDataSets));
 
     data$.subscribe({ next: () => this.isLoading = false });
+
+    function buildDataSets(data: any[]): ChartDataSets[] {
+      return [{
+        data: data.map(([year, pages]) => pages),
+        backgroundColor: data.map(([year]) => year == currentYear ? currentYearBarColor : defaultBarColor),
+        hoverBackgroundColor: data.map(([year]) => (year == currentYear ? currentYearBarColor : defaultBarColor).replace('0.7', '0.8')),
+        hoverBorderColor: 'transparent'
+      }];
+    }
   }
 
 

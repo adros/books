@@ -1,19 +1,25 @@
 <div *ngIf="isLoading" class="d-flex justify-content-center">
     <div class="spinner-border m-5 text-primary" role="status"></div>
 </div>
-<div *ngIf="!isLoading" class="row">
+<div *ngIf="!isLoading" class="row mt-4">
     <div class="col-xl-6">
-        <div style="display: block">
-            <canvas baseChart [datasets]="barChartData1$ | async" [labels]="barChartLabels1$ | async" [options]="{}"
-                chartType="horizontalBar" [legend]="false">
-            </canvas>
+        <div class="card">
+            <div class="card-header">Prečítané Strany</div>
+            <div class="card-body" style="height: 500px;">
+                <canvas baseChart [datasets]="barChartData1$ | async" [labels]="barChartLabels1$ | async" [options]="chartOpts1"
+                    chartType="horizontalBar" [legend]="false" [plugins]="plugins" style="height: 500px;">
+                </canvas>
+            </div>
         </div>
     </div>
     <div class="col-xl-6">
-        <div style="display: block">
-            <canvas baseChart [datasets]="barChartData2$ | async" [labels]="barChartLabels2$ | async" [options]="{}"
-                chartType="horizontalBar" [legend]="false">
-            </canvas>
+        <div class="card">
+            <div class="card-header">Prečítané knihy</div>
+            <div class="card-body" style="height: 500px;">
+                <canvas baseChart [datasets]="barChartData2$ | async" [labels]="barChartLabels2$ | async" [options]="chartOpts2"
+                    chartType="horizontalBar" [legend]="false" [plugins]="plugins">
+                </canvas>
+            </div>
         </div>
     </div>
 </div>
