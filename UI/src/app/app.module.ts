@@ -19,6 +19,7 @@ import { ReadingsComponent } from './pages/readings/readings.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ChartsModule } from 'ng2-charts';
+import { GaugeChartModule } from 'angular-gauge-chart'
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ChartsModule } from 'ng2-charts';
     FormsModule,
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    GaugeChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]

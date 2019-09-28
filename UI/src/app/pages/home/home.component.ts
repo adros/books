@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label, Color, BaseChartDirective } from 'ng2-charts';
 import { ReadingsService } from '../../services/readings.service';
-import { shareReplay, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { shareReplay, map, filter, distinctUntilChanged, debounce, expand, delay, take, debounceTime, switchMap } from 'rxjs/operators';
+import { Observable, ReplaySubject, interval, of, empty } from 'rxjs';
 import { groupBy, sumBy, orderBy } from 'lodash-es';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import * as pluginAnnotation from 'chartjs-plugin-annotation';
@@ -27,6 +27,10 @@ export class HomeComponent implements OnInit {
   public barChartData2$: Observable<ChartDataSets[]>;
 
   public plugins = [pluginDataLabels, pluginAnnotation];
+  public size$: Observable<number>;
+
+  public isLeapYear = new Date(new Date().getFullYear(), 1, 29).getDate() === 29;
+  public dayOfYear = dayOfYear();
 
   public chartOpts1: ChartOptions = {
     responsive: true,
@@ -45,6 +49,10 @@ export class HomeComponent implements OnInit {
     },
     scales: { xAxes: [{ ticks: { beginAtZero: true } }] },
   }
+
+  @ViewChild('gauge1', { static: false }) gauge1: ElementRef;
+
+  ngAfterViewInit() { }
 
   constructor(private readingService: ReadingsService) { }
 
@@ -65,6 +73,19 @@ export class HomeComponent implements OnInit {
 
     data$.subscribe({ next: () => this.isLoading = false });
 
+    this.size$ = interval(100).pipe(
+      filter(() => !!this.gauge1),
+      map(() => Math.floor(this.gauge1.nativeElement.getBoundingClientRect().width - 30)),
+      distinctUntilChanged(),
+      debounceTime(50),
+      switchMap((val) => {
+        const arr = [0, val];
+        return interval(10).pipe(map(() => arr.shift()), take(2));
+      })
+    );
+
+    this.size$.subscribe({ next: (val) => console.log('size', val) });
+
     function buildDataSets(data: any[]): ChartDataSets[] {
       return [{
         data: data.map(([year, pages]) => pages),
@@ -76,4 +97,13 @@ export class HomeComponent implements OnInit {
   }
 
 
+}
+
+
+function dayOfYear() {
+  var now = new Date();
+  var start = new Date(now.getFullYear(), 0, 0);
+  var diff = (now as any) - (start as any);
+  var oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diff / oneDay);
 }

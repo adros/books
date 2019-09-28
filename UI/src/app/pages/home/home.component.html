@@ -1,24 +1,77 @@
 <div *ngIf="isLoading" class="d-flex justify-content-center">
     <div class="spinner-border m-5 text-primary" role="status"></div>
 </div>
-<div *ngIf="!isLoading" class="row mt-4">
-    <div class="col-xl-6">
-        <div class="card">
-            <div class="card-header">Prečítané Strany</div>
-            <div class="card-body" style="height: 500px;">
-                <canvas baseChart [datasets]="barChartData1$ | async" [labels]="barChartLabels1$ | async" [options]="chartOpts1"
-                    chartType="horizontalBar" [legend]="false" [plugins]="plugins" style="height: 500px;">
-                </canvas>
+
+<div *ngIf="!isLoading">
+    <div class="row mt-3">
+        <div class="col-md-6 col-xl-3">
+            <div class="card">
+                <div class="card-header">Prečítané Strany</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6" #gauge1>
+                            <div *ngIf="size$ | async as size">
+                                <rg-gauge-chart [canvasWidth]="size" [needleValue]="2" [centralLabel]="dayOfYear + ''" [options]="{
+                                    arcColors: ['rgb(44, 151, 222)', 'lightgray'],
+                                    arcDelimiters: [dayOfYear / (isLeapYear ? 366 : 365) * 100],
+                                    rangeLabel: ['1', isLeapYear ? '366' : '365']
+                                }" [name]="'Dni v roku'">
+                                </rg-gauge-chart>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div *ngIf="size$ | async as size">
+                                <rg-gauge-chart [canvasWidth]="size" [needleValue]="2" [centralLabel]="'xxx'" [options]="{
+                                    arcColors: ['rgb(44, 151, 222)', 'lightgray'],
+                                    arcDelimiters: [100/150*100],
+                                    rangeLabel: ['1', '365']
+                                }" [name]="'Dni v roku'">
+                                </rg-gauge-chart>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card">
+                <div class="card-header">Prečítané Strany</div>
+                <div class="card-body"></div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card">
+                <div class="card-header">Prečítané Strany</div>
+                <div class="card-body"></div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card">
+                <div class="card-header">Prečítané Strany</div>
+                <div class="card-body"></div>
             </div>
         </div>
     </div>
-    <div class="col-xl-6">
-        <div class="card">
-            <div class="card-header">Prečítané knihy</div>
-            <div class="card-body" style="height: 500px;">
-                <canvas baseChart [datasets]="barChartData2$ | async" [labels]="barChartLabels2$ | async" [options]="chartOpts2"
-                    chartType="horizontalBar" [legend]="false" [plugins]="plugins">
-                </canvas>
+    <div class="row mt-3">
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-header">Prečítané Strany</div>
+                <div class="card-body" style="height: 500px;">
+                    <canvas baseChart [datasets]="barChartData1$ | async" [labels]="barChartLabels1$ | async"
+                        [options]="chartOpts1" chartType="horizontalBar" [legend]="false" [plugins]="plugins"
+                        style="height: 500px;">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-header">Prečítané knihy</div>
+                <div class="card-body" style="height: 500px;">
+                    <canvas baseChart [datasets]="barChartData2$ | async" [labels]="barChartLabels2$ | async"
+                        [options]="chartOpts2" chartType="horizontalBar" [legend]="false" [plugins]="plugins">
+                    </canvas>
+                </div>
             </div>
         </div>
     </div>
