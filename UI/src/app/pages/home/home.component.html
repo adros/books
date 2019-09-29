@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="!isLoading">
-    <div class="row mt-3">
+    <div class="row mt-3 top-bar">
         <div class="col-md-6 col-xl-3">
             <div class="card">
                 <div class="card-header">Prečítané Strany</div>
@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col-6" #gauge1>
                             <div *ngIf="size$ | async as size">
-                                <rg-gauge-chart [canvasWidth]="size" [needleValue]="2" [centralLabel]="dayOfYear + ''" [options]="{
+                                <rg-gauge-chart [canvasWidth]="size" [needleValue]="0" [centralLabel]="dayOfYear + ''" [options]="{
                                     arcColors: ['rgb(44, 151, 222)', 'lightgray'],
                                     arcDelimiters: [dayOfYear / (isLeapYear ? 366 : 365) * 100],
                                     rangeLabel: ['1', isLeapYear ? '366' : '365']
@@ -21,9 +21,9 @@
                         </div>
                         <div class="col-6">
                             <div *ngIf="size$ | async as size">
-                                <rg-gauge-chart [canvasWidth]="size" [needleValue]="2" [centralLabel]="'xxx'" [options]="{
+                                <rg-gauge-chart [canvasWidth]="size" [needleValue]="0" [centralLabel]="'xxx'" [options]="{
                                     arcColors: ['rgb(44, 151, 222)', 'lightgray'],
-                                    arcDelimiters: [100/150*100],
+                                    arcDelimiters: [],
                                     rangeLabel: ['1', '365']
                                 }" [name]="'Dni v roku'">
                                 </rg-gauge-chart>

@@ -5,3 +5,7 @@
 .card-body{
     padding: 0.3rem;
 }
+
+.top-bar .card{
+    height:100%
+}

@@ -57,6 +57,7 @@ export class HomeComponent implements OnInit {
   constructor(private readingService: ReadingsService) { }
 
   ngOnInit() {
+    // todo extract to service - all this countings
     const data$ = this.readingService.getStats().pipe(shareReplay());
 
     const barChartData1All$ = data$.pipe(map((data) => {
@@ -77,14 +78,11 @@ export class HomeComponent implements OnInit {
       filter(() => !!this.gauge1),
       map(() => Math.floor(this.gauge1.nativeElement.getBoundingClientRect().width - 30)),
       distinctUntilChanged(),
-      debounceTime(50),
       switchMap((val) => {
         const arr = [0, val];
-        return interval(10).pipe(map(() => arr.shift()), take(2));
+        return interval(0).pipe(map(() => arr.shift()), take(2));
       })
     );
-
-    this.size$.subscribe({ next: (val) => console.log('size', val) });
 
     function buildDataSets(data: any[]): ChartDataSets[] {
       return [{
