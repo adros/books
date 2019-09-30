@@ -131,12 +131,12 @@ function getAuthorImage(imgName) {
 
 function getBookImage(imgName) {
   const imgPath = path.join(__dirname, `../_import/books/${imgName}`)
-    .replace('Stratený', 'Strateny')
-    .replace('Gróf', 'Grвf')
-    .replace('Jožo Ráž - Návrat', 'Jozo Rаz - Nаvrat')
-    .replace('Neodovzdaný list', 'Neodovzdany list')
-    .replace('Víchor na Jamaike', 'Vбchor na Jamaike')
-    .replace('Alexander Veľký', 'Alexander Velky');
+     .replace('Stratený', 'Strateny')
+    // .replace('Gróf', 'Grвf')
+     .replace('Jožo Ráž - Návrat', 'Jozo Ráz - Návrat')
+     .replace('Neodovzdaný list', 'Neodovzdany list')
+    // .replace('Víchor na Jamaike', 'Vбchor na Jamaike')
+     .replace('Alexander Veľký', 'Alexander Velky');
 
 
   if (!fs.existsSync(imgPath)) {
