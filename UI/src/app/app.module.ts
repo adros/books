@@ -18,8 +18,10 @@ import { ReadingsComponent } from './pages/readings/readings.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ChartsModule } from 'ng2-charts';
 import { GaugeChartModule } from 'angular-gauge-chart'
+import { ValComponent } from './pages/home/val.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { GaugeChartModule } from 'angular-gauge-chart'
     ReadingsComponent,
     BookListComponent,
     AuthorListComponent,
-    ReadingListComponent
+    ReadingListComponent,
+    ValComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ import { GaugeChartModule } from 'angular-gauge-chart'
     FormsModule,
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
+    BsDropdownModule.forRoot(),
     ChartsModule,
     GaugeChartModule
   ],

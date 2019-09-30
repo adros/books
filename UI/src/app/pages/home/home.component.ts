@@ -6,16 +6,17 @@ import { shareReplay, map, filter, distinctUntilChanged, take, switchMap } from 
 import { Observable, interval, combineLatest } from 'rxjs';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import * as pluginAnnotation from 'chartjs-plugin-annotation';
+import { maxBy, meanBy, findIndex } from 'lodash-es';
 
 const DEFAULT_BAR_COLOR = 'rgba(23, 162, 184, 0.7)';
 const CURRENT_YEAR_BAR_COLOR = 'rgba(0, 118, 138, 0.7)';
 const CURRENT_YEAR = new Date().getFullYear();
-const PAGES_PER_DAY = 30;
+const PLANNED_PAGES_PER_DAY = 30;
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
 
@@ -32,6 +33,7 @@ export class HomeComponent implements OnInit {
   public plugins = [pluginDataLabels, pluginAnnotation];
 
   public gauges$: Observable<Array<{ name: string, label: string, opts: any; size: number }>>
+  public readStats$: Observable<any>;
 
   @ViewChild('gauge', { static: false }) gauge: ElementRef;
 
@@ -53,8 +55,8 @@ export class HomeComponent implements OnInit {
 
     stats$.subscribe({ next: () => this.isLoading = false });
 
-
     this.initGauges(stats$);
+    this.initReadStats(stats$);
 
   }
   private initGauges(stats$: Observable<IStats>) {
@@ -69,10 +71,10 @@ export class HomeComponent implements OnInit {
       const perDayToEndOfYear = pagesCurrentYear / (isLeapYear ? 366 : 365);
       const perDayToEndOfYearPerc = perDayToEndOfYear / 30;
 
-      const planToToday = dayOfYear * PAGES_PER_DAY;
+      const planToToday = dayOfYear * PLANNED_PAGES_PER_DAY;
       const planToTodayPerc = pagesCurrentYear / planToToday;
 
-      const planToEndOfYear = (isLeapYear ? 366 : 365) * PAGES_PER_DAY;
+      const planToEndOfYear = (isLeapYear ? 366 : 365) * PLANNED_PAGES_PER_DAY;
       const planToEndOfYearPerc = pagesCurrentYear / planToEndOfYear;
 
       return [
@@ -146,14 +148,46 @@ export class HomeComponent implements OnInit {
         return val.toLocaleString('sk', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
       }
     });
-    /*
-  plnenie planu 30*365
-  plnene planu 30*365/den
-  plan k aktualnemu dnu a ku koncu roka
-  plus-minus dni
-  plus-minus stran
-  
-    */
+  }
+
+  private initReadStats(stats$: Observable<IStats>) {
+    const { dayOfYear, year } = this.readingService;
+    this.readStats$ = stats$.pipe(map(({ pagesCurrentYear, booksCurrentYear, booksByYear, pagesByYear }) => {
+      const booksByYearExceptThis = booksByYear.filter(([itemYear]) => year != itemYear);
+      const pagesByYearExceptThis = pagesByYear.filter(([itemYear]) => year != itemYear);
+
+      const avgPages = Math.round(meanBy(pagesByYearExceptThis, 1));
+      const avgBooks = Math.round(meanBy(booksByYearExceptThis, 1));
+      const maxPages = maxBy(pagesByYearExceptThis, 1)[1];
+      const maxBooks = maxBy(booksByYearExceptThis, 1)[1];
+
+      const planPagesDiff = pagesCurrentYear - PLANNED_PAGES_PER_DAY * dayOfYear
+      const avgPagesDiff = pagesCurrentYear - avgPages;
+      const avgBooksDiff = booksCurrentYear - avgBooks;
+      const maxPagesDiff = pagesCurrentYear - maxPages;
+      const maxBooksDiff = booksCurrentYear - maxBooks;
+      const currentPagesOrder = findIndex(pagesByYear, ['0', year]) + 1;
+      const currentBooksOrder = findIndex(booksByYear, ['0', year]) + 1;
+
+
+
+      return {
+        planPagesDiff,
+        planDayDiff: Math.floor(planPagesDiff / PLANNED_PAGES_PER_DAY),
+        avgPagesDiff,
+        avgBooksDiff,
+        maxPagesDiff,
+        maxBooksDiff,
+        currentPagesOrder,
+        currentBooksOrder,
+        pagesCurrentYear,
+        booksCurrentYear,
+        avgPages,
+        avgBooks,
+        maxPages,
+        maxBooks
+      };
+    }));
   }
 
   private getGaugeSize(): Observable<number> {
