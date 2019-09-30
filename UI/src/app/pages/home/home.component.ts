@@ -40,8 +40,8 @@ export class HomeComponent implements OnInit {
   ngAfterViewInit() { }
 
   constructor(public readingService: ReadingsService) {
-    this.booksByYearOpts = this.getChartOptions();
-    this.pagesByYearOpts = this.getChartOptions(50);
+    this.booksByYearOpts = this.getChartOptions(50);
+    this.pagesByYearOpts = this.getChartOptions();
   }
 
   ngOnInit() {

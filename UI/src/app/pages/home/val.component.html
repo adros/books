@@ -1,0 +1,5 @@
+<span [ngClass]="{'text-success': value > 0, 'text-danger': value < 0}">
+    {{ abs(value) }}
+    <b *ngIf="value > 0" class="fas fa-long-arrow-alt-up"></b>
+    <b *ngIf="value < 0" class="fas fa-long-arrow-alt-down"></b>
+</span>

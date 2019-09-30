@@ -2,9 +2,9 @@
     <div class="spinner-border m-5 text-primary" role="status"></div>
 </div>
 
-<div *ngIf="!isLoading">
-    <div class="row top-bar">
-        <div class="col-xl-6 mt-3">
+<div *ngIf="!isLoading" class="pt-2 pb-2">
+    <div class="row top-bar mr-n2 ml-n2">
+        <div class="col-xl-6 mt-2 mb-2 pr-2 pl-2">
             <div class="card">
                 <div class="card-header">Plnenie plánu "30 strán na deň"
                     <div class="float-right"> deň {{readingService.dayOfYear}} /
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-xl-3 mt-3">
+        <div class="col-md-6 col-xl-3 mt-2 mb-2 pr-2 pl-2">
             <div class="card stats">
                 <div class="card-header">Štatistiky
                     <div class="float-right" *ngIf="readStats$ | async as readStats">
@@ -98,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-xl-3 d-none d-md-block mt-3">
+        <div class="col-md-6 col-xl-3 d-none d-md-block mt-2 mb-2 pr-2 pl-2">
             <div class="card add-new">
                 <div class="card-header">Pridať</div>
                 <div class="card-body">
@@ -118,8 +118,8 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xl-6 mt-3">
+    <div class="row mr-n2 ml-n2">
+        <div class="col-xl-6 mt-2 mb-2 pr-2 pl-2">
             <div class="card">
                 <div class="card-header">Prečítané Strany</div>
                 <div class="card-body" style="height: 500px;">
@@ -129,7 +129,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-6 mt-3">
+        <div class="col-xl-6 mt-2 mb-2 pr-2 pl-2">
             <div class="card">
                 <div class="card-header">Prečítané knihy</div>
                 <div class="card-body" style="height: 500px;">

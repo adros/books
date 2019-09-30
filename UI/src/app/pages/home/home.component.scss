@@ -1,0 +1,54 @@
+.card-header {
+  padding: 0.5rem;
+}
+
+.card-body {
+  padding: 0.3rem;
+}
+
+.top-bar .card {
+  height: 100%;
+}
+
+.add-new a {
+  width: calc(50% - 0.6rem);
+  height: calc(50% - 0.6rem);
+  margin: 0.3rem;
+
+  &:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+}
+
+.stats {
+  .card-body {
+    font-size: 12px;
+
+    .stats-row {
+      margin: -0.2rem -0.2rem;
+      height: calc(100% + 0.2rem);
+        
+      & > * {
+        height: calc(100% + 0.2rem);
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .row:not(.stats-row) {
+      flex: 1;
+      width: calc(100% - 0.2rem);
+      margin: 0.1rem;
+
+      & > * {
+        padding: 1px 3px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
+    }
+  }
+}

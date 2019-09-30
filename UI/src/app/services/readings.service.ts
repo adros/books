@@ -17,6 +17,8 @@ export interface IStats {
 })
 export class ReadingsService {
 
+  // TODO: reset stats on new reading
+
   private stats$: Observable<any>;
   public isLeapYear: boolean;
   public dayOfYear: number;
