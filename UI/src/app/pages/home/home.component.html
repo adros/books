@@ -6,46 +6,39 @@
     <div class="row mt-3 top-bar">
         <div class="col-xl-6">
             <div class="card">
-                <div class="card-header">Prečítané Strany</div>
+                <div class="card-header">Plnenie plánu "30 strán na deň" (deň {{readingService.dayOfYear}} /
+                    {{readingService.isLeapYear ? 366 : 365}})</div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6 col-md-3" #gauge1>
-                            <div *ngIf="size$ | async as size">
-                                <rg-gauge-chart [canvasWidth]="size" [needleValue]="0" [centralLabel]="dayOfYear + ''" [options]="{
-                                    arcColors: ['rgba(23, 162, 184, 0.7)', 'lightgray'],
-                                    arcDelimiters: [dayOfYear / (isLeapYear ? 366 : 365) * 100],
-                                    rangeLabel: ['1', isLeapYear ? '366' : '365']
-                                }" [name]="'Dni v roku'">
+                        <div class="col-6 col-md-3" #gauge>
+                            <div *ngIf="gauges$ | async as gauges">
+                                <rg-gauge-chart [canvasWidth]="gauges[0].size" [needleValue]="0"
+                                    [centralLabel]="gauges[0].label" [options]="gauges[0].opts" [name]="gauges[0].name"
+                                    [nameFont]="14">
+                                </rg-gauge-chart>
+                            </div>
+                        </div>
+                        <div class=" col-6 col-md-3">
+                            <div *ngIf="gauges$ | async as gauges">
+                                <rg-gauge-chart [canvasWidth]="gauges[1].size" [needleValue]="0"
+                                    [centralLabel]="gauges[1].label" [options]="gauges[1].opts" [name]="gauges[1].name"
+                                    [nameFont]="14">
                                 </rg-gauge-chart>
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
-                            <div *ngIf="size$ | async as size">
-                                <rg-gauge-chart [canvasWidth]="size" [needleValue]="0" [centralLabel]="'xxx'" [options]="{
-                                    arcColors: ['rgba(23, 162, 184, 0.7)', 'lightgray'],
-                                    arcDelimiters: [],
-                                    rangeLabel: ['1', '365']
-                                }" [name]="'Dni v roku'">
+                            <div *ngIf="gauges$ | async as gauges">
+                                <rg-gauge-chart [canvasWidth]="gauges[2].size" [needleValue]="0"
+                                    [centralLabel]="gauges[2].label" [options]="gauges[2].opts" [name]="gauges[2].name"
+                                    [nameFont]="14">
                                 </rg-gauge-chart>
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
-                            <div *ngIf="size$ | async as size">
-                                <rg-gauge-chart [canvasWidth]="size" [needleValue]="0" [centralLabel]="'xxx'" [options]="{
-                                    arcColors: ['rgba(23, 162, 184, 0.7)', 'lightgray'],
-                                    arcDelimiters: [],
-                                    rangeLabel: ['1', '365']
-                                }" [name]="'Dni v roku'">
-                                </rg-gauge-chart>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div *ngIf="size$ | async as size">
-                                <rg-gauge-chart [canvasWidth]="size" [needleValue]="0" [centralLabel]="'xxx'" [options]="{
-                                    arcColors: ['rgba(23, 162, 184, 0.7)', 'lightgray'],
-                                    arcDelimiters: [],
-                                    rangeLabel: ['1', '365']
-                                }" [name]="'Dni v roku'">
+                            <div *ngIf="gauges$ | async as gauges">
+                                <rg-gauge-chart [canvasWidth]="gauges[3].size" [needleValue]="0"
+                                    [centralLabel]="gauges[3].label" [options]="gauges[3].opts" [name]="gauges[3].name"
+                                    [nameFont]="14">
                                 </rg-gauge-chart>
                             </div>
                         </div>
@@ -71,9 +64,8 @@
             <div class="card">
                 <div class="card-header">Prečítané Strany</div>
                 <div class="card-body" style="height: 500px;">
-                    <canvas baseChart [datasets]="barChartData1$ | async" [labels]="barChartLabels1$ | async"
-                        [options]="chartOpts1" chartType="horizontalBar" [legend]="false" [plugins]="plugins"
-                        style="height: 500px;">
+                    <canvas baseChart [datasets]="pagesByYearData$ | async" [labels]="pagesByYearLabels$ | async"
+                        [options]="pagesByYearOpts" chartType="horizontalBar" [legend]="false" [plugins]="plugins">
                     </canvas>
                 </div>
             </div>
@@ -82,8 +74,8 @@
             <div class="card">
                 <div class="card-header">Prečítané knihy</div>
                 <div class="card-body" style="height: 500px;">
-                    <canvas baseChart [datasets]="barChartData2$ | async" [labels]="barChartLabels2$ | async"
-                        [options]="chartOpts2" chartType="horizontalBar" [legend]="false" [plugins]="plugins">
+                    <canvas baseChart [datasets]="booksByYearData$ | async" [labels]="booksByYearLabels$ | async"
+                        [options]="booksByYearOpts" chartType="horizontalBar" [legend]="false" [plugins]="plugins">
                     </canvas>
                 </div>
             </div>
