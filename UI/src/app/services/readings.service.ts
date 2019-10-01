@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, combineLatest, Subject, BehaviorSubject } from 'rxjs';
 import { shareReplay, map, switchMapTo } from 'rxjs/operators';
-import { groupBy, sumBy, orderBy } from 'lodash-es';
+import { groupBy, sumBy, orderBy, maxBy } from 'lodash-es';
 
 export interface IStats {
   booksByYear: Array<[number, number]>;
@@ -11,6 +11,9 @@ export interface IStats {
   booksCurrentYear: number;
   pagesCurrentYear: number;
   lastBookPages: number;
+  currentYear: number;
+  isLeapYear: boolean;
+  dayOfYear: number;
 };
 
 @Injectable({
@@ -22,15 +25,8 @@ export class ReadingsService {
 
   private stats$: Observable<any>;
   private loadStats$: Subject<any>;
-  public isLeapYear: boolean;
-  public dayOfYear: number;
-  public year: number;
 
-  constructor(private http: HttpClient) {
-    this.isLeapYear = new Date(new Date().getFullYear(), 1, 29).getDate() === 29;
-    this.dayOfYear = dayOfYear();
-    this.year = new Date().getFullYear();
-  }
+  constructor(private http: HttpClient) { }
 
   public listReadings() {
     return this.http.get(`${environment.baseUrl}/svc/reading/list/`);
@@ -42,6 +38,8 @@ export class ReadingsService {
       this.stats$ = this.loadStats$.pipe(
         switchMapTo(this.http.get(`${environment.baseUrl}/svc/reading/stats/`)),
         shareReplay()
+        // simulation of new year
+        // map((data: any[]) => data.filter(({ year }) => year != 2019))
       );
     }
     return this.stats$;
@@ -60,18 +58,27 @@ export class ReadingsService {
       return orderBy(Object.entries(groupBy(data, 'year')).map(([year, readings]) => [+year, sumBy(readings, 'pages')]), '1').reverse();
     }));
 
-    return combineLatest<IStats>(booksByYear$, pagesByYear$, statsData$, (booksByYear, pagesByYear, statsData) => ({
-      booksByYear,
-      pagesByYear,
-      booksCurrentYear: (booksByYear.find(([year]) => year == this.year) || [0, 0])[1],
-      pagesCurrentYear: (pagesByYear.find(([year]) => year == this.year) || [0, 0])[1],
-      pagesYearTarget: 30 * (this.isLeapYear ? 366 : 366),
-      lastBookPages: statsData.slice(0).pop().pages
-    }));
+    return combineLatest<IStats>(booksByYear$, pagesByYear$, statsData$, (booksByYear, pagesByYear, statsData) => {
+      const currentYear = maxBy(booksByYear, 0)[0];
+      const isLeapYear = new Date(currentYear, 1, 29).getDate() === 29;
+      const dayOfYear = currentYear == new Date().getFullYear() ? getDayOfCurrentYear() : (isLeapYear ? 366 : 365);
+
+      return {
+        booksByYear,
+        pagesByYear,
+        booksCurrentYear: (booksByYear.find(([year]) => year == currentYear) || [0, 0])[1],
+        pagesCurrentYear: (pagesByYear.find(([year]) => year == currentYear) || [0, 0])[1],
+        pagesYearTarget: 30 * (isLeapYear ? 366 : 366),
+        lastBookPages: statsData.slice(0).pop().pages,
+        currentYear,
+        isLeapYear,
+        dayOfYear
+      };
+    });
   }
 }
 
-function dayOfYear() {
+function getDayOfCurrentYear() {
   var now = new Date();
   var start = new Date(now.getFullYear(), 0, 0);
   var diff = (now as any) - (start as any);

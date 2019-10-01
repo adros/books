@@ -3,14 +3,13 @@ import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { ReadingsService, IStats } from '../../services/readings.service';
 import { shareReplay, map, filter, distinctUntilChanged, take, switchMap } from 'rxjs/operators';
-import { Observable, interval, combineLatest } from 'rxjs';
+import { Observable, interval, combineLatest, BehaviorSubject } from 'rxjs';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import * as pluginAnnotation from 'chartjs-plugin-annotation';
 import { maxBy, meanBy, findIndex } from 'lodash-es';
 
 const DEFAULT_BAR_COLOR = 'rgba(23, 162, 184, 0.7)';
 const CURRENT_YEAR_BAR_COLOR = 'rgba(0, 118, 138, 0.7)';
-const CURRENT_YEAR = new Date().getFullYear();
 const PLANNED_PAGES_PER_DAY = 30;
 
 @Component({
@@ -32,26 +31,47 @@ export class HomeComponent implements OnInit {
 
   public plugins = [pluginDataLabels, pluginAnnotation];
 
+  public isStatsHistory$ = new BehaviorSubject(false);
+
   public gauges$: Observable<Array<{ name: string, label: string, opts: any; size: number }>>
   public readStats$: Observable<any>;
+  public statsData$: Observable<IStats>;
 
-  @ViewChild('gauge', { static: false }) gauge: ElementRef;
+  @ViewChild('gauge', { static: false })
+  private gauge: ElementRef;
 
-  ngAfterViewInit() { }
 
   constructor(public readingService: ReadingsService) {
     this.booksByYearOpts = this.getChartOptions(50);
     this.pagesByYearOpts = this.getChartOptions();
   }
 
-  ngOnInit() {
-    const stats$ = this.readingService.getStats().pipe(shareReplay());
+  public ngOnInit() {
+    const stats$ = this.statsData$ = this.isStatsHistory$.pipe(
+      switchMap((isStatsHistory) => this.readingService.getStats().pipe(
+        map<IStats, IStats>((stats) => {
+          if (!isStatsHistory) {
+            return stats;
+          }
+          return {
+            ...stats,
+            booksCurrentYear: stats.booksCurrentYear - 1,
+            pagesCurrentYear: stats.pagesCurrentYear - stats.lastBookPages,
+            booksByYear: stats.booksByYear.map(([year, val]) => [year, year == stats.currentYear ? val - 1 : val]),
+            pagesByYear: stats.pagesByYear.map(([year, val]) => [year, year == stats.currentYear ? val - stats.lastBookPages : val])
+          }
+        }),
+        shareReplay()
+      ))
+    );
+
+
 
     this.booksByYearLabels$ = stats$.pipe(map(({ booksByYear }) => booksByYear.map(([year], i) => `[${i + 1}.]   ${year}`)));
-    this.booksByYearData$ = stats$.pipe(map(({ booksByYear }) => this.buildChartDataSet(booksByYear)));
+    this.booksByYearData$ = stats$.pipe(map(({ booksByYear, currentYear }) => this.buildChartDataSet(booksByYear, currentYear)));
 
     this.pagesByYearLabels$ = stats$.pipe(map(({ pagesByYear }) => pagesByYear.map(([year], i) => `[${i + 1}.]   ${year}`)));
-    this.pagesByYearData$ = stats$.pipe(map(({ pagesByYear }) => this.buildChartDataSet(pagesByYear)));
+    this.pagesByYearData$ = stats$.pipe(map(({ pagesByYear, currentYear }) => this.buildChartDataSet(pagesByYear, currentYear)));
 
     stats$.subscribe({ next: () => this.isLoading = false });
 
@@ -59,11 +79,15 @@ export class HomeComponent implements OnInit {
     this.initReadStats(stats$);
 
   }
+
+  public toggleStatsHistory() {
+    this.isStatsHistory$.next(!this.isStatsHistory$.value);
+  }
+
   private initGauges(stats$: Observable<IStats>) {
-    const { dayOfYear, isLeapYear } = this.readingService
     const size$ = this.getGaugeSize();
 
-    this.gauges$ = combineLatest(stats$, size$, ({ pagesCurrentYear }, size) => {
+    this.gauges$ = combineLatest(stats$, size$, ({ pagesCurrentYear, isLeapYear, dayOfYear }, size) => {
 
       const perDayToToday = pagesCurrentYear / dayOfYear;
       const perDayToTodayPerc = perDayToToday / 30;
@@ -135,7 +159,7 @@ export class HomeComponent implements OnInit {
             arcLabels: [perc(dayOfYear / (isLeapYear ? 366 : 365))],
             arcLabelFontSize: 12,
             arcDelimiters: [Math.round(dayOfYear / (isLeapYear ? 366 : 365) * 100)],
-            rangeLabel: ['1', isLeapYear ? '366' : '365']
+            rangeLabel: ['1', isLeapYemaxByar ? '366' : '365']
           }
         }*/
       ];
@@ -151,10 +175,10 @@ export class HomeComponent implements OnInit {
   }
 
   private initReadStats(stats$: Observable<IStats>) {
-    const { dayOfYear, year } = this.readingService;
-    this.readStats$ = stats$.pipe(map(({ pagesCurrentYear, booksCurrentYear, booksByYear, pagesByYear }) => {
-      const booksByYearExceptThis = booksByYear.filter(([itemYear]) => year != itemYear);
-      const pagesByYearExceptThis = pagesByYear.filter(([itemYear]) => year != itemYear);
+    this.readStats$ = stats$.pipe(map(({ pagesCurrentYear, booksCurrentYear, booksByYear, pagesByYear, currentYear, dayOfYear }) => {
+
+      const booksByYearExceptThis = booksByYear.filter(([itemYear]) => currentYear != itemYear);
+      const pagesByYearExceptThis = pagesByYear.filter(([itemYear]) => currentYear != itemYear);
 
       const avgPages = Math.round(meanBy(pagesByYearExceptThis, 1));
       const avgBooks = Math.round(meanBy(booksByYearExceptThis, 1));
@@ -166,26 +190,15 @@ export class HomeComponent implements OnInit {
       const avgBooksDiff = booksCurrentYear - avgBooks;
       const maxPagesDiff = pagesCurrentYear - maxPages;
       const maxBooksDiff = booksCurrentYear - maxBooks;
-      const currentPagesOrder = findIndex(pagesByYear, ['0', year]) + 1;
-      const currentBooksOrder = findIndex(booksByYear, ['0', year]) + 1;
-
-
+      const currentPagesOrder = findIndex(pagesByYear, ['0', currentYear]) + 1;
+      const currentBooksOrder = findIndex(booksByYear, ['0', currentYear]) + 1;
 
       return {
         planPagesDiff,
         planDayDiff: Math.floor(planPagesDiff / PLANNED_PAGES_PER_DAY),
-        avgPagesDiff,
-        avgBooksDiff,
-        maxPagesDiff,
-        maxBooksDiff,
-        currentPagesOrder,
-        currentBooksOrder,
-        pagesCurrentYear,
-        booksCurrentYear,
-        avgPages,
-        avgBooks,
-        maxPages,
-        maxBooks
+        avgPagesDiff, avgBooksDiff, maxPagesDiff, maxBooksDiff,
+        currentPagesOrder, currentBooksOrder, pagesCurrentYear, booksCurrentYear,
+        avgPages, avgBooks, maxPages, maxBooks
       };
     }));
   }
@@ -202,11 +215,11 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  private buildChartDataSet(data: [number, number][]): ChartDataSets[] {
+  private buildChartDataSet(data: [number, number][], currentYear: number): ChartDataSets[] {
     return [{
       data: data.map(([year, value]) => value),
-      backgroundColor: data.map(([year]) => year == CURRENT_YEAR ? CURRENT_YEAR_BAR_COLOR : DEFAULT_BAR_COLOR),
-      hoverBackgroundColor: data.map(([year]) => (year == CURRENT_YEAR ? CURRENT_YEAR_BAR_COLOR : DEFAULT_BAR_COLOR).replace('0.7', '0.8')),
+      backgroundColor: data.map(([year]) => year == currentYear ? CURRENT_YEAR_BAR_COLOR : DEFAULT_BAR_COLOR),
+      hoverBackgroundColor: data.map(([year]) => (year == currentYear ? CURRENT_YEAR_BAR_COLOR : DEFAULT_BAR_COLOR).replace('0.7', '0.8')),
       hoverBorderColor: 'transparent'
     }];
   }

@@ -7,8 +7,8 @@
         <div class="col-xl-6 mt-2 mb-2 pr-2 pl-2">
             <div class="card">
                 <div class="card-header">Plnenie plánu "30 strán na deň"
-                    <div class="float-right"> deň {{readingService.dayOfYear}} /
-                        {{readingService.isLeapYear ? 366 : 365}}</div>
+                    <div class="float-right"> deň {{(statsData$ | async).dayOfYear}} /
+                        {{(statsData$ | async).isLeapYear ? 366 : 365}}</div>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -18,19 +18,23 @@
                     </div>
                     <div *ngIf="gauges$ | async as gauges" class="row">
                         <div class="col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[0].size" [needleValue]="0" [centralLabel]="gauges[0].label" [options]="gauges[0].opts" [name]="gauges[0].name" [nameFont]="14">
+                            <rg-gauge-chart [canvasWidth]="gauges[0].size" [needleValue]="0" [centralLabel]="gauges[0].label" [options]="gauges[0].opts" [name]="gauges[0].name"
+                                [nameFont]="14">
                             </rg-gauge-chart>
                         </div>
                         <div class=" col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[1].size" [needleValue]="0" [centralLabel]="gauges[1].label" [options]="gauges[1].opts" [name]="gauges[1].name" [nameFont]="14">
+                            <rg-gauge-chart [canvasWidth]="gauges[1].size" [needleValue]="0" [centralLabel]="gauges[1].label" [options]="gauges[1].opts" [name]="gauges[1].name"
+                                [nameFont]="14">
                             </rg-gauge-chart>
                         </div>
                         <div class="col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[2].size" [needleValue]="0" [centralLabel]="gauges[2].label" [options]="gauges[2].opts" [name]="gauges[2].name" [nameFont]="14">
+                            <rg-gauge-chart [canvasWidth]="gauges[2].size" [needleValue]="0" [centralLabel]="gauges[2].label" [options]="gauges[2].opts" [name]="gauges[2].name"
+                                [nameFont]="14">
                             </rg-gauge-chart>
                         </div>
                         <div class="col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[3].size" [needleValue]="0" [centralLabel]="gauges[3].label" [options]="gauges[3].opts" [name]="gauges[3].name" [nameFont]="14">
+                            <rg-gauge-chart [canvasWidth]="gauges[3].size" [needleValue]="0" [centralLabel]="gauges[3].label" [options]="gauges[3].opts" [name]="gauges[3].name"
+                                [nameFont]="14">
                             </rg-gauge-chart>
                         </div>
                     </div>
@@ -41,8 +45,11 @@
             <div class="card stats">
                 <div class="card-header">Štatistiky
                     <div class="float-right" *ngIf="readStats$ | async as readStats">
-                        {{readStats.booksCurrentYear}} kníh
-                        | {{readStats.pagesCurrentYear.toLocaleString('sk')}} strán</div>
+                        {{readStats.booksCurrentYear}} kníh | {{readStats.pagesCurrentYear.toLocaleString('sk')}} strán
+                        <button class="btn btn-link" [ngClass]="{'text-secondary':!(isStatsHistory$ | async),'text-primary':(isStatsHistory$ | async)}" (click)="toggleStatsHistory()">
+                            <i class="fas fa-history" title="Pred poslednou knihou"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table *ngIf="readStats$ | async as readStats" class="stats-table">
@@ -87,48 +94,6 @@
                             </td>
                         </tr>
                     </table>
-                    <!--<div *ngIf="readStats$ | async as readStats" class="row no-gutters stats-row">
-                        <div class="col-5">
-                            <div class="row no-gutters border rounded">
-                                <div class="col-7">Plán &plusmn;dni</div>
-                                <app-val class="col-5 text-right" [value]="readStats.planDayDiff"></app-val>
-                            </div>
-                            <div class="row no-gutters border rounded">
-                                <div class="col-7">Plán &plusmn;strany</div>
-                                <app-val class="col-5 text-right" [value]="readStats.planPagesDiff"></app-val>
-                            </div>
-                            <div class="row no-gutters border rounded">
-                                <div class="col-7">Poradie strany</div>
-                                <div class="col-5 text-right">{{readStats.currentPagesOrder}}.</div>
-                            </div>
-                            <div class="row no-gutters border rounded">
-                                <div class="col-7">Poradie knihy</div>
-                                <div class="col-5 text-right">{{readStats.currentBooksOrder}}.</div>
-                            </div>
-                        </div>
-                        <div class="col-7">
-                            <div class="row no-gutters border rounded">
-                                <div class="col-6">Priemer strán</div>
-                                <div class="col-3 text-right">{{readStats.avgPages.toLocaleString('sk')}}</div>
-                                <app-val class="col-3 text-right" [value]="readStats.avgPagesDiff"></app-val>
-                            </div>
-                            <div class="row no-gutters border rounded">
-                                <div class="col-6">Priemer kníh</div>
-                                <div class="col-3 text-right">{{readStats.avgBooks.toLocaleString('sk')}}</div>
-                                <app-val class="col-3 text-right" [value]="readStats.avgBooksDiff"></app-val>
-                            </div>
-                            <div class="row no-gutters border rounded">
-                                <div class="col-6">Max. strán</div>
-                                <div class="col-3 text-right">{{readStats.maxPages.toLocaleString('sk')}}</div>
-                                <app-val class="col-3 text-right" [value]="readStats.maxPagesDiff"></app-val>
-                            </div>
-                            <div class="row no-gutters border rounded">
-                                <div class="col-6">Max. kníh</div>
-                                <div class="col-3 text-right">{{readStats.maxBooks.toLocaleString('sk')}}</div>
-                                <app-val class="col-3 text-right" [value]="readStats.maxBooksDiff"></app-val>
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
             </div>
         </div>
@@ -136,18 +101,10 @@
             <div class="card add-new">
                 <div class="card-header">Pridať</div>
                 <div class="card-body">
-                    <a class="btn btn-outline-primary" [routerLink]="['/books','new']" role="button">
-                        <i class="fas fa-book"></i> Knihu
-                    </a>
-                    <a class="btn btn-outline-primary" [routerLink]="['/reading','new']" role="button">
-                        <i class="fas fa-glasses"></i> Čítanie
-                    </a>
-                    <a class="btn btn-outline-primary" [routerLink]="['/authors','new']" role="button">
-                        <i class="fas fa-user"></i> Autora
-                    </a>
-                    <a class="btn btn-outline-primary" [routerLink]="['/series','new']" role="button">
-                        <i class="fas fa-layer-group"></i> Sériu
-                    </a>
+                    <a class="btn btn-outline-primary" [routerLink]="['/books','new']" role="button"><i class="fas fa-book"></i> Knihu</a>
+                    <a class="btn btn-outline-primary" [routerLink]="['/reading','new']" role="button"><i class="fas fa-glasses"></i> Čítanie</a>
+                    <a class="btn btn-outline-primary" [routerLink]="['/authors','new']" role="button"><i class="fas fa-user"></i> Autora</a>
+                    <a class="btn btn-outline-primary" [routerLink]="['/series','new']" role="button"><i class="fas fa-layer-group"></i> Sériu</a>
                 </div>
             </div>
         </div>
@@ -157,8 +114,8 @@
             <div class="card">
                 <div class="card-header">Prečítané Strany</div>
                 <div class="card-body" style="height: 500px;">
-                    <canvas baseChart [datasets]="pagesByYearData$ | async" [labels]="pagesByYearLabels$ | async" [options]="pagesByYearOpts" chartType="horizontalBar" [legend]="false"
-                        [plugins]="plugins">
+                    <canvas baseChart [datasets]="pagesByYearData$ | async" [labels]="pagesByYearLabels$ | async" [options]="pagesByYearOpts" chartType="horizontalBar"
+                        [legend]="false" [plugins]="plugins">
                     </canvas>
                 </div>
             </div>
@@ -167,8 +124,8 @@
             <div class="card">
                 <div class="card-header">Prečítané knihy</div>
                 <div class="card-body" style="height: 500px;">
-                    <canvas baseChart [datasets]="booksByYearData$ | async" [labels]="booksByYearLabels$ | async" [options]="booksByYearOpts" chartType="horizontalBar" [legend]="false"
-                        [plugins]="plugins">
+                    <canvas baseChart [datasets]="booksByYearData$ | async" [labels]="booksByYearLabels$ | async" [options]="booksByYearOpts" chartType="horizontalBar"
+                        [legend]="false" [plugins]="plugins">
                     </canvas>
                 </div>
             </div>
