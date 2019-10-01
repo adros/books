@@ -24,17 +24,25 @@
                     <i class="fas fa-plus-circle"></i> Pridať
                 </a>
                 <ul *dropdownMenu class="dropdown-menu" role="menu">
-                    <li [routerLink]="['/books','new']">
-                        <a class="dropdown-item nav-link" href="#"> <i class="fas fa-book"></i> Knihu</a>
+                    <li>
+                        <a class="dropdown-item nav-link" [routerLink]="['/books','new']">
+                            <i class="fas fa-book"></i> Knihu
+                        </a>
                     </li>
-                    <li [routerLink]="['/reading','new']">
-                        <a class="dropdown-item nav-link" href="#"><i class="fas fa-glasses"></i> Čítanie</a>
+                    <li>
+                        <a class="dropdown-item nav-link" [routerLink]="['/reading','new']">
+                            <i class="fas fa-glasses"></i> Čítanie
+                        </a>
                     </li>
-                    <li [routerLink]="['/authors','new']">
-                        <a class="dropdown-item nav-link" href="#"><i class="fas fa-user"></i> Autora</a>
+                    <li>
+                        <a class="dropdown-item nav-link" [routerLink]="['/authors','new']">
+                            <i class="fas fa-user"></i> Autora
+                        </a>
                     </li>
-                    <li [routerLink]="['/series','new']">
-                        <a class="dropdown-item nav-link" href="#"><i class="fas fa-layer-group"></i> Sériu</a>
+                    <li>
+                        <a class="dropdown-item nav-link" [routerLink]="['/series','new']">
+                            <i class="fas fa-layer-group"></i> Sériu
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -43,8 +51,32 @@
             <span class="version" [title]="versionTitle">{{version}}</span>
         </div>
         <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Autor / Kniha" aria-label="Hľadať">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Hľadať</button>
+            <div class="dropdown">
+                <input class="form-control mr-sm-2" type="search" placeholder="Hľadať" aria-label="Hľadať"
+                    (input)="searchInputChange$.next($event)">
+                <div class="dropdown-menu dropdown-menu-right show navbar-nav" *ngIf="searchResult$ | async as result">
+                    <div *ngIf="result=='LOADING';else elseTemplate"
+                        class="dropdown-item d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status"></div>
+                    </div>
+                    <ng-template #elseTemplate>
+                        <h6 class="dropdown-header">Knihy - názov ({{result.booksByTitle.length}} /
+                            {{result.booksByTitleCount}})</h6>
+                        <a *ngFor="let item of result.booksByTitle" class="pl-2 pr-2 d-block text-nowrap"
+                            [routerLink]="['/books',item.id]"> <i class="fas fa-book"></i> {{item.title}} </a>
+                        <div class="dropdown-divider"></div>
+                        <h6 class="dropdown-header">Autori ({{result.authors.length}} /
+                            {{result.authorsCount}})</h6>
+                        <a *ngFor="let item of result.authors" class="pl-2 pr-2 d-block text-nowrap"
+                            [routerLink]="['/authors',item.id]"> <i class="fas fa-user"></i> {{item.lastName}}, {{item.firstName}}</a>
+                        <div class="dropdown-divider"></div>
+                        <h6 class="dropdown-header">Knihy - pôvodný názov ({{result.booksByOriginal.length}} /
+                            {{result.booksByOriginalCount}})</h6>
+                        <a *ngFor="let item of result.booksByOriginal" class="pl-2 pr-2 d-block text-nowrap"
+                            [routerLink]="['/books',item.id]"> <i class="fas fa-atlas"></i> {{item.original}} </a>
+                    </ng-template>
+                </div>
+            </div>
         </form>
     </div>
 </nav>

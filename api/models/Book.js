@@ -24,7 +24,10 @@ module.exports = {
 
     series: { collection: 'serie', via: 'books' },
     authors: { collection: 'author', via: 'books' },
-    readings: { collection: 'reading', via: 'book' }
+    readings: { collection: 'reading', via: 'book' },
+
+    titleSearch: { type: 'string', required: true },
+    originalSearch: { type: 'string', required: false }
 
   },
 

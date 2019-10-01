@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const dataUri = require('datauri').promise;
+const { removeDiacriticalMarks } = require('../api/common/remove-diacritical-marks');
 
 let importDataPromise;
 
@@ -39,16 +40,21 @@ async function importAuthors() {
   var authorsData = await Promise.all(authors.map(async function (item) {
     const pictureName = item.picture_url && item.picture_url.split('/').pop();
     const pictureUrl = pictureName && (await getAuthorImage(pictureName));
+    const firstName = item.first_name.trim();
+    const lastName = item.last_name.trim();
     const data = {
       id: +item.author_id,
       dateOfBirth: item.date_of_birth && item.date_of_birth == '1900-01-01T00:00:00' ? null : item.date_of_birth,
       dateOfDeath: item.date_of_death ? item.date_of_death : null,
-      firstName: item.first_name.trim(),
-      lastName: item.last_name.trim(),
+      firstName,
+      lastName,
       link: item.link,
       nationality: item.nationality,
       pictureName,
-      pictureUrl
+      pictureUrl,
+
+      firstNameSearch: removeDiacriticalMarks(firstName).toUpperCase(),
+      lastNameSearch: removeDiacriticalMarks(lastName).toUpperCase()
     };
 
     return data;
@@ -71,10 +77,13 @@ async function importBooks() {
     const series = bookSeries.filter(({ book_id }) => book_id == item.book_id).map(({ serie_id }) => serie_id);
     const authors = authorBooks.filter(({ book_id }) => book_id == item.book_id).map(({ author_id }) => author_id);
 
+    const title = item.title.trim();
+    const original = item.original == '-' ? undefined : item.original.trim();
+    debugger;
     return {
       id: +item.book_id,
-      title: item.title.trim(),
-      original: item.original == '-' ? undefined : item.original.trim(),
+      title,
+      original,
       pages: +item.pages,
       published: item.published ? +item.published : undefined,
       description: item.description,
@@ -83,7 +92,10 @@ async function importBooks() {
       pictureUrl,
       pictureName,
       series: series, // no empty string
-      authors: authors
+      authors: authors,
+
+      titleSearch: removeDiacriticalMarks(title).toUpperCase(),
+      originalSearch: original ? removeDiacriticalMarks(original).toUpperCase() : undefined
     };
   }));
 
@@ -131,12 +143,12 @@ function getAuthorImage(imgName) {
 
 function getBookImage(imgName) {
   const imgPath = path.join(__dirname, `../_import/books/${imgName}`)
-     .replace('Stratený', 'Strateny')
+    .replace('Stratený', 'Strateny')
     // .replace('Gróf', 'Grвf')
-     .replace('Jožo Ráž - Návrat', 'Jozo Ráz - Návrat')
-     .replace('Neodovzdaný list', 'Neodovzdany list')
+    .replace('Jožo Ráž - Návrat', 'Jozo Ráz - Návrat')
+    .replace('Neodovzdaný list', 'Neodovzdany list')
     // .replace('Víchor na Jamaike', 'Vбchor na Jamaike')
-     .replace('Alexander Veľký', 'Alexander Velky');
+    .replace('Alexander Veľký', 'Alexander Velky');
 
 
   if (!fs.existsSync(imgPath)) {

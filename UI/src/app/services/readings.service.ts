@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, combineLatest, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
-import { shareReplay, map, publish, switchMapTo } from 'rxjs/operators';
+import { Observable, combineLatest, Subject, BehaviorSubject } from 'rxjs';
+import { shareReplay, map, switchMapTo } from 'rxjs/operators';
 import { groupBy, sumBy, orderBy } from 'lodash-es';
 
 export interface IStats {
@@ -10,6 +10,7 @@ export interface IStats {
   pagesByYear: Array<[number, number]>;
   booksCurrentYear: number;
   pagesCurrentYear: number;
+  lastBookPages: number;
 };
 
 @Injectable({
@@ -51,19 +52,21 @@ export class ReadingsService {
   }
 
   public getStats(): Observable<IStats> {
-    const booksByYear$ = this.getStatsData().pipe(map((data) => {
+    const statsData$ = this.getStatsData();
+    const booksByYear$ = statsData$.pipe(map((data) => {
       return orderBy(Object.entries(groupBy(data, 'year')).map(([year, readings]) => [+year, (readings as any).length]), '1').reverse();
     }));
-    const pagesByYear$ = this.getStatsData().pipe(map((data) => {
+    const pagesByYear$ = statsData$.pipe(map((data) => {
       return orderBy(Object.entries(groupBy(data, 'year')).map(([year, readings]) => [+year, sumBy(readings, 'pages')]), '1').reverse();
     }));
 
-    return combineLatest<IStats>(booksByYear$, pagesByYear$, (booksByYear, pagesByYear) => ({
+    return combineLatest<IStats>(booksByYear$, pagesByYear$, statsData$, (booksByYear, pagesByYear, statsData) => ({
       booksByYear,
       pagesByYear,
       booksCurrentYear: (booksByYear.find(([year]) => year == this.year) || [0, 0])[1],
       pagesCurrentYear: (pagesByYear.find(([year]) => year == this.year) || [0, 0])[1],
-      pagesYearTarget: 30 * (this.isLeapYear ? 366 : 366)
+      pagesYearTarget: 30 * (this.isLeapYear ? 366 : 366),
+      lastBookPages: statsData.slice(0).pop().pages
     }));
   }
 }

@@ -57,6 +57,11 @@ module.exports.routes = {
     controller: 'reading',
     action: 'listStats'
   },
+
+  'get /svc/search/': {
+    controller: 'search',
+    action: 'search'
+  },
   
 
   /***************************************************************************

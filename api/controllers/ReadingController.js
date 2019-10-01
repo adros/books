@@ -41,7 +41,7 @@ const controller = module.exports = {
         const query = `SELECT r.year, b.pages
                         FROM public.reading r
                         LEFT JOIN public.book b ON b.id = r.book
-                        GROUP BY r.id, b.id ORDER BY r.id`;
+                        GROUP BY r.id, b.id ORDER BY r."totalOrder"`;
 
         return (await sails.getDatastore().sendNativeQuery(query, params || []))
             .rows;

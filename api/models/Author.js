@@ -16,8 +16,10 @@ module.exports = {
     pictureUrl: { type: 'string', required: false },
     pictureName: { type: 'string', required: false },
 
-    books: { collection: 'book', via: 'authors' }
-
+    books: { collection: 'book', via: 'authors' },
+    
+    firstNameSearch: { type: 'string', required: true, },
+    lastNameSearch: { type: 'string', required: true }
   },
 
   customToJSON: function () {
