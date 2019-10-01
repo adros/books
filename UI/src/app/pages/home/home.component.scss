@@ -25,12 +25,59 @@
 
 .stats {
   .card-body {
-    font-size: 12px;
+    font-size: 13px;
+
+    .stats-table {
+      width: 100%;
+      height: 100%;
+
+      td {
+        padding: 0;
+      }
+
+      td > * {
+        border: 1px solid #dfdfdf;
+        padding: 2px 5px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      td:nth-child(1) > *,
+      td:nth-child(3) > * {
+        border-right-width: 0;
+        border-top-left-radius: 0.25rem !important;
+        border-bottom-left-radius: 0.25rem !important;
+      }
+
+      td:nth-child(2) > *,
+      td:nth-child(5) > * {
+        border-left-width: 0;
+        border-top-right-radius: 0.25rem !important;
+        border-bottom-right-radius: 0.25rem !important;
+        text-align: right;
+      }
+
+      td:nth-child(4) > * {
+        border-left-width: 0;
+        border-right-width: 0;
+        text-align: right;
+      }
+
+      td:nth-child(3) > * {
+        margin-left: 0.3rem;
+      }
+
+      tr:not(:last-child) td {
+        padding-bottom: 0.3rem;
+      }
+    }
 
     .stats-row {
       margin: -0.2rem -0.2rem;
       height: calc(100% + 0.2rem);
-        
+
       & > * {
         height: calc(100% + 0.2rem);
         display: flex;

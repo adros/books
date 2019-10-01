@@ -18,27 +18,19 @@
                     </div>
                     <div *ngIf="gauges$ | async as gauges" class="row">
                         <div class="col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[0].size" [needleValue]="0"
-                                [centralLabel]="gauges[0].label" [options]="gauges[0].opts" [name]="gauges[0].name"
-                                [nameFont]="14">
+                            <rg-gauge-chart [canvasWidth]="gauges[0].size" [needleValue]="0" [centralLabel]="gauges[0].label" [options]="gauges[0].opts" [name]="gauges[0].name" [nameFont]="14">
                             </rg-gauge-chart>
                         </div>
                         <div class=" col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[1].size" [needleValue]="0"
-                                [centralLabel]="gauges[1].label" [options]="gauges[1].opts" [name]="gauges[1].name"
-                                [nameFont]="14">
+                            <rg-gauge-chart [canvasWidth]="gauges[1].size" [needleValue]="0" [centralLabel]="gauges[1].label" [options]="gauges[1].opts" [name]="gauges[1].name" [nameFont]="14">
                             </rg-gauge-chart>
                         </div>
                         <div class="col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[2].size" [needleValue]="0"
-                                [centralLabel]="gauges[2].label" [options]="gauges[2].opts" [name]="gauges[2].name"
-                                [nameFont]="14">
+                            <rg-gauge-chart [canvasWidth]="gauges[2].size" [needleValue]="0" [centralLabel]="gauges[2].label" [options]="gauges[2].opts" [name]="gauges[2].name" [nameFont]="14">
                             </rg-gauge-chart>
                         </div>
                         <div class="col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[3].size" [needleValue]="0"
-                                [centralLabel]="gauges[3].label" [options]="gauges[3].opts" [name]="gauges[3].name"
-                                [nameFont]="14">
+                            <rg-gauge-chart [canvasWidth]="gauges[3].size" [needleValue]="0" [centralLabel]="gauges[3].label" [options]="gauges[3].opts" [name]="gauges[3].name" [nameFont]="14">
                             </rg-gauge-chart>
                         </div>
                     </div>
@@ -53,7 +45,49 @@
                         | {{readStats.pagesCurrentYear.toLocaleString('sk')}} strán</div>
                 </div>
                 <div class="card-body">
-                    <div *ngIf="readStats$ | async as readStats" class="row no-gutters stats-row">
+                    <table *ngIf="readStats$ | async as readStats" class="stats-table">
+                        <tr>
+                            <td><span>Plán &plusmn;dni</span></td>
+                            <td>
+                                <app-val [value]="readStats.planDayDiff"></app-val>
+                            </td>
+                            <td><span>Priemer strán</span></td>
+                            <td><span>{{readStats.avgPages.toLocaleString('sk')}}</span></td>
+                            <td>
+                                <app-val [value]="readStats.avgPagesDiff"></app-val>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span>Plán &plusmn;strany</span></td>
+                            <td>
+                                <app-val [value]="readStats.planPagesDiff"></app-val>
+                            </td>
+                            <td><span>Priemer kníh</span></td>
+                            <td><span>{{readStats.avgBooks.toLocaleString('sk')}}</span></td>
+                            <td>
+                                <app-val [value]="readStats.avgBooksDiff"></app-val>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span>Poradie strany</span></td>
+                            <td><span>{{readStats.currentPagesOrder}}.</span></td>
+                            <td><span>Max. strán</span></td>
+                            <td><span>{{readStats.maxPages.toLocaleString('sk')}}</span></td>
+                            <td>
+                                <app-val [value]="readStats.maxPagesDiff"></app-val>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span>Poradie knihy</span></td>
+                            <td><span>{{readStats.currentBooksOrder}}.</span></td>
+                            <td><span>Max. kníh</span></td>
+                            <td><span>{{readStats.maxBooks.toLocaleString('sk')}}</span></td>
+                            <td>
+                                <app-val [value]="readStats.maxBooksDiff"></app-val>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--<div *ngIf="readStats$ | async as readStats" class="row no-gutters stats-row">
                         <div class="col-5">
                             <div class="row no-gutters border rounded">
                                 <div class="col-7">Plán &plusmn;dni</div>
@@ -94,7 +128,7 @@
                                 <app-val class="col-3 text-right" [value]="readStats.maxBooksDiff"></app-val>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -123,8 +157,8 @@
             <div class="card">
                 <div class="card-header">Prečítané Strany</div>
                 <div class="card-body" style="height: 500px;">
-                    <canvas baseChart [datasets]="pagesByYearData$ | async" [labels]="pagesByYearLabels$ | async"
-                        [options]="pagesByYearOpts" chartType="horizontalBar" [legend]="false" [plugins]="plugins">
+                    <canvas baseChart [datasets]="pagesByYearData$ | async" [labels]="pagesByYearLabels$ | async" [options]="pagesByYearOpts" chartType="horizontalBar" [legend]="false"
+                        [plugins]="plugins">
                     </canvas>
                 </div>
             </div>
@@ -133,8 +167,8 @@
             <div class="card">
                 <div class="card-header">Prečítané knihy</div>
                 <div class="card-body" style="height: 500px;">
-                    <canvas baseChart [datasets]="booksByYearData$ | async" [labels]="booksByYearLabels$ | async"
-                        [options]="booksByYearOpts" chartType="horizontalBar" [legend]="false" [plugins]="plugins">
+                    <canvas baseChart [datasets]="booksByYearData$ | async" [labels]="booksByYearLabels$ | async" [options]="booksByYearOpts" chartType="horizontalBar" [legend]="false"
+                        [plugins]="plugins">
                     </canvas>
                 </div>
             </div>
