@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, combineLatest } from 'rxjs';
-import { shareReplay, map } from 'rxjs/operators';
+import { Observable, combineLatest, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
+import { shareReplay, map, publish, switchMapTo } from 'rxjs/operators';
 import { groupBy, sumBy, orderBy } from 'lodash-es';
 
 export interface IStats {
@@ -20,6 +20,7 @@ export class ReadingsService {
   // TODO: reset stats on new reading
 
   private stats$: Observable<any>;
+  private loadStats$: Subject<any>;
   public isLeapYear: boolean;
   public dayOfYear: number;
   public year: number;
@@ -36,9 +37,17 @@ export class ReadingsService {
 
   private getStatsData() {
     if (!this.stats$) {
-      this.stats$ = this.http.get(`${environment.baseUrl}/svc/reading/stats/`).pipe(shareReplay());
+      this.loadStats$ = new BehaviorSubject(true);
+      this.stats$ = this.loadStats$.pipe(
+        switchMapTo(this.http.get(`${environment.baseUrl}/svc/reading/stats/`)),
+        shareReplay()
+      );
     }
     return this.stats$;
+  }
+
+  public resetStats() {
+    this.loadStats$.next(true);
   }
 
   public getStats(): Observable<IStats> {
