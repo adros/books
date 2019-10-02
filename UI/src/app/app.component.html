@@ -1,79 +1,54 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top ">
     <a class="navbar-brand" [routerLink]="['/home']" title="Domov"><i class="fas fa-home text-primary"></i></a>
-    <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <button class="navbar-toggler" type="button" (click)="toggleNavbar()"><span class="navbar-toggler-icon"></span></button>
 
     <div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item" routerLinkActive="active">
-                <a class="nav-link" [routerLink]="['/books']"><i class="fas fa-book"></i> Knihy</a>
-            </li>
-            <li class="nav-item" routerLinkActive="active">
-                <a class="nav-link" [routerLink]="['/readings']"><i class="fas fa-glasses"></i> Čítanie</a>
-            </li>
-            <li class="nav-item" routerLinkActive="active">
-                <a class="nav-link" [routerLink]="['/authors']"><i class="fas fa-user"></i> Autori</a>
-            </li>
-            <li class="nav-item" routerLinkActive="active">
-                <a class="nav-link" [routerLink]="['/series']"><i class="fas fa-layer-group"></i> Série</a>
-            </li>
+            <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/books']"><i class="fas fa-book"></i> Knihy</a></li>
+            <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/readings']"><i class="fas fa-glasses"></i> Čítanie</a></li>
+            <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/authors']"><i class="fas fa-user"></i> Autori</a></li>
+            <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/series']"><i class="fas fa-layer-group"></i> Série</a></li>
 
             <li dropdown class="dropdown">
-                <a href="#" id="basic-link" dropdownToggle (click)="false" class="nav-link dropdown-toggle">
-                    <i class="fas fa-plus-circle"></i> Pridať
-                </a>
+                <a href="#" id="basic-link" dropdownToggle (click)="false" class="nav-link dropdown-toggle"><i class="fas fa-plus-circle"></i> Pridať</a>
                 <ul *dropdownMenu class="dropdown-menu" role="menu">
-                    <li>
-                        <a class="dropdown-item nav-link" [routerLink]="['/books','new']">
-                            <i class="fas fa-book"></i> Knihu
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item nav-link" [routerLink]="['/reading','new']">
-                            <i class="fas fa-glasses"></i> Čítanie
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item nav-link" [routerLink]="['/authors','new']">
-                            <i class="fas fa-user"></i> Autora
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item nav-link" [routerLink]="['/series','new']">
-                            <i class="fas fa-layer-group"></i> Sériu
-                        </a>
-                    </li>
+                    <li><a class="dropdown-item nav-link" [routerLink]="['/books','new']"> <i class="fas fa-book"></i> Knihu</a> </li>
+                    <li><a class="dropdown-item nav-link" [routerLink]="['/reading','new']"> <i class="fas fa-glasses"></i> Čítanie</a></li>
+                    <li><a class="dropdown-item nav-link" [routerLink]="['/authors','new']"> <i class="fas fa-user"></i> Autora</a>
+                    <li><a class="dropdown-item nav-link" [routerLink]="['/series','new']"> <i class="fas fa-layer-group"></i> Sériu</a></li>
                 </ul>
             </li>
         </ul>
         <div>
             <span class="version" [title]="versionTitle">{{version}}</span>
         </div>
-        <form class="form-inline my-2 my-lg-0">
+        <form class="form-inline my-2 my-lg-0 search-form">
             <div class="dropdown">
-                <input class="form-control mr-sm-2" type="search" placeholder="Hľadať" aria-label="Hľadať"
-                    (input)="searchInputChange$.next($event)">
-                <div class="dropdown-menu dropdown-menu-right show navbar-nav" *ngIf="searchResult$ | async as result">
-                    <div *ngIf="result=='LOADING';else elseTemplate"
-                        class="dropdown-item d-flex justify-content-center">
+                <input class="form-control mr-sm-2" type="search" placeholder="Hľadať" aria-label="Hľadať" (input)="searchInputChange$.next($event)">
+                <div class="dropdown-menu dropdown-menu-md-right show navbar-nav" *ngIf="searchResult$ | async as result">
+                    <div *ngIf="result=='LOADING';else elseTemplate" class="dropdown-item d-flex justify-content-center">
                         <div class="spinner-border text-primary" role="status"></div>
                     </div>
                     <ng-template #elseTemplate>
-                        <h6 class="dropdown-header">Knihy - názov ({{result.booksByTitle.length}} /
-                            {{result.booksByTitleCount}})</h6>
-                        <a *ngFor="let item of result.booksByTitle" class="pl-2 pr-2 d-block text-nowrap"
-                            [routerLink]="['/books',item.id]"> <i class="fas fa-book"></i> {{item.title}} </a>
+                        <h6 class="dropdown-header">Knihy - názov ({{result.booksByTitle.length}} / {{result.booksByTitleCount}})</h6>
+                        <a *ngFor="let item of result.booksByTitle" class="pl-2 pr-2 d-block text-truncate" [routerLink]="['/books',item.id]" title="{{item.title}}">
+                            <i class="fas fa-book"></i> {{item.title}}
+                        </a>
+
                         <div class="dropdown-divider"></div>
                         <h6 class="dropdown-header">Autori ({{result.authors.length}} /
                             {{result.authorsCount}})</h6>
-                        <a *ngFor="let item of result.authors" class="pl-2 pr-2 d-block text-nowrap"
-                            [routerLink]="['/authors',item.id]"> <i class="fas fa-user"></i> {{item.lastName}}, {{item.firstName}}</a>
+                        <a *ngFor="let item of result.authors" class="pl-2 pr-2 d-block text-truncate" [routerLink]="['/authors',item.id]"
+                            title="{{item.lastName}}, {{item.firstName}}">
+                            <i class="fas fa-user"></i> {{item.lastName}}, {{item.firstName}}
+                        </a>
+
                         <div class="dropdown-divider"></div>
                         <h6 class="dropdown-header">Knihy - pôvodný názov ({{result.booksByOriginal.length}} /
                             {{result.booksByOriginalCount}})</h6>
-                        <a *ngFor="let item of result.booksByOriginal" class="pl-2 pr-2 d-block text-nowrap"
-                            [routerLink]="['/books',item.id]"> <i class="fas fa-atlas"></i> {{item.original}} </a>
+                        <a *ngFor="let item of result.booksByOriginal" class="pl-2 pr-2 d-block text-truncate" [routerLink]="['/books',item.id]" title="{{item.original}}">
+                            <i class="fas fa-atlas"></i> {{item.original}}
+                        </a>
                     </ng-template>
                 </div>
             </div>

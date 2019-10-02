@@ -1,6 +1,9 @@
-
-.version{
+.version {
   font-size: 10px;
   color: #a8a8a8;
-  margin-right: 5px
+  margin-right: 5px;
+}
+
+.search-form a {
+  max-width: 300px;
 }
