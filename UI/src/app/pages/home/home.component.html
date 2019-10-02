@@ -4,49 +4,26 @@
 
 <div *ngIf="!isLoading" class="pt-2 pb-2">
     <div class="row top-bar mr-n2 ml-n2">
-        <div class="col-xl-6 mt-2 mb-2 pr-2 pl-2">
-            <div class="card">
-                <div class="card-header">Plán "30 strán na deň"
-                    <div class="float-right"> deň {{(statsData$ | async).dayOfYear}} /
-                        {{(statsData$ | async).isLeapYear ? 366 : 365}}</div>
-                </div>
+
+        <div class="col-md-6 col-xl-3 d-none d-md-block mt-2 mb-2 pr-2 pl-2">
+            <div class="card add-new">
+                <div class="card-header">Pridať</div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-6 col-md-3" #gauge>
-                            <!--just placeholder for couting widthF-->
-                        </div>
-                    </div>
-                    <div *ngIf="gauges$ | async as gauges" class="row">
-                        <div class="col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[0].size" [needleValue]="0" [centralLabel]="gauges[0].label" [options]="gauges[0].opts" [name]="gauges[0].name"
-                                [nameFont]="14">
-                            </rg-gauge-chart>
-                        </div>
-                        <div class=" col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[1].size" [needleValue]="0" [centralLabel]="gauges[1].label" [options]="gauges[1].opts" [name]="gauges[1].name"
-                                [nameFont]="14">
-                            </rg-gauge-chart>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[2].size" [needleValue]="0" [centralLabel]="gauges[2].label" [options]="gauges[2].opts" [name]="gauges[2].name"
-                                [nameFont]="14">
-                            </rg-gauge-chart>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <rg-gauge-chart [canvasWidth]="gauges[3].size" [needleValue]="0" [centralLabel]="gauges[3].label" [options]="gauges[3].opts" [name]="gauges[3].name"
-                                [nameFont]="14">
-                            </rg-gauge-chart>
-                        </div>
-                    </div>
+                    <a class="btn btn-outline-primary" [routerLink]="['/books','new']" role="button"><i class="fas fa-book"></i> Knihu</a>
+                    <a class="btn btn-outline-primary" [routerLink]="['/reading','new']" role="button"><i class="fas fa-glasses"></i> Čítanie</a>
+                    <a class="btn btn-outline-primary" [routerLink]="['/authors','new']" role="button"><i class="fas fa-user"></i> Autora</a>
+                    <a class="btn btn-outline-primary" [routerLink]="['/series','new']" role="button"><i class="fas fa-layer-group"></i> Sériu</a>
                 </div>
             </div>
         </div>
+
         <div class="col-md-6 col-xl-3 mt-2 mb-2 pr-2 pl-2">
             <div class="card stats">
                 <div class="card-header">Štatistiky
                     <div class="float-right" *ngIf="readStats$ | async as readStats">
                         {{readStats.booksCurrentYear}} kníh | {{readStats.pagesCurrentYear.toLocaleString('sk')}} strán
-                        <button class="btn btn-link" [ngClass]="{'text-secondary':!(isStatsHistory$ | async),'text-primary':(isStatsHistory$ | async)}" (click)="toggleStatsHistory()">
+                        <button class="btn btn-link" [ngClass]="{'text-secondary':!(isStatsHistory$ | async),'text-primary':(isStatsHistory$ | async)}"
+                            (click)="toggleStatsHistory()">
                             <i class="fas fa-history" title="Pred poslednou knihou"></i>
                         </button>
                     </div>
@@ -97,14 +74,41 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-xl-3 d-none d-md-block mt-2 mb-2 pr-2 pl-2">
-            <div class="card add-new">
-                <div class="card-header">Pridať</div>
+
+        <div class="col-xl-6 mt-2 mb-2 pr-2 pl-2">
+            <div class="card">
+                <div class="card-header">Plán "30 strán na deň"
+                    <div class="float-right"> deň {{(statsData$ | async).dayOfYear}} /
+                        {{(statsData$ | async).isLeapYear ? 366 : 365}}</div>
+                </div>
                 <div class="card-body">
-                    <a class="btn btn-outline-primary" [routerLink]="['/books','new']" role="button"><i class="fas fa-book"></i> Knihu</a>
-                    <a class="btn btn-outline-primary" [routerLink]="['/reading','new']" role="button"><i class="fas fa-glasses"></i> Čítanie</a>
-                    <a class="btn btn-outline-primary" [routerLink]="['/authors','new']" role="button"><i class="fas fa-user"></i> Autora</a>
-                    <a class="btn btn-outline-primary" [routerLink]="['/series','new']" role="button"><i class="fas fa-layer-group"></i> Sériu</a>
+                    <div class="row">
+                        <div class="col-6 col-md-3" #gauge>
+                            <!--just placeholder for couting widthF-->
+                        </div>
+                    </div>
+                    <div *ngIf="gauges$ | async as gauges" class="row">
+                        <div class="col-6 col-md-3">
+                            <rg-gauge-chart [canvasWidth]="gauges[0].size" [needleValue]="0" [centralLabel]="gauges[0].label" [options]="gauges[0].opts" [name]="gauges[0].name"
+                                [nameFont]="14">
+                            </rg-gauge-chart>
+                        </div>
+                        <div class=" col-6 col-md-3">
+                            <rg-gauge-chart [canvasWidth]="gauges[1].size" [needleValue]="0" [centralLabel]="gauges[1].label" [options]="gauges[1].opts" [name]="gauges[1].name"
+                                [nameFont]="14">
+                            </rg-gauge-chart>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <rg-gauge-chart [canvasWidth]="gauges[2].size" [needleValue]="0" [centralLabel]="gauges[2].label" [options]="gauges[2].opts" [name]="gauges[2].name"
+                                [nameFont]="14">
+                            </rg-gauge-chart>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <rg-gauge-chart [canvasWidth]="gauges[3].size" [needleValue]="0" [centralLabel]="gauges[3].label" [options]="gauges[3].opts" [name]="gauges[3].name"
+                                [nameFont]="14">
+                            </rg-gauge-chart>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
