@@ -43,7 +43,7 @@
 
       td > * {
         border: 1px solid #dfdfdf;
-        padding: 2px 5px;
+        padding: 2px 0 2px 3px;
         height: 100%;
         display: flex;
         justify-content: center;
@@ -63,6 +63,7 @@
         border-top-right-radius: 0.25rem !important;
         border-bottom-right-radius: 0.25rem !important;
         text-align: right;
+        padding-right: 3px;
       }
 
       td:nth-child(4) > * {
