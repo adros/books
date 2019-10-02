@@ -10,16 +10,20 @@
   height: 100%;
 }
 
-.add-new a {
-  width: calc(50% - 0.6rem);
-  height: calc(50% - 0.6rem);
-  margin: 0.3rem;
+.add-new .card-body {
+  padding: 0.15rem;
 
-  &:before {
-    content: "";
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+  a {
+    width: calc(50% - 0.3rem);
+    height: calc(50% - 0.3rem);
+    margin: 0.15rem;
+
+    &:before {
+      content: "";
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
   }
 }
 
@@ -35,20 +39,18 @@
 
     .stats-table {
       width: 100%;
-      height: 100%;
 
       td {
         padding: 0;
-        background: green;
       }
 
       td > * {
         border: 1px solid #dfdfdf;
         padding: 2px 0 2px 3px;
-        height: 100%;
         display: flex;
         justify-content: center;
         flex-direction: column;
+        white-space: nowrap;
       }
 
       td:nth-child(1) > *,
