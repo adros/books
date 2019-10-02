@@ -1,6 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top ">
     <a class="navbar-brand" [routerLink]="['/home']" title="Domov"><i class="fas fa-home text-primary"></i></a>
-    <button class="navbar-toggler" type="button" (click)="toggleNavbar()"><span class="navbar-toggler-icon"></span></button>
 
     <div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
         <ul class="navbar-nav mr-auto">
@@ -19,13 +18,16 @@
                 </ul>
             </li>
         </ul>
+    </div>
+
+    <div class="form-toggler-wrapper">
         <div>
             <span class="version" [title]="versionTitle">{{version}}</span>
         </div>
-        <form class="form-inline my-2 my-lg-0 search-form">
+        <form class="form-inline search-form mr-2">
             <div class="dropdown">
-                <input class="form-control mr-sm-2" type="search" placeholder="Hľadať" aria-label="Hľadať" (input)="searchInputChange$.next($event)">
-                <div class="dropdown-menu dropdown-menu-md-right show navbar-nav" *ngIf="searchResult$ | async as result">
+                <input class="form-control" type="search" placeholder="Hľadať" aria-label="Hľadať" (input)="searchInputChange$.next($event)">
+                <div class="dropdown-menu dropdown-menu-right show navbar-nav" *ngIf="searchResult$ | async as result">
                     <div *ngIf="result=='LOADING';else elseTemplate" class="dropdown-item d-flex justify-content-center">
                         <div class="spinner-border text-primary" role="status"></div>
                     </div>
@@ -53,6 +55,7 @@
                 </div>
             </div>
         </form>
+        <button class="navbar-toggler" type="button" (click)="toggleNavbar()"><span class="navbar-toggler-icon"></span></button>
     </div>
 </nav>
 

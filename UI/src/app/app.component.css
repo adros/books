@@ -5,5 +5,10 @@
 }
 
 .search-form a {
-  max-width: 300px;
+  max-width: 280px;
+}
+
+.form-toggler-wrapper {
+  display: flex;
+  align-items: center;
 }
